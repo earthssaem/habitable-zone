@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>생명 가능 지대 탐구실</title>
+<meta name="description" content="별의 질량과 광도에 따라 생명 가능 지대의 거리와 폭이 어떻게 달라지는지 직접 경계를 찾으며 탐구하는 고등학교 지구과학 시뮬레이션">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%230a1230%22/><circle cx=%2250%22 cy=%2250%22 r=%2232%22 fill=%22none%22 stroke=%22%233ad07e%22 stroke-width=%2210%22/><circle cx=%2250%22 cy=%2250%22 r=%2213%22 fill=%22%23ffd84d%22/></svg>">
+<style>
+  :root{
+    --bg:#0a1230;
+    --bg-2:#0d1838;
+    --panel:#111d47;
+    --panel-2:#17255a;
+    --line:#2b3c74;
+    --ink:#f2f5ff;
+    --ink-2:#c6cfeb;
+    --muted:#93a1c9;
+    --accent:#b9a6ff;
+    --accent-ink:#1b1340;
+    --hot:#ff9a3c;
+    --ok:#3ad07e;
+    --cold:#4ea8ff;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; min-height:100vh; display:flex; flex-direction:column;
+    background:
+      radial-gradient(1px 1px at 12% 18%, #ffffff55 50%, transparent 51%),
+      radial-gradient(1px 1px at 67% 9%, #ffffff44 50%, transparent 51%),
+      radial-gradient(1.5px 1.5px at 83% 62%, #ffffff33 50%, transparent 51%),
+      radial-gradient(1px 1px at 35% 78%, #ffffff33 50%, transparent 51%),
+      radial-gradient(ellipse at 20% -10%, #1a2a6a 0%, transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+    font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  button{font:inherit}
+
+  /* ── 상단 ─────────────────────────────── */
+  .top{
+    display:flex; align-items:center; gap:10px 18px; flex-wrap:wrap;
+    padding:10px 16px; border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,#0e1840 0%,#0a1230 100%);
+  }
+  .brand{display:flex; align-items:center; gap:10px; min-width:0}
+  .brand .logo{width:40px; height:40px; flex:none}
+  .brand h1{margin:0; font-size:20px; line-height:1.2; letter-spacing:-.3px}
+  .brand p{margin:0; font-size:12.5px; color:var(--muted)}
+  /* 제목 부분(로고·제목·부제)을 누르면 처음 화면으로 */
+  a.brand{color:inherit;text-decoration:none;border-radius:16px;margin:-4px -8px;padding:4px 8px;-webkit-tap-highlight-color:transparent}
+  a.brand .logo{transition:transform .15s}
+  @media (hover:hover){ a.brand:hover h1{color:var(--accent)} a.brand:hover .logo{transform:translateY(-1px)} }
+  a.brand:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+  .stepinfo{display:flex; align-items:center; gap:10px; margin-left:auto; color:var(--ink-2); font-weight:600; font-size:15px}
+  .dots{display:flex; gap:6px; list-style:none; margin:0; padding:0}
+  .dots li{width:10px; height:10px; border-radius:50%; background:var(--line)}
+  .dots li.done{background:var(--muted)}
+  .dots li.on{background:var(--accent); box-shadow:0 0 0 3px #b9a6ff40}
+  .mode{display:flex; border:1px solid var(--line); border-radius:999px; padding:3px; background:var(--panel)}
+  .mode button{
+    appearance:none; border:0; background:transparent; color:var(--ink-2);
+    min-height:44px; padding:0 16px; border-radius:999px; font-weight:700; font-size:15px; cursor:pointer;
+  }
+  .mode button[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink)}
+
+  /* ── 본문 배치: 트랙 A (7:3) ─────────── */
+  .layout{
+    flex:1; width:100%; max-width:1680px; margin:0 auto;
+    display:grid; grid-template-columns:minmax(0,7fr) minmax(0,3fr); gap:16px;
+    padding:14px 16px; align-items:start; align-content:start;
+  }
+  .stage, .panel{min-width:0}
+  .stage svg{
+    display:block; width:100%; height:auto;
+    background:linear-gradient(180deg,#0d1a44 0%,#0a1433 100%);
+    border:1px solid var(--line); border-radius:var(--radius);
+    fill:var(--ink-2); font-family:inherit; user-select:none; -webkit-user-select:none;
+  }
+  .stage svg .drag-zone{touch-action:none; cursor:grab}
+  .stage svg.dragging .drag-zone{cursor:grabbing}
+  .stage svg [tabindex]:focus{outline:none}
+  .stage svg [tabindex]:focus-visible .focus-ring{stroke:var(--accent); stroke-width:3; opacity:1}
+  .stage-html:empty{display:none}
+
+  .simctl{display:flex; flex-direction:column; gap:10px; margin-top:12px}
+  .simctl:empty{display:none}
+  .ctlrow{display:flex; flex-wrap:wrap; align-items:center; gap:8px}
+  .ctlrow .lbl{color:var(--muted); font-size:14px; font-weight:600; margin-right:2px}
+  .ctlrow .sep{width:1px; align-self:stretch; background:var(--line); margin:0 4px}
+  .btn{
+    appearance:none; min-height:44px; min-width:44px; padding:8px 14px;
+    border:1px solid var(--line); border-radius:12px; background:var(--panel-2); color:var(--ink);
+    font-weight:650; font-size:15px; cursor:pointer; line-height:1.2;
+    display:inline-flex; align-items:center; justify-content:center; gap:7px;
+    transition:background .15s, border-color .15s;
+  }
+  @media (hover:hover){ .btn:hover:not(:disabled){border-color:#4a5fa6} }
+  .btn:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+  .btn[aria-pressed="true"]{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+  .btn:disabled{opacity:.45; cursor:not-allowed}
+  .btn.primary{background:#2a3a86; border-color:#5068c4}
+  .btn.go{background:var(--accent); color:var(--accent-ink); border-color:var(--accent)}
+  .btn .chip{width:14px; height:14px; border-radius:50%; flex:none; box-shadow:0 0 8px currentColor}
+  .btn .tick{font-size:13px}
+  .readpos{min-width:96px; text-align:center; font-weight:800; font-size:18px; font-variant-numeric:tabular-nums}
+  .teacher-only{border:1px dashed #6b5fb0; border-radius:12px; padding:8px; background:#b9a6ff10}
+  .teacher-only .lbl{color:var(--accent)}
+
+  /* ── 설명 패널 ─────────────────────── */
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:16px; display:flex; flex-direction:column; gap:12px;
+  }
+  .panel h2{margin:0; font-size:20px; letter-spacing:-.3px}
+  .panel h2 small{display:block; font-size:13px; color:var(--accent); font-weight:700; letter-spacing:0}
+  .panel p{margin:0}
+  .goal{color:var(--ink-2)}
+  .note{font-size:14px; color:var(--muted)}
+  .box{background:var(--bg-2); border:1px solid var(--line); border-radius:12px; padding:10px 12px}
+  .summary{border-left:4px solid var(--accent); background:#b9a6ff14; border-radius:0 12px 12px 0; padding:10px 12px; font-weight:600}
+  .feedback{min-height:48px; font-weight:650}
+  .feedback.good{border-color:#b9a6ff88}
+  .feedback.warn{border-color:#ffffff40}
+  .readout{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; text-align:center}
+  .readout div{background:var(--bg-2); border:1px solid var(--line); border-radius:12px; padding:8px 4px}
+  .readout b{display:block; font-size:22px; font-variant-numeric:tabular-nums}
+  .readout span{font-size:12.5px; color:var(--muted)}
+  .formula{font-family:"Times New Roman",serif; font-size:22px; text-align:center; font-style:italic; letter-spacing:.5px}
+  .formula small{display:block; font-family:inherit; font-style:normal; font-size:12.5px; color:var(--muted); letter-spacing:0}
+  .tag{display:inline-block; font-size:12px; font-weight:700; color:var(--accent); border:1px solid #b9a6ff66; border-radius:999px; padding:1px 8px; margin-bottom:4px}
+  .z-hot{color:var(--hot)} .z-ok{color:var(--ok)} .z-cold{color:var(--cold)}
+
+  table.data{width:100%; border-collapse:collapse; font-size:14px; font-variant-numeric:tabular-nums}
+  table.data th, table.data td{padding:6px 4px; text-align:center; border-bottom:1px solid var(--line)}
+  table.data th{font-size:12.5px; color:var(--muted); font-weight:700; line-height:1.25}
+  table.data td:first-child{font-weight:700; white-space:nowrap}
+  table.data tr.cur td{background:#b9a6ff14}
+  table.data .empty{color:#5d6a95}
+
+  details{background:var(--bg-2); border:1px solid var(--line); border-radius:12px}
+  details summary{cursor:pointer; padding:10px 12px; min-height:44px; font-weight:700; color:var(--ink-2); list-style-position:inside}
+  details[open] summary{border-bottom:1px solid var(--line)}
+  details .in{padding:10px 12px; display:flex; flex-direction:column; gap:8px; font-size:14.5px}
+  details ul{margin:0; padding-left:18px}
+  details li{margin:2px 0}
+
+  .choices{display:flex; flex-wrap:wrap; gap:8px}
+  .qcard{background:var(--bg-2); border:1px solid var(--line); border-radius:12px; padding:12px; display:flex; flex-direction:column; gap:8px}
+  .qcard p.q{font-weight:700}
+
+  .stepnav{display:flex; gap:8px; margin-top:4px}
+  .stepnav .btn{flex:1}
+  .navhint{font-size:13.5px; color:var(--muted); text-align:center}
+
+  /* ── 5단계 퀴즈 ─────────────────────── */
+  .quiz{
+    background:linear-gradient(180deg,#0d1a44 0%,#0a1433 100%);
+    border:1px solid var(--line); border-radius:var(--radius); padding:24px; min-height:420px;
+    display:flex; flex-direction:column; gap:16px;
+  }
+  .quiz .qn{color:var(--accent); font-weight:800}
+  .quiz h3{margin:0; font-size:24px; line-height:1.4; letter-spacing:-.3px}
+  .quiz .opts{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
+  .quiz .opts .btn{min-height:60px; font-size:18px; justify-content:flex-start; text-align:left; padding:10px 16px}
+  .quiz .opts .btn.right{border-color:#ffffff; background:#ffffff1a; color:var(--ink)}
+  .quiz .opts .btn.wrong{border-style:dashed; color:var(--muted)}
+  .quiz .opts .btn:disabled{opacity:1; cursor:default}
+  .quiz .expl{font-size:17px}
+  .quiz .row{display:flex; gap:8px; flex-wrap:wrap; margin-top:auto}
+
+  footer{padding:2px 20px 10px;font-size:12px;color:var(--muted);text-align:center}
+  footer .hub{color:inherit;font-weight:500;white-space:nowrap;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:3px}
+  footer .hub:hover{color:var(--ink);text-decoration-color:currentColor}
+
+  /* 좁거나 세로인 화면: SVG → 설명 패널 순서로 1열 */
+  @media (max-width: 960px), (orientation: portrait){
+    .layout{grid-template-columns:minmax(0,1fr)}
+  }
+  @media (max-width: 640px){
+    .brand h1{font-size:18px}
+    .brand p{display:none}
+    .stepinfo{margin-left:0; order:3; width:100%}
+    .mode{margin-left:auto}
+    .mode button{padding:0 12px; font-size:14px}
+    .quiz{padding:16px}
+    .quiz h3{font-size:20px}
+    .quiz .opts{grid-template-columns:minmax(0,1fr)}
+    .layout{padding:10px}
+  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" id="homeLink" href="#" title="처음 화면으로" aria-label="생명 가능 지대 탐구실 — 처음 화면으로">
+    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
+      <circle cx="20" cy="20" r="19" fill="#111d47" stroke="#2b3c74"/>
+      <circle cx="20" cy="20" r="13" fill="none" stroke="#3ad07e" stroke-width="5" opacity=".85"/>
+      <circle cx="20" cy="20" r="5.5" fill="#ffd84d"/>
+      <circle cx="31.5" cy="14" r="2.6" fill="#c6cfeb"/>
+    </svg>
+    <div>
+      <h1>생명 가능 지대 탐구실</h1>
+      <p>별의 광도가 크면 생명 가능 지대는 왜 멀고 넓을까?</p>
+    </div>
+  </a>
+  <div class="stepinfo" aria-live="polite">
+    <ol class="dots" id="dots" aria-hidden="true"></ol>
+    <span id="stepLabel"></span>
+  </div>
+  <div class="mode" role="group" aria-label="모드 전환">
+    <button type="button" id="modeStudent" data-act="mode" data-v="student" aria-pressed="true">학생 탐구</button>
+    <button type="button" id="modeTeacher" data-act="mode" data-v="teacher" aria-pressed="false">교사 시연</button>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="stage" aria-label="시뮬레이션">
+    <svg id="sv" viewBox="0 0 1000 560" role="img" aria-labelledby="svTitle"><title id="svTitle">시뮬레이션 그림</title><g id="svBody"></g></svg>
+    <div class="stage-html" id="stageHtml"></div>
+    <div class="simctl" id="simctl"></div>
+  </section>
+  <aside class="panel" aria-label="설명">
+    <div id="panelBody" style="display:flex;flex-direction:column;gap:12px"></div>
+    <nav class="stepnav" aria-label="단계 이동">
+      <button type="button" class="btn" id="prevBtn" data-act="prev">◀ 이전</button>
+      <button type="button" class="btn go" id="nextBtn" data-act="next">다음 ▶</button>
+    </nav>
+    <p class="navhint" id="navHint" hidden></p>
+  </aside>
+</main>
+
+<footer>© 2026 제작: 김연경(earthssaem@gmail.com) | <a class="hub" href="https://earthssaem-lab.vercel.app/" target="_blank" rel="noopener">연경쌤의 지구과학 실험실 둘러보기 →</a></footer>
+
+<script>
+'use strict';
+/* ==========================================================
+   물리 모형 상수 — 여기만 바꾸면 앱 전체 계산·설명이 함께 바뀐다
+   ========================================================== */
+const HZ_INNER_S = 1.1;   // 안쪽 경계에서 받는 에너지(지구 = 1)
+const HZ_OUTER_S = 0.35;  // 바깥쪽 경계에서 받는 에너지(지구 = 1)
+const MASS_LUMINOSITY_POWER = 3.5;
+const RECORD_TOLERANCE = 0.05;   // 경계 기록 인정 범위(정답의 ±5%)
+
+/* 별: 질량(태양 = 1), 별의 색, 조작용 자 범위(AU)와 눈금 */
+const STARS = [
+  { m:0.5, name:'0.5배 별',     short:'0.5배', color:'#ff5b4d', colorName:'빨강',   ruler:1,   minor:0.05, label:0.1,  r:12 },
+  { m:1,   name:'1배 별(태양)', short:'1배',   color:'#ffd84d', colorName:'노랑',   ruler:2.5, minor:0.1,  label:0.5,  r:16 },
+  { m:1.5, name:'1.5배 별',     short:'1.5배', color:'#ffffff', colorName:'흰색',   ruler:5,   minor:0.25, label:1,    r:20 },
+  { m:2,   name:'2배 별',       short:'2배',   color:'#a9d3ff', colorName:'청백색', ruler:8,   minor:0.5,  label:1,    r:24 },
+];
+/* 색 의미는 모든 단계에서 고정, 글자 라벨을 함께 쓴다 */
+const ZONES = {
+  hot:  { label:'너무 많음', color:'#ff9a3c' },
+  ok:   { label:'적당함',    color:'#3ad07e' },
+  cold: { label:'너무 적음', color:'#4ea8ff' },
+};
+
+/* ── 계산 함수 ─────────────────────────── */
+const luminosity = m => Math.pow(m, MASS_LUMINOSITY_POWER);   // L = M^3.5
+const fluxAt     = (L, d) => L / (d * d);                      // S = L / d²
+const distForS   = (L, S) => Math.sqrt(L / S);                 // d = √(L / S)
+const innerAU    = m => distForS(luminosity(m), HZ_INNER_S);
+const outerAU    = m => distForS(luminosity(m), HZ_OUTER_S);
+const HZ_RATIO   = Math.sqrt(HZ_INNER_S / HZ_OUTER_S);          // 바깥쪽 ÷ 안쪽 (별과 무관)
+const HZ_LOG_WIDTH = Math.log10(HZ_RATIO);                      // 로그축에서의 띠 폭
+const zoneOf = S => S > HZ_INNER_S ? 'hot' : (S < HZ_OUTER_S ? 'cold' : 'ok');
+
+const f2 = x => x.toFixed(2);
+const fmtL = L => L < 0.1 ? L.toFixed(3) : L.toFixed(2);
+const fmtS = S => S >= 100 ? '99 이상' : (S >= 10 ? S.toFixed(1) : S.toFixed(2));
+const trimNum = x => String(Number(x.toFixed(2)));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ── 검증 수치 확인 (요구사항 표) ─────────── */
+const EXPECTED = [
+  { m:0.5, L:'0.088', inner:'0.28', outer:'0.50', width:'0.22', ratio:'1.77' },
+  { m:1,   L:'1.00',  inner:'0.95', outer:'1.69', width:'0.74', ratio:'1.77' },
+  { m:1.5, L:'4.13',  inner:'1.94', outer:'3.44', width:'1.50', ratio:'1.77' },
+  { m:2,   L:'11.31', inner:'3.21', outer:'5.69', width:'2.48', ratio:'1.77' },
+];
+function runSelfCheck(){
+  const rows = EXPECTED.map(e => {
+    const a = innerAU(e.m), b = outerAU(e.m);
+    const got = { m:e.m, L:fmtL(luminosity(e.m)), inner:f2(a), outer:f2(b), width:f2(b - a), ratio:f2(b / a),
+                  logWidth:(Math.log10(b) - Math.log10(a)).toFixed(3) };
+    got.ok = ['L','inner','outer','width','ratio'].every(k => got[k] === e[k]) && got.logWidth === '0.249';
+    return got;
+  });
+  const ok = rows.every(r => r.ok);
+  document.documentElement.dataset.selfcheck = ok ? 'pass' : 'fail';
+  window.__hzSelfCheck = { ok, rows };
+  if (console.table) console.table(rows);
+  (ok ? console.info : console.warn)('[생명 가능 지대 탐구실] 검증 수치 ' + (ok ? '일치 ✓' : '불일치 — 상수를 바꿨다면 요구사항 표와 달라질 수 있어요'));
+  return ok;
+}
+
+/* ── 상태 (페이지 변수에만 둔다: 새로고침하면 사라짐) ── */
+const S = {
+  step: 1,
+  mode: 'student',
+  s1: { dist: 1 },
+  s2: {
+    star: 1,
+    pos: STARS.map(s => +(s.ruler * 0.1).toFixed(2)),
+    rec: STARS.map(() => ({ inner:null, outer:null })),
+    bands: true,         // 교사 시연에서 정답 띠 보이기
+    msg: null,
+  },
+  s3: { on: [false, true, false, true], pred: null },
+  s4: { log: true, t: 1 },
+  s5: { q: 0, picks: [] },
+  open: {},
+};
+const STEP_TITLES = ['별빛의 세기', '경계 찾기', '왜 넓어질까', '교과서 그림 읽기', '핵심 퀴즈'];
+const isTeacher = () => S.mode === 'teacher';
+const $ = id => document.getElementById(id);
+const sv = $('sv'), svBody = $('svBody');
+
+/* ── 공통 렌더 ─────────────────────────── */
+function render(){
+  const focusKey = focusKeyOf(document.activeElement);
+  // 헤더
+  $('dots').innerHTML = STEP_TITLES.map((_, i) => `<li class="${i + 1 === S.step ? 'on' : (i + 1 < S.step ? 'done' : '')}"></li>`).join('');
+  $('stepLabel').textContent = `${S.step} / 5 단계 · ${STEP_TITLES[S.step - 1]}`;
+  $('modeStudent').setAttribute('aria-pressed', String(!isTeacher()));
+  $('modeTeacher').setAttribute('aria-pressed', String(isTeacher()));
+  // 단계
+  sv.style.display = S.step === 5 ? 'none' : '';
+  $('stageHtml').innerHTML = '';
+  STEPS[S.step].render();
+  // 이동 버튼
+  $('prevBtn').disabled = S.step === 1;
+  const gate = nextGate();
+  $('nextBtn').disabled = S.step === 5 || !!gate;
+  $('nextBtn').textContent = S.step === 5 ? '마지막 단계' : `다음: ${STEP_TITLES[S.step]} ▶`;
+  $('navHint').hidden = !gate;
+  $('navHint').textContent = gate || '';
+  restoreFocus(focusKey);
+}
+function focusKeyOf(el){
+  if (!el || !el.dataset) return null;
+  if (el.id === 'planet') return '#planet';
+  if (el.dataset.act) return el.dataset.act + '|' + (el.dataset.v ?? el.dataset.i ?? '');
+  return null;
+}
+function restoreFocus(key){
+  if (!key) return;
+  if (document.activeElement && document.activeElement !== document.body && document.contains(document.activeElement)) return;
+  let el = null;
+  if (key === '#planet') el = $('planet');
+  else {
+    const [act, v] = key.split('|');
+    el = [...document.querySelectorAll(`[data-act="${act}"]`)].find(b => (b.dataset.v ?? b.dataset.i ?? '') === v);
+  }
+  if (el && !el.disabled) el.focus({ preventScroll:true });
+}
+function nextGate(){
+  if (S.step === 2 && !isTeacher()){
+    const n = doneCount();
+    if (n < STARS.length) return `네 별의 경계를 모두 찾으면 다음 단계가 열려요 (${n}/4)`;
+  }
+  return null;
+}
+function go(step){
+  S.step = Math.max(1, Math.min(5, step));
+  render();
+}
+const detailsAttr = key => `data-key="${key}"${S.open[key] ? ' open' : ''}`;
+document.addEventListener('toggle', e => {
+  const d = e.target; if (d.tagName === 'DETAILS' && d.dataset.key) S.open[d.dataset.key] = d.open;
+}, true);
+
+/* 교사용 수식 카드 */
+const formulaCard = () => isTeacher() ? `
+  <div class="box teacher-only"><span class="tag">교사 시연</span>
+    <div class="formula">d = √(L / S)<small>d: 거리(AU) · L: 광도(태양 = 1) · S: 받는 에너지(지구 = 1)<br>안쪽 경계 S = ${HZ_INNER_S}, 바깥쪽 경계 S = ${HZ_OUTER_S}</small></div>
+  </div>` : '';
+
+/* ==========================================================
+   1단계: 별빛의 세기
+   ========================================================== */
+const FRAC = { 1:'1', 2:'1/4', 3:'1/9' };
+function s1Render(){
+  const sel = S.s1.dist;
+  sv.setAttribute('viewBox', '0 0 1000 560');
+  $('svTitle').textContent = `별빛이 사각뿔 모양으로 퍼지는 그림. 거리 ${sel} AU에서 빛이 ${sel * sel}칸에 닿고 한 칸이 받는 에너지는 ${FRAC[sel]}`;
+  const U = 58, K = 250, SX = 120, SY = 200;
+  const P = (x, y, z) => [SX + x * K + z * 0.42 * U, SY - y * U + z * 0.3 * U];
+  const pt = a => a.map(n => n.toFixed(1)).join(',');
+  const corners = d => { const h = d / 2; return [P(d, h, -h), P(d, h, h), P(d, -h, h), P(d, -h, -h)]; };
+  const yel = '#ffd84d';
+  let h = `<defs><radialGradient id="glow1"><stop offset="0" stop-color="${yel}" stop-opacity=".9"/><stop offset="1" stop-color="${yel}" stop-opacity="0"/></radialGradient></defs>`;
+
+  // 전체 사각뿔(3 AU까지) 옅게
+  const c3 = corners(3);
+  c3.forEach(c => { h += `<line x1="${SX}" y1="${SY}" x2="${c[0]}" y2="${c[1]}" stroke="${yel}" stroke-opacity=".18" stroke-dasharray="4 6"/>`; });
+  // 선택한 거리까지의 빛 (면을 반투명하게)
+  const cs = corners(sel);
+  for (let k = 0; k < 4; k++){
+    const a = cs[k], b = cs[(k + 1) % 4];
+    h += `<polygon points="${SX},${SY} ${pt(a)} ${pt(b)}" fill="${yel}" fill-opacity=".07" stroke="${yel}" stroke-opacity=".55" stroke-width="1.2"/>`;
+  }
+  // 면 세 개
+  for (const d of [1, 2, 3]){
+    const on = d === sel, c = corners(d), hh = d / 2;
+    h += `<polygon points="${c.map(pt).join(' ')}" fill="${on ? '#1d2c66' : '#152152'}" fill-opacity="${on ? .9 : .45}" stroke="${on ? '#ffffff' : '#5a6aa0'}" stroke-width="${on ? 2 : 1}"/>`;
+    // 한 칸(1 × 1) 강조: 받는 에너지만큼 밝게
+    if (on){
+      const cell = [P(d, hh, -hh), P(d, hh, -hh + 1), P(d, hh - 1, -hh + 1), P(d, hh - 1, -hh)];
+      h += `<polygon points="${cell.map(pt).join(' ')}" fill="${yel}" fill-opacity="${(0.9 / (d * d)).toFixed(3)}" stroke="${yel}" stroke-width="2"/>`;
+    }
+    for (let k = 1; k < d; k++){
+      const t = -hh + k;
+      const g1 = P(d, hh, t), g2 = P(d, -hh, t), g3 = P(d, t, -hh), g4 = P(d, t, hh);
+      h += `<line x1="${g1[0]}" y1="${g1[1]}" x2="${g2[0]}" y2="${g2[1]}" stroke="${on ? '#ffffff' : '#5a6aa0'}" stroke-opacity="${on ? .8 : .5}"/>`;
+      h += `<line x1="${g3[0]}" y1="${g3[1]}" x2="${g4[0]}" y2="${g4[1]}" stroke="${on ? '#ffffff' : '#5a6aa0'}" stroke-opacity="${on ? .8 : .5}"/>`;
+    }
+    const top = P(d, hh, 0);
+    h += `<text x="${top[0]}" y="${top[1] - 26}" text-anchor="middle" font-size="22" font-weight="${on ? 800 : 600}" fill="${on ? '#ffffff' : '#8f9cc6'}">${d * d}칸</text>`;
+  }
+  // 별
+  h += `<circle cx="${SX}" cy="${SY}" r="46" fill="url(#glow1)"/><circle cx="${SX}" cy="${SY}" r="18" fill="${yel}"/>`;
+  h += `<text x="${SX}" y="${SY + 46}" text-anchor="middle" font-size="18" font-weight="700" fill="#f2f5ff">별</text>`;
+  // 거리축
+  const AY = 345;
+  h += `<line x1="${SX}" y1="${AY}" x2="${SX + 3.25 * K}" y2="${AY}" stroke="#93a1c9" stroke-width="2"/>`;
+  for (const d of [0, 1, 2, 3]){
+    const x = SX + d * K;
+    h += `<line x1="${x}" y1="${AY - 8}" x2="${x}" y2="${AY + 8}" stroke="#93a1c9" stroke-width="2"/>`;
+    h += `<text x="${x}" y="${AY + 30}" text-anchor="middle" font-size="20" font-weight="${d === sel ? 800 : 600}" fill="${d === sel ? '#ffffff' : '#c6cfeb'}">${d === 0 ? '0' : d + ' AU'}</text>`;
+  }
+  // 한 칸이 받는 에너지 막대
+  const BY = 545, BH = 110;
+  h += `<text x="20" y="${BY - BH - 22}" font-size="18" font-weight="700" fill="#f2f5ff">한 칸이 받는 에너지</text>`;
+  h += `<text x="20" y="${BY - BH + 2}" font-size="15" fill="#93a1c9">(1 AU에서 = 1)</text>`;
+  h += `<line x1="${SX + 0.6 * K}" y1="${BY}" x2="${SX + 3.25 * K}" y2="${BY}" stroke="#93a1c9"/>`;
+  for (const d of [1, 2, 3]){
+    const x = SX + d * K, bh = BH / (d * d), on = d === sel;
+    h += `<rect x="${x - 36}" y="${BY - bh}" width="72" height="${bh}" rx="4" fill="${yel}" fill-opacity="${on ? .95 : .3}"/>`;
+    h += `<text x="${x}" y="${BY - bh - 10}" text-anchor="middle" font-size="22" font-weight="800" fill="${on ? '#ffffff' : '#8f9cc6'}">${FRAC[d]}</text>`;
+  }
+  svBody.innerHTML = h;
+
+  $('simctl').innerHTML = `<div class="ctlrow"><span class="lbl">별까지의 거리</span>${[1, 2, 3].map(d =>
+    `<button type="button" class="btn" data-act="s1-dist" data-v="${d}" aria-pressed="${d === sel}">${d} AU</button>`).join('')}</div>`;
+
+  $('panelBody').innerHTML = `
+    <h2><small>1단계</small>별빛의 세기</h2>
+    <p class="goal">거리가 2배가 되면 받는 에너지는 왜 1/4이 될까요? 거리 버튼을 눌러 비교해 보세요.</p>
+    <div class="readout">
+      <div><b>${sel} AU</b><span>별까지의 거리</span></div>
+      <div><b>${sel * sel}칸</b><span>빛이 닿는 면</span></div>
+      <div><b>${FRAC[sel]}</b><span>한 칸이 받는 에너지</span></div>
+    </div>
+    <p class="summary">같은 빛이 더 넓은 면적으로 퍼지기 때문에, 한 칸이 받는 에너지가 줄어요.</p>
+    <p class="note">거리가 2배 → 면적 2×2 = 4배 → 한 칸의 에너지 1/4<br>거리가 3배 → 면적 3×3 = 9배 → 한 칸의 에너지 1/9</p>
+    ${isTeacher() ? `<div class="box teacher-only"><span class="tag">교사 시연</span><div class="formula">S = L / d²<small>받는 에너지는 거리의 제곱에 반비례</small></div></div>` : ''}`;
+}
+
+/* ==========================================================
+   2단계: 경계 찾기 (중심 활동)
+   ========================================================== */
+const RX0 = 130, RX1 = 940, RY = 150;          // 조작용 자
+const GX0 = 130, GX1 = 940, GY = 268, G_MAX = 2; // 에너지 게이지 (왼쪽 = 많음)
+const CX0 = 130, CX1 = 940, C_MAX = 8;         // 같은 축척 비교 그림
+const C_ROWS = [3, 2, 1, 0];                   // 위쪽이 큰 질량
+const C_ROW_Y = [408, 444, 480, 516], C_AXIS_Y = 540;
+let drag = null;
+
+const doneCount = () => S.s2.rec.filter(r => r.inner != null && r.outer != null).length;
+const gX = s => GX0 + (1 - Math.min(s, G_MAX) / G_MAX) * (GX1 - GX0);
+const cX = d => CX0 + Math.min(d, C_MAX) / C_MAX * (CX1 - CX0);
+/* 띠를 보여 줄 경계: 교사 시연+띠 켜짐 → 모형, 아니면 학생이 두 경계를 모두 찾았을 때 그 값 */
+function bandFor(i){
+  if (isTeacher() && S.s2.bands) return { inner:innerAU(STARS[i].m), outer:outerAU(STARS[i].m), model:true };
+  const r = S.s2.rec[i];
+  if (r.inner != null && r.outer != null) return { inner:r.inner, outer:r.outer, model:false };
+  return null;
+}
+
+function s2Render(){
+  const i = S.s2.star, st = STARS[i], max = st.ruler, L = luminosity(st.m);
+  const X = d => RX0 + d / max * (RX1 - RX0);
+  sv.setAttribute('viewBox', '0 0 1000 580');
+  $('svTitle').textContent = `${st.name}의 조작용 자(0~${max} AU)와 받는 에너지 게이지, 모든 별을 0~8 AU 같은 축척으로 쌓은 비교 그림`;
+  let h = `<defs>${STARS.map((s, k) => `<radialGradient id="sg${k}"><stop offset="0" stop-color="${s.color}" stop-opacity=".85"/><stop offset="1" stop-color="${s.color}" stop-opacity="0"/></radialGradient>`).join('')}
+    <clipPath id="rulerClip"><rect x="${RX0}" y="0" width="${RX1 - RX0}" height="580"/></clipPath></defs>`;
+
+  // 제목 줄: 자 범위를 크게
+  h += `<text x="${RX0 - 100}" y="44" font-size="26" font-weight="800" fill="#f2f5ff">자 범위 <tspan fill="${st.color === '#ffffff' ? '#ffffff' : st.color}">0 ~ ${max} AU</tspan></text>`;
+  h += `<text x="${RX1}" y="44" text-anchor="end" font-size="19" font-weight="700" fill="${st.color}">${st.name} · 광도 ${fmtL(L)} (태양 = 1)</text>`;
+  h += `<text x="${RX0 - 100}" y="70" font-size="15" fill="#93a1c9">별마다 자의 축척이 달라요. 행성을 끌어 옮겨 보세요.</text>`;
+
+  // 경계 띠 (측정 전에는 숨김)
+  const band = bandFor(i);
+  if (band){
+    const segs = [['hot', 0, band.inner], ['ok', band.inner, band.outer], ['cold', band.outer, max]];
+    h += `<g clip-path="url(#rulerClip)">`;
+    for (const [z, a, b] of segs){
+      if (a >= max) continue;
+      const xa = X(a), xb = X(Math.min(b, max));
+      h += `<rect x="${xa}" y="${RY - 24}" width="${Math.max(0, xb - xa)}" height="48" fill="${ZONES[z].color}" fill-opacity="${z === 'ok' ? .38 : .2}"/>`;
+      if (xb - xa > 70) h += `<text x="${(xa + xb) / 2}" y="${RY - 6}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES[z].color}">${ZONES[z].label}</text>`;
+    }
+    h += `</g>`;
+    if (band.model) h += `<text x="${RX1}" y="70" text-anchor="end" font-size="15" font-weight="700" fill="#b9a6ff">교사 시연: 모형의 정답 띠 표시 중</text>`;
+  }
+  // 자
+  h += `<line x1="${RX0}" y1="${RY}" x2="${RX1}" y2="${RY}" stroke="#c6cfeb" stroke-width="3"/>`;
+  const nMinor = Math.round(max / st.minor);
+  for (let k = 0; k <= nMinor; k++){
+    const d = k * st.minor, x = X(d), isLab = Math.abs(d / st.label - Math.round(d / st.label)) < 1e-6;
+    h += `<line x1="${x}" y1="${RY}" x2="${x}" y2="${RY + (isLab ? 18 : 9)}" stroke="#c6cfeb" stroke-width="${isLab ? 2.5 : 1.5}"/>`;
+    if (isLab) h += `<text x="${x}" y="${RY + 44}" text-anchor="middle" font-size="22" font-weight="700" fill="#f2f5ff">${trimNum(d)}</text>`;
+  }
+  h += `<text x="${RX1 + 8}" y="${RY + 6}" font-size="18" font-weight="700" fill="#c6cfeb">AU</text>`;
+  // 기록한 경계 표시
+  const rec = S.s2.rec[i];
+  for (const [k, lab] of [['inner', '안쪽'], ['outer', '바깥쪽']]){
+    if (rec[k] == null) continue;
+    const x = X(rec[k]);
+    h += `<line x1="${x}" y1="${RY - 30}" x2="${x}" y2="${RY + 22}" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="5 4"/>`;
+    h += `<text x="${x}" y="${RY + 72}" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">${lab} ${f2(rec[k])}</text>`;
+  }
+  // 별
+  h += `<circle cx="${RX0}" cy="${RY}" r="${st.r * 2.6}" fill="url(#sg${i})"/><circle cx="${RX0}" cy="${RY}" r="${st.r}" fill="${st.color}"/>`;
+  // 드래그 트랙(자 전체) + 행성
+  h += `<rect class="drag-zone" x="${RX0 - 6}" y="${RY - 52}" width="${RX1 - RX0 + 12}" height="104" fill="transparent"/>`;
+  h += `<text id="pLabel" y="${RY - 34}" text-anchor="middle" font-size="22" font-weight="800" fill="#ffffff"></text>`;
+  h += `<g id="planet" class="drag-zone" tabindex="0" role="slider" aria-label="행성 위치(AU)" aria-valuemin="0.01" aria-valuemax="${max}">
+          <circle r="34" fill="transparent"/>
+          <circle class="focus-ring" r="27" fill="none" stroke="transparent"/>
+          <circle id="pRing" r="18" fill="none" stroke-width="5"/>
+          <circle r="12" fill="#dfe6f5"/><circle r="12" fill="none" stroke="#0a1230" stroke-width="1.5"/>
+        </g>`;
+
+  // 받는 에너지 게이지 (왼쪽 = 많음, 오른쪽 = 적음: 자와 같은 방향)
+  h += `<text x="${GX0 + 16}" y="${GY - 20}" font-size="18" font-weight="700" fill="#f2f5ff">받는 에너지 <tspan font-size="15" font-weight="600" fill="#93a1c9">(지구 = 1)</tspan></text>`;
+  h += `<text id="gVal" x="${GX1}" y="${GY - 18}" text-anchor="end" font-size="24" font-weight="800"></text>`;
+  const gsegs = [['hot', G_MAX, HZ_INNER_S], ['ok', HZ_INNER_S, HZ_OUTER_S], ['cold', HZ_OUTER_S, 0]];
+  for (const [z, a, b] of gsegs){
+    const xa = gX(a), xb = gX(b);
+    h += `<rect x="${xa}" y="${GY}" width="${xb - xa}" height="30" fill="${ZONES[z].color}" fill-opacity=".3" stroke="${ZONES[z].color}" stroke-opacity=".7"/>`;
+    h += `<text x="${(xa + xb) / 2}" y="${GY + 21}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES[z].color}">${ZONES[z].label}</text>`;
+  }
+  for (const [v, lab, anc] of [[G_MAX, `많음 (${G_MAX} 이상)`, 'start'], [HZ_INNER_S, String(HZ_INNER_S), 'middle'], [HZ_OUTER_S, String(HZ_OUTER_S), 'middle'], [0, '적음 0', 'end']]){
+    const x = gX(v);
+    h += `<line x1="${x}" y1="${GY + 30}" x2="${x}" y2="${GY + 38}" stroke="#c6cfeb"/>`;
+    h += `<text x="${x}" y="${GY + 56}" text-anchor="${anc}" font-size="15" font-weight="600" fill="#c6cfeb">${lab}</text>`;
+  }
+  h += `<g id="gMark"><polygon points="-9,-14 9,-14 0,-1" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="30" stroke="#ffffff" stroke-width="3"/></g>`;
+
+  // 같은 축척 비교 그림 (0~8 AU, 위쪽이 큰 질량)
+  h += `<line x1="20" y1="350" x2="980" y2="350" stroke="#2b3c74"/>`;
+  h += `<text x="20" y="380" font-size="17" font-weight="700" fill="#f2f5ff">모든 별을 같은 축척으로 비교 <tspan font-size="15" font-weight="600" fill="#93a1c9">(0 ~ ${C_MAX} AU · 위로 갈수록 질량이 큰 별)</tspan></text>`;
+  C_ROWS.forEach((si, r) => {
+    const y = C_ROW_Y[r], s = STARS[si], cur = si === i;
+    if (cur) h += `<rect x="20" y="${y - 17}" width="960" height="34" rx="8" fill="#b9a6ff" fill-opacity=".1"/>`;
+    h += `<text x="${CX0 - 26}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="${cur ? 800 : 600}" fill="${cur ? '#ffffff' : '#c6cfeb'}">${s.short}</text>`;
+    h += `<line x1="${CX0}" y1="${y}" x2="${CX1}" y2="${y}" stroke="#3a4b85" stroke-dasharray="2 4"/>`;
+    const b = bandFor(si), rr = S.s2.rec[si];
+    if (b){
+      h += `<rect x="${cX(b.inner)}" y="${y - 9}" width="${Math.max(2, cX(b.outer) - cX(b.inner))}" height="18" rx="3" fill="${ZONES.ok.color}" fill-opacity="${b.model ? .5 : .75}"/>`;
+    }
+    for (const k of ['inner', 'outer']) if (rr[k] != null)
+      h += `<line x1="${cX(rr[k])}" y1="${y - 13}" x2="${cX(rr[k])}" y2="${y + 13}" stroke="#ffffff" stroke-width="2.5"/>`;
+    h += `<circle cx="${CX0}" cy="${y}" r="${4 + s.r / 4}" fill="${s.color}"/>`;
+  });
+  h += `<circle id="cMark" r="6" fill="#dfe6f5" stroke="#0a1230" stroke-width="1.5"/>`;
+  h += `<line x1="${CX0}" y1="${C_AXIS_Y}" x2="${CX1}" y2="${C_AXIS_Y}" stroke="#93a1c9"/>`;
+  for (let d = 0; d <= C_MAX; d++){
+    h += `<line x1="${cX(d)}" y1="${C_AXIS_Y}" x2="${cX(d)}" y2="${C_AXIS_Y + 6}" stroke="#93a1c9"/>`;
+    h += `<text x="${cX(d)}" y="${C_AXIS_Y + 24}" text-anchor="middle" font-size="15" fill="#c6cfeb">${d}</text>`;
+  }
+  h += `<text x="${CX1 + 8}" y="${C_AXIS_Y + 24}" font-size="15" fill="#c6cfeb">AU</text>`;
+  svBody.innerHTML = h;
+
+  // 조작 버튼
+  $('simctl').innerHTML = `
+    <div class="ctlrow"><span class="lbl">별의 질량</span>${STARS.map((s, k) => {
+      const done = S.s2.rec[k].inner != null && S.s2.rec[k].outer != null;
+      return `<button type="button" class="btn" data-act="s2-star" data-i="${k}" aria-pressed="${k === i}"><span class="chip" style="background:${s.color};color:${s.color}"></span>${s.short}${done ? ' <span class="tick" aria-label="완료">✓</span>' : ''}</button>`;
+    }).join('')}</div>
+    <div class="ctlrow">
+      <button type="button" class="btn" data-act="s2-nudge" data-v="-1" aria-label="0.01 AU 안쪽으로">−0.01 AU</button>
+      <output class="readpos" id="posOut" aria-live="off"></output>
+      <button type="button" class="btn" data-act="s2-nudge" data-v="1" aria-label="0.01 AU 바깥쪽으로">+0.01 AU</button>
+      <span class="sep"></span>
+      <button type="button" class="btn primary" data-act="s2-rec" data-v="inner">여기가 안쪽 경계</button>
+      <button type="button" class="btn primary" data-act="s2-rec" data-v="outer">여기가 바깥쪽 경계</button>
+    </div>
+    ${isTeacher() ? `<div class="ctlrow teacher-only"><span class="lbl">교사 시연</span>
+      <button type="button" class="btn" data-act="s2-bands" aria-pressed="${S.s2.bands}">경계 띠 ${S.s2.bands ? '켜짐' : '꺼짐'}</button>
+      <button type="button" class="btn" data-act="s2-fill">모두 채우기</button></div>` : ''}`;
+
+  // 설명 패널
+  const n = doneCount();
+  const msg = S.s2.msg;
+  $('panelBody').innerHTML = `
+    <h2><small>2단계</small>경계 찾기</h2>
+    <p class="goal">행성을 옮기며 게이지를 보세요. <b class="z-ok">적당함</b>이 시작되는 곳과 끝나는 곳이 두 경계예요. 네 별 모두 찾아 비교해요.</p>
+    <div class="box feedback ${msg ? msg.kind : ''}" role="status" aria-live="polite">${msg ? msg.text : '경계라고 생각하는 곳에서 <b>여기가 안쪽 경계</b> 또는 <b>여기가 바깥쪽 경계</b>를 누르세요.'}</div>
+    <table class="data">
+      <caption class="note" style="caption-side:top;text-align:left;padding-bottom:4px">${isTeacher() ? '측정 표' : '내가 찾은 값'} (찾은 별 ${n}/4)</caption>
+      <thead><tr><th>별의<br>질량</th><th>광도<br>(태양=1)</th><th>안쪽<br>경계(AU)</th><th>바깥쪽<br>경계(AU)</th><th>폭<br>(AU)</th></tr></thead>
+      <tbody>${STARS.map((s, k) => {
+        const r = S.s2.rec[k], both = r.inner != null && r.outer != null;
+        const cell = v => v == null ? '<td class="empty">—</td>' : `<td>${f2(v)}</td>`;
+        return `<tr class="${k === i ? 'cur' : ''}"><td>${s.short}</td><td>${fmtL(luminosity(s.m))}</td>${cell(r.inner)}${cell(r.outer)}${both ? `<td>${f2(r.outer - r.inner)}</td>` : '<td class="empty">—</td>'}</tr>`;
+      }).join('')}</tbody>
+    </table>
+    ${n === STARS.length ? `<p class="summary">네 별을 모두 찾았어요! 별이 클수록 경계가 어떻게 달라졌나요? <b>다음</b>을 눌러 3단계로 가 보세요.</p>` : ''}
+    ${formulaCard()}
+    <details ${detailsAttr('s2why')}><summary>더 알아보기: 왜 온도가 아니라 받는 에너지로 찾을까요?</summary><div class="in">
+      <p>온실 효과를 빼고 계산하면 지구의 복사 평형 온도는 약 255 K(약 −18 °C)예요. 실제 지표 온도는 대기에 따라 크게 달라지기 때문에, 이 앱은 행성의 온도 대신 <b>별에서 받는 에너지(지구 = 1)</b>로 경계를 정해요.</p>
+      <p>이 모형의 기준: 받는 에너지 ${HZ_INNER_S}보다 많으면 너무 많음, ${HZ_OUTER_S}보다 적으면 너무 적음.</p>
+    </div></details>`;
+  s2Update();
+}
+
+/* 드래그 중에는 필요한 부분만 바꾼다 */
+function s2Update(){
+  const i = S.s2.star, st = STARS[i], max = st.ruler, d = S.s2.pos[i];
+  const X = dd => RX0 + dd / max * (RX1 - RX0);
+  const s = fluxAt(luminosity(st.m), d), z = zoneOf(s), col = ZONES[z].color;
+  const x = X(d);
+  const p = $('planet'); if (!p) return;
+  p.setAttribute('transform', `translate(${x.toFixed(1)},${RY})`);
+  p.setAttribute('aria-valuenow', f2(d));
+  p.setAttribute('aria-valuetext', `${f2(d)} AU, 받는 에너지 ${fmtS(s)}, ${ZONES[z].label}`);
+  $('pRing').setAttribute('stroke', col);
+  const pl = $('pLabel');
+  pl.textContent = `${f2(d)} AU`;
+  pl.setAttribute('x', Math.max(RX0 + 40, Math.min(RX1 - 30, x)).toFixed(1));
+  $('gMark').setAttribute('transform', `translate(${gX(s).toFixed(1)},${GY})`);
+  const gv = $('gVal');
+  gv.textContent = `${fmtS(s)} · ${ZONES[z].label}`;
+  gv.setAttribute('fill', col);
+  const cm = $('cMark');
+  cm.setAttribute('cx', cX(d).toFixed(1));
+  cm.setAttribute('cy', C_ROW_Y[C_ROWS.indexOf(i)]);
+  const po = $('posOut'); if (po) po.textContent = `${f2(d)} AU`;
+}
+function s2SetPos(d){
+  const max = STARS[S.s2.star].ruler;
+  S.s2.pos[S.s2.star] = Math.round(Math.max(0.01, Math.min(max, d)) * 100) / 100;
+  s2Update();
+}
+function s2Record(kind){
+  const i = S.s2.star, st = STARS[i], d = S.s2.pos[i];
+  const target = kind === 'inner' ? innerAU(st.m) : outerAU(st.m);
+  const err = (d - target) / target;
+  const name = kind === 'inner' ? '안쪽' : '바깥쪽';
+  if (Math.abs(err) <= RECORD_TOLERANCE){
+    S.s2.rec[i][kind] = d;
+    const r = S.s2.rec[i], both = r.inner != null && r.outer != null;
+    let text = `✓ ${st.short} 별의 ${name} 경계를 <b>${f2(d)} AU</b>로 기록했어요.`;
+    if (both) text += doneCount() === STARS.length ? ' 네 별을 모두 찾았어요!' : ` 이 별은 완료! 다른 별도 찾아보세요 (${doneCount()}/4).`;
+    else text += ` 이제 ${kind === 'inner' ? '바깥쪽' : '안쪽'} 경계를 찾아보세요.`;
+    S.s2.msg = { kind:'good', text };
+  } else {
+    const dir = err < 0 ? '바깥쪽' : '안쪽';
+    const how = Math.abs(err) <= 0.25 ? '조금 더 ' : '더 ';
+    S.s2.msg = { kind:'warn', text:`아직 ${name} 경계가 아니에요. <b>${how}${dir}으로</b> 가 보세요. 게이지가 바뀌는 곳을 살펴보세요.` };
+  }
+  render();
+}
+
+/* 포인터 드래그 (마우스·터치·펜 공통) */
+function svgX(e){
+  const m = sv.getScreenCTM(); if (!m) return 0;
+  return new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse()).x;
+}
+function dragTo(e){
+  const max = STARS[S.s2.star].ruler;
+  s2SetPos((svgX(e) - RX0) / (RX1 - RX0) * max);
+}
+sv.addEventListener('pointerdown', e => {
+  if (S.step !== 2 || !e.target.closest || !e.target.closest('.drag-zone')) return;
+  if (e.pointerType === 'mouse' && e.button !== 0) return;
+  e.preventDefault();
+  drag = { id:e.pointerId };
+  try { sv.setPointerCapture(e.pointerId); } catch(_) {}
+  sv.classList.add('dragging');
+  const p = $('planet'); if (p) p.focus({ preventScroll:true });
+  dragTo(e);
+});
+sv.addEventListener('pointermove', e => { if (drag && e.pointerId === drag.id) dragTo(e); });
+const endDrag = e => { if (drag && e.pointerId === drag.id){ drag = null; sv.classList.remove('dragging'); } };
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(t => sv.addEventListener(t, endDrag));
+// touch-action을 지원하지 않는 브라우저 대비: 드래그 영역의 터치 스크롤 막기
+sv.addEventListener('touchstart', e => { if (S.step === 2 && e.target.closest && e.target.closest('.drag-zone')) e.preventDefault(); }, { passive:false });
+sv.addEventListener('touchmove', e => { if (drag) e.preventDefault(); }, { passive:false });
+// 키보드: 행성에 초점이 있을 때 ← → 로 0.01 AU, PageUp/PageDown 으로 0.1 AU
+sv.addEventListener('keydown', e => {
+  if (S.step !== 2 || e.target.id !== 'planet') return;
+  const step = { ArrowLeft:-0.01, ArrowDown:-0.01, ArrowRight:0.01, ArrowUp:0.01, PageDown:-0.1, PageUp:0.1 }[e.key];
+  if (step == null) return;
+  e.preventDefault();
+  s2SetPos(S.s2.pos[S.s2.star] + step);
+});
+
+/* ==========================================================
+   3단계: 왜 넓어질까
+   ========================================================== */
+function s3Render(){
+  sv.setAttribute('viewBox', '0 0 1000 610');
+  const PX0 = 110, PX1 = 950, PY0 = 50, PY1 = 440, XMAX = 6, YMAX = 2;
+  const X = d => PX0 + d / XMAX * (PX1 - PX0);
+  const Y = s => PY1 - s / YMAX * (PY1 - PY0);
+  const on = S.s3.on;
+  const vis = STARS.map((s, k) => k).filter(k => on[k]);
+  $('svTitle').textContent = '거리에 따라 받는 에너지가 줄어드는 곡선 그래프. 받는 에너지가 ' + HZ_OUTER_S + '~' + HZ_INNER_S + '인 구간이 생명 가능 지대';
+  let h = `<defs><clipPath id="plot3"><rect x="${PX0}" y="${PY0}" width="${PX1 - PX0}" height="${PY1 - PY0}"/></clipPath></defs>`;
+  // 영역 색 (색 의미 고정 + 글자 라벨)
+  const regs = [['hot', YMAX, HZ_INNER_S], ['ok', HZ_INNER_S, HZ_OUTER_S], ['cold', HZ_OUTER_S, 0]];
+  for (const [z, a, b] of regs){
+    h += `<rect x="${PX0}" y="${Y(a)}" width="${PX1 - PX0}" height="${Y(b) - Y(a)}" fill="${ZONES[z].color}" fill-opacity="${z === 'ok' ? .22 : .08}"/>`;
+    h += `<text x="${PX1 - 10}" y="${(Y(a) + Y(b)) / 2 + 6}" text-anchor="end" font-size="17" font-weight="700" fill="${ZONES[z].color}">${ZONES[z].label}</text>`;
+  }
+  // 축과 눈금
+  for (let s = 0; s <= YMAX + 1e-9; s += 0.5){
+    h += `<line x1="${PX0}" y1="${Y(s)}" x2="${PX1}" y2="${Y(s)}" stroke="#ffffff" stroke-opacity=".06"/>`;
+    h += `<text x="${PX0 - 10}" y="${Y(s) + 6}" text-anchor="end" font-size="16" fill="#c6cfeb">${trimNum(s)}</text>`;
+  }
+  for (let d = 0; d <= XMAX; d++){
+    h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${PY1 + 7}" stroke="#93a1c9"/>`;
+    h += `<text x="${X(d)}" y="${PY1 + 26}" text-anchor="middle" font-size="16" fill="#c6cfeb">${d}</text>`;
+  }
+  h += `<line x1="${PX0}" y1="${PY0}" x2="${PX0}" y2="${PY1}" stroke="#93a1c9" stroke-width="2"/><line x1="${PX0}" y1="${PY1}" x2="${PX1}" y2="${PY1}" stroke="#93a1c9" stroke-width="2"/>`;
+  h += `<text transform="translate(28 ${(PY0 + PY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#f2f5ff">받는 에너지 (지구 = 1)</text>`;
+  h += `<text x="${(PX0 + PX1) / 2}" y="${PY1 + 52}" text-anchor="middle" font-size="16" font-weight="700" fill="#f2f5ff">별까지의 거리 (AU)</text>`;
+  // 기준 점선
+  for (const [v, lab] of [[HZ_INNER_S, '안쪽 경계 기준'], [HZ_OUTER_S, '바깥쪽 경계 기준']]){
+    h += `<line x1="${PX0}" y1="${Y(v)}" x2="${PX1}" y2="${Y(v)}" stroke="#ffffff" stroke-width="2" stroke-dasharray="8 6" stroke-opacity=".85"/>`;
+    h += `<text x="${PX0 + 10}" y="${Y(v) - 8}" font-size="15" font-weight="700" fill="#ffffff">${v} · ${lab}</text>`;
+  }
+  // 곡선
+  h += `<g clip-path="url(#plot3)">`;
+  for (const k of vis){
+    const L = luminosity(STARS[k].m);
+    const d0 = Math.max(0.01, Math.sqrt(L / (YMAX * 1.2)));
+    let pts = [];
+    for (let n = 0; n <= 300; n++){ const d = d0 + (XMAX - d0) * n / 300; pts.push(`${X(d).toFixed(1)},${Y(fluxAt(L, d)).toFixed(1)}`); }
+    h += `<polyline points="${pts.join(' ')}" fill="none" stroke="${STARS[k].color}" stroke-width="3.5"/>`;
+  }
+  h += `</g>`;
+  // 교점과 수직선, 별 이름표
+  vis.forEach((k, row) => {
+    const s = STARS[k], L = luminosity(s.m), a = innerAU(s.m), b = outerAU(s.m);
+    const lx = X(Math.sqrt(L / YMAX));
+    h += `<text x="${Math.min(PX1 - 20, lx + 6)}" y="${PY0 - 10}" font-size="16" font-weight="800" fill="${s.color}">${s.short}</text>`;
+    const ly = PY1 + 82 + row * 24;
+    h += `<text x="${PX0 - 10}" y="${ly}" text-anchor="end" font-size="15" font-weight="700" fill="${s.color}">${s.short}</text>`;
+    for (const [d, sv0] of [[a, HZ_INNER_S], [b, HZ_OUTER_S]]){
+      if (d > XMAX) continue;
+      h += `<line x1="${X(d)}" y1="${Y(sv0)}" x2="${X(d)}" y2="${PY1}" stroke="${s.color}" stroke-width="1.6" stroke-dasharray="3 4"/>`;
+      h += `<circle cx="${X(d)}" cy="${Y(sv0)}" r="6" fill="${s.color}" stroke="#0a1230" stroke-width="2"/>`;
+      h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${ly - 14}" stroke="${s.color}" stroke-opacity=".35"/>`;
+      h += `<text x="${X(d)}" y="${ly}" text-anchor="middle" font-size="15" font-weight="700" fill="${s.color}">${f2(d)}</text>`;
+    }
+  });
+  svBody.innerHTML = h;
+
+  $('simctl').innerHTML = `<div class="ctlrow"><span class="lbl">곡선 켜고 끄기</span>${STARS.map((s, k) =>
+    `<button type="button" class="btn" data-act="s3-curve" data-i="${k}" aria-pressed="${on[k]}"><span class="chip" style="background:${s.color};color:${s.color}"></span>${s.short}</button>`).join('')}</div>`;
+
+  // 측정값 표 (2단계 값)
+  const pred = S.s3.pred;
+  const rows = STARS.map((s, k) => {
+    const r = S.s2.rec[k], both = r.inner != null && r.outer != null;
+    if (!both) return `<tr><td>${s.short}</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td></tr>`;
+    return `<tr><td>${s.short}</td><td>${f2(r.inner)}</td><td>${f2(r.outer)}</td><td>${f2(r.outer - r.inner)}</td><td>${pred ? `<b>${f2(r.outer / r.inner)}</b>` : '?'}</td></tr>`;
+  }).join('');
+  const sunA = innerAU(1), bigA = innerAU(2), mult = bigA / sunA;
+  const ex = 4, exA = distForS(ex, HZ_INNER_S), exB = distForS(ex, HZ_OUTER_S);
+  const predLabels = { up:'커진다', same:'같다', down:'작아진다' };
+  $('panelBody').innerHTML = `
+    <h2><small>3단계</small>왜 넓어질까</h2>
+    <p class="goal">곡선이 두 점선과 만나는 곳이 경계예요. 광도가 큰 별일수록 곡선이 오른쪽으로 밀려나요.</p>
+    <div class="box">
+      <p style="font-weight:700">예측해 보세요: 더 큰 별의 <span style="white-space:nowrap">바깥쪽 ÷ 안쪽</span> 값은 어떻게 될까요?</p>
+      <div class="choices" style="margin-top:8px">${Object.entries(predLabels).map(([v, t]) =>
+        `<button type="button" class="btn" data-act="s3-pred" data-v="${v}" aria-pressed="${pred === v}">${t}</button>`).join('')}</div>
+    </div>
+    <table class="data">
+      <caption class="note" style="caption-side:top;text-align:left;padding-bottom:4px">2단계에서 찾은 값 (AU)</caption>
+      <thead><tr><th>별</th><th>안쪽</th><th>바깥쪽</th><th>폭</th><th>바깥쪽<br>÷ 안쪽</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    ${pred ? `
+      <p class="box">내 예측: <b>${predLabels[pred]}</b> → 모형으로 계산하면 모든 별에서 <b>${f2(HZ_RATIO)}</b>로 같아요.
+        ${STARS.some((s, k) => S.s2.rec[k].outer == null) ? '' : '내 측정값도 거의 같은지 확인해 보세요.'}</p>
+      <p class="summary">두 경계가 같은 배수로 멀어져요. 그래서 비율은 같고, 실제 폭은 넓어져요.</p>
+      <p class="note">예: 2배 별의 두 경계는 모두 태양의 약 ${mult.toFixed(1)}배 거리예요. 폭도 ${f2(outerAU(1) - innerAU(1))} AU → ${f2(outerAU(2) - innerAU(2))} AU로 약 ${mult.toFixed(1)}배가 돼요.</p>`
+      : `<p class="note">예측을 고르면 비율이 보여요. 예측은 화면에만 보이고 저장되지 않아요.</p>`}
+    ${formulaCard()}
+    <details ${detailsAttr('s3more')}><summary>더 알아보기: 거리 공식</summary><div class="in">
+      <div class="formula">d = √(L / S)<small>d: 거리(AU) · L: 광도(태양 = 1) · S: 받는 에너지(지구 = 1)</small></div>
+      <p>같은 받는 에너지를 얻는 거리는 광도의 제곱근(√)에 비례해요.</p>
+      <p>예: 광도가 4배인 별 → 거리는 √4 = <b>2배</b>. 안쪽 ${f2(innerAU(1))} → ${f2(exA)} AU, 바깥쪽 ${f2(outerAU(1))} → ${f2(exB)} AU이므로 폭도 ${f2(outerAU(1) - innerAU(1))} → ${f2(exB - exA)} AU로 <b>2배</b>예요.</p>
+      <p>바깥쪽 ÷ 안쪽 = √(${HZ_INNER_S} ÷ ${HZ_OUTER_S}) ≈ ${f2(HZ_RATIO)} — 광도와 관계없어요.</p>
+    </div></details>`;
+}
+
+/* ==========================================================
+   4단계: 교과서 그림 읽기 (질량 축 × 거리 축)
+   ========================================================== */
+const PLANETS = [
+  { n:'수성', d:0.39, r:4,  c:'#b9b3a8' }, { n:'금성', d:0.72, r:6,  c:'#e8d9b0' },
+  { n:'지구', d:1.00, r:6.5,c:'#cfe3ff' }, { n:'화성', d:1.52, r:5,  c:'#d9a38c' },
+  { n:'목성', d:5.20, r:12, c:'#e3c9a6' }, { n:'토성', d:9.58, r:10, c:'#e9dcb5' },
+  { n:'천왕성', d:19.2, r:8, c:'#bfe7ea' }, { n:'해왕성', d:30.1, r:8, c:'#9fb6ef' },
+];
+const PL_OFF = [-18, 26, -34, 42, -22, -22, -22, -22];   // 이름표 높이(겹침 방지)
+const D_MIN = 0.1, D_MAX = 40;
+let s4Anim = null;
+function s4Svg(){
+  sv.setAttribute('viewBox', '0 0 1000 560');
+  const t = S.s4.t;
+  const QX0 = 140, QX1 = 950, QY0 = 70, QY1 = 450;
+  const lin = d => QX0 + (d / D_MAX) * (QX1 - QX0);
+  const lg = d => QX0 + (Math.log10(d) - Math.log10(D_MIN)) / (Math.log10(D_MAX) - Math.log10(D_MIN)) * (QX1 - QX0);
+  const X = d => lin(d) * (1 - t) + lg(Math.max(d, D_MIN)) * t;
+  const Y = m => QY1 - (m - 0.5) / 1.5 * (QY1 - QY0);
+  $('svTitle').textContent = `별의 질량(0.5~2)과 ${S.s4.log ? '로그' : '선형'} 거리축(0.1~40 AU)에 생명 가능 지대를 그린 그림`;
+  let h = `<defs><clipPath id="plot4"><rect x="${QX0}" y="${QY0 - 20}" width="${QX1 - QX0}" height="${QY1 - QY0 + 40}"/></clipPath></defs>`;
+  // 띠: 질량 0.5~2를 연속으로
+  const ms = []; for (let m = 0.5; m <= 2.0001; m += 0.025) ms.push(Math.min(m, 2));
+  const yTop = Y(2) - 20, yBot = Y(0.5) + 20;
+  const inPts = ms.map(m => [X(innerAU(m)), Y(m)]), outPts = ms.map(m => [X(outerAU(m)), Y(m)]);
+  // 위아래로 띠를 조금 연장
+  const edge = (pts, f) => [[X(f(2.0667)), yTop], ...pts.slice().reverse(), [X(f(0.4333)), yBot]];
+  const P = a => a.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const inEdge = edge(inPts, innerAU), outEdge = edge(outPts, outerAU);
+  h += `<g clip-path="url(#plot4)">`;
+  h += `<polygon points="${X(D_MIN)},${yTop} ${P(inEdge)} ${X(D_MIN)},${yBot}" fill="${ZONES.hot.color}" fill-opacity=".14"/>`;
+  h += `<polygon points="${P(inEdge)} ${P(outEdge.slice().reverse())}" fill="${ZONES.ok.color}" fill-opacity=".5" stroke="${ZONES.ok.color}" stroke-width="1.5"/>`;
+  h += `<polygon points="${P(outEdge)} ${X(D_MAX)},${yBot} ${X(D_MAX)},${yTop}" fill="${ZONES.cold.color}" fill-opacity=".12"/>`;
+  h += `</g>`;
+  // 영역 라벨
+  h += `<text x="${QX0 + 8}" y="${QY0 - 28}" font-size="15" font-weight="700" fill="${ZONES.hot.color}">왼쪽: 너무 많음</text>`;
+  h += `<text x="${(QX0 + QX1) / 2}" y="${QY0 - 28}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES.ok.color}">초록 띠: 적당함 (생명 가능 지대)</text>`;
+  h += `<text x="${QX1}" y="${QY0 - 28}" text-anchor="end" font-size="15" font-weight="700" fill="${ZONES.cold.color}">오른쪽: 너무 적음</text>`;
+  // 별 줄
+  STARS.forEach((s, k) => {
+    const y = Y(s.m);
+    h += `<line x1="${QX0}" y1="${y}" x2="${QX1}" y2="${y}" stroke="#ffffff" stroke-opacity=".25" stroke-dasharray="2 5"/>`;
+    h += `<circle cx="${QX0 - 22}" cy="${y}" r="${4 + s.r / 3}" fill="${s.color}"/>`;
+    h += `<text x="${QX0 - 40}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="700" fill="#f2f5ff">${trimNum(s.m)}</text>`;
+  });
+  h += `<text transform="translate(26 ${(QY0 + QY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#f2f5ff">별의 질량 (태양 = 1)</text>`;
+  // 축 눈금: 로그·선형을 함께 두고 t에 따라 서서히 바꾼다
+  h += `<line x1="${QX0}" y1="${QY1 + 20}" x2="${QX1}" y2="${QY1 + 20}" stroke="#93a1c9" stroke-width="2"/>`;
+  const logMinor = [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,2,3,4,5,6,7,8,9,20,30];
+  for (const d of logMinor) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 27}" stroke="#93a1c9" opacity="${t.toFixed(2)}"/>`;
+  for (const d of [0.1, 1, 10, 40]){
+    h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 32}" stroke="#c6cfeb" stroke-width="2" opacity="${t.toFixed(2)}"/>`;
+    h += `<text x="${X(d)}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#f2f5ff" opacity="${t.toFixed(2)}">${d}</text>`;
+  }
+  for (const d of [0, 10, 20, 30, 40]){
+    const x = lin(d) * (1 - t) + lg(Math.max(d, D_MIN)) * t;
+    h += `<line x1="${x}" y1="${QY1 + 20}" x2="${x}" y2="${QY1 + 32}" stroke="#c6cfeb" stroke-width="2" opacity="${(1 - t).toFixed(2)}"/>`;
+    h += `<text x="${x}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#f2f5ff" opacity="${(1 - t).toFixed(2)}">${d}</text>`;
+  }
+  h += `<text x="${QX1}" y="${QY1 + 82}" text-anchor="end" font-size="16" font-weight="700" fill="#f2f5ff">별까지의 거리 (AU, ${S.s4.log ? '로그 눈금' : '선형 눈금'})</text>`;
+  // 태양계 행성 (질량 1 줄)
+  const y1 = Y(1);
+  const innerOp = Math.max(0, Math.min(1, (t - 0.35) / 0.4));   // 선형축에서는 안쪽 행성 이름을 묶어서 표시
+  if (innerOp < 1){
+    const gx = X(1.52) + 8;
+    h += `<g opacity="${(1 - innerOp).toFixed(2)}"><line x1="${X(0.39)}" y1="${y1 + 16}" x2="${X(1.52)}" y2="${y1 + 16}" stroke="#ffffff" stroke-opacity=".5"/>`
+       + `<text x="${gx}" y="${y1 + 36}" font-size="14" font-weight="600" fill="#f2f5ff">수성·금성·지구·화성</text></g>`;
+  }
+  PLANETS.forEach((p, k) => {
+    const x = X(p.d), oy = PL_OFF[k], op = k < 4 ? innerOp : 1;
+    h += `<circle cx="${x.toFixed(1)}" cy="${y1}" r="${p.r}" fill="${p.c}" stroke="#0a1230" stroke-width="1.5"/>`;
+    if (op <= 0) return;
+    h += `<g opacity="${op.toFixed(2)}"><line x1="${x.toFixed(1)}" y1="${y1 + Math.sign(oy) * (p.r + 1)}" x2="${x.toFixed(1)}" y2="${y1 + oy - Math.sign(oy) * 13}" stroke="#ffffff" stroke-opacity=".35"/>`;
+    h += `<text x="${x.toFixed(1)}" y="${y1 + oy + (oy > 0 ? 4 : 0)}" text-anchor="middle" font-size="14" font-weight="${p.n === '지구' ? 800 : 600}" fill="#f2f5ff">${p.n}</text></g>`;
+  });
+  svBody.innerHTML = h;
+}
+function s4Render(){
+  s4Svg();
+  $('simctl').innerHTML = `<div class="ctlrow"><span class="lbl">거리축</span>
+    <button type="button" class="btn" data-act="s4-axis" data-v="lin" aria-pressed="${!S.s4.log}">선형 거리축</button>
+    <button type="button" class="btn" data-act="s4-axis" data-v="log" aria-pressed="${S.s4.log}">로그 거리축</button></div>`;
+
+  const marsIn = 1.52 >= innerAU(1) && 1.52 <= outerAU(1);
+  $('panelBody').innerHTML = `
+    <h2><small>4단계</small>교과서 그림 읽기</h2>
+    <p class="goal">세로축은 별의 질량, 가로축은 별까지의 거리예요. 거리축을 바꾸며 띠의 모양을 비교해 보세요.</p>
+    <p class="note">※ 행성의 크기와 거리 비율은 실제와 달라요. 행성은 태양(질량 1) 줄에 표시했어요.</p>
+    <div class="qcard"><span class="tag">질문 1</span><p class="q">로그축에서 띠의 폭이 왜 거의 일정해 보일까요?</p>
+      <details ${detailsAttr('s4q1')}><summary>생각 도우미</summary><div class="in">
+        <p>로그축에서는 같은 <b>배수</b>가 같은 길이로 보여요(0.1→1과 1→10이 같은 길이).</p>
+        <p>모든 별에서 바깥쪽 ÷ 안쪽 = ${f2(HZ_RATIO)}로 같으니, 로그 눈금으로 잰 띠의 폭은 모든 별에서 약 ${HZ_LOG_WIDTH.toFixed(3)}칸(10배 = 1칸)으로 같아요.</p>
+        <p>하지만 실제 폭은 ${STARS.map(s => `${s.short} ${f2(outerAU(s.m) - innerAU(s.m))}`).join(', ')} AU로 넓어져요.</p>
+      </div></details></div>
+    <div class="qcard"><span class="tag">질문 2</span><p class="q">${marsIn
+      ? '화성은 이 모형의 경계 안에 있어요. 그런데 왜 지금 표면에 액체 물이 안정적으로 유지되지 않을까요?'
+      : '화성은 이 모형의 경계 밖에 있어요. 경계 기준을 바꾸면 어떻게 될까요?'}</p>
+      <p class="box note" style="color:var(--ink-2)">교과서처럼 경계를 금성과 화성 사이로 표현하기도 하고, 대기 조건을 넓게 잡으면 경계가 화성 바깥까지 가기도 해요. 경계는 모형의 가정에 따라 달라져요. 실제 환경은 대기의 양과 성분 같은 조건도 함께 살펴야 해요.</p></div>
+    ${isTeacher() ? `<div class="box teacher-only"><span class="tag">교사 시연</span><p class="note" style="color:var(--ink-2)">로그축 띠 폭 log₁₀(바깥쪽) − log₁₀(안쪽) = ${STARS.map(s => (Math.log10(outerAU(s.m)) - Math.log10(innerAU(s.m))).toFixed(3)).join(' / ')}</p></div>` : ''}
+    <details ${detailsAttr('s4limit')}><summary>더 알아보기: 모형의 한계</summary><div class="in"><ul>
+      <li>광도 = 질량<sup>${MASS_LUMINOSITY_POWER}</sup>은 주계열성의 근사식이에요. 질량이 작은 별에서는 광도를 실제보다 크게 줄 수 있어요.</li>
+      <li>경계에 필요한 에너지는 별빛의 파장 분포와 행성의 대기에 따라 조금 달라져요.</li>
+      <li>생명 가능 지대 안에 있다고 해서 생명이 있거나 액체 물이 반드시 있는 것은 아니에요.</li>
+      <li>온실 효과를 빼면 지구의 복사 평형 온도는 약 255 K예요. 실제 온도는 대기에 따라 달라지므로 이 앱은 온도 대신 받는 에너지로 경계를 찾아요.</li>
+    </ul></div></details>`;
+}
+function s4SetAxis(toLog){
+  if (S.s4.log === toLog && !s4Anim) return;
+  S.s4.log = toLog;
+  const from = S.s4.t, to = toLog ? 1 : 0, t0 = performance.now();
+  const dur = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 700;
+  if (s4Anim) cancelAnimationFrame(s4Anim);
+  const ease = u => u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;
+  const tick = now => {
+    const u = dur ? Math.min(1, (now - t0) / dur) : 1;
+    S.s4.t = from + (to - from) * ease(u);
+    if (S.step !== 4){ S.s4.t = to; s4Anim = null; return; }
+    if (u < 1){ s4Svg(); s4Anim = requestAnimationFrame(tick); }
+    else { s4Anim = null; render(); }
+  };
+  render();               // 버튼 상태 먼저 갱신
+  s4Anim = requestAnimationFrame(tick);
+}
+
+/* ==========================================================
+   5단계: 핵심 퀴즈
+   ========================================================== */
+function buildQuiz(){
+  const L2 = luminosity(2), s5 = fluxAt(L2, 1), z5 = zoneOf(s5);
+  const ans5 = { hot:0, ok:1, cold:2 }[z5];
+  return [
+    { q:'별까지의 거리가 3배가 되면 받는 에너지는 몇 배인가요?',
+      c:['3배', '1/3배', '1/9배', '9배'], a:2,
+      e:'받는 에너지는 거리의 제곱에 반비례해요. 3² = 9이므로 1/9배가 돼요.' },
+    { q:'광도가 태양의 9배인 별의 생명 가능 지대 경계는 태양의 몇 배 거리인가요?',
+      c:['3배', '9배', '1/3배', '81배'], a:0,
+      e:'같은 에너지를 받는 거리는 √(광도)배로 멀어져요. √9 = 3이므로 3배예요.' },
+    { q:'광도가 태양의 4배인 별의 생명 가능 지대 폭은 태양의 몇 배인가요?',
+      c:['같다(1배)', '2배', '4배', '16배'], a:1,
+      e:`안쪽·바깥쪽 경계가 모두 √4 = 2배로 멀어지므로 폭도 2배예요 (${f2(outerAU(1) - innerAU(1))} AU → ${f2(distForS(4, HZ_OUTER_S) - distForS(4, HZ_INNER_S))} AU).` },
+    { q:'광도가 태양의 1/4인 별의 바깥쪽 ÷ 안쪽 값은 태양과 비교해 어떤가요?',
+      c:['더 크다', '같다', '더 작다'], a:1,
+      e:`두 경계가 같은 배수로 움직이므로, 경계 기준이 같으면 바깥쪽 ÷ 안쪽은 언제나 약 ${f2(HZ_RATIO)}로 같아요.` },
+    { q:'질량이 태양의 2배인 별에서 1 AU 떨어진 행성은 어떤 상태인가요?',
+      c:['받는 에너지가 너무 많다', '적당하다', '받는 에너지가 너무 적다'], a:ans5,
+      e:`광도는 2^${MASS_LUMINOSITY_POWER} ≈ ${f2(L2)}이므로 1 AU에서 받는 에너지는 지구의 약 ${Math.round(s5)}배예요. 이 별의 생명 가능 지대는 약 ${f2(innerAU(2))}~${f2(outerAU(2))} AU예요.` },
+    { q:'로그축 그림에서 띠의 폭이 비슷해 보이면 실제 폭도 같은가요?',
+      c:['예, 같다', '아니다'], a:1,
+      e:`로그축은 배수(비율)를 같은 길이로 보여 줘서 폭이 비슷해 보여요. 실제 AU 폭은 √(광도)배로 넓어져요: 태양 ${f2(outerAU(1) - innerAU(1))} AU, 2배 별 ${f2(outerAU(2) - innerAU(2))} AU.` },
+  ];
+}
+const QUIZ = buildQuiz();
+function s5Render(){
+  const q = S.s5.q, picks = S.s5.picks;
+  const score = QUIZ.reduce((n, item, k) => n + (picks[k] === item.a ? 1 : 0), 0);
+  const answered = picks.filter(p => p != null).length;
+  const finished = q >= QUIZ.length;
+  svBody.innerHTML = '';
+  $('simctl').innerHTML = '';
+  if (finished){
+    $('stageHtml').innerHTML = `<div class="quiz" role="region" aria-label="퀴즈 결과">
+      <span class="qn">퀴즈 끝</span>
+      <h3>${QUIZ.length}문제 중 ${score}문제를 맞혔어요.</h3>
+      <p class="expl">${score === QUIZ.length ? '모두 맞혔어요! 광도·거리·폭의 관계를 잘 이해했어요.' : '틀린 문제는 해당 단계로 돌아가 그림을 다시 살펴보세요.'}</p>
+      <ol style="margin:0;padding-left:22px;color:var(--ink-2)">${QUIZ.map((it, k) => `<li>${picks[k] === it.a ? '✓ 맞음' : '✗ 다시 보기'} — ${esc(it.q)}</li>`).join('')}</ol>
+      <div class="row"><button type="button" class="btn go" data-act="s5-restart">다시 풀기</button></div></div>`;
+  } else {
+    const it = QUIZ[q], pk = picks[q];
+    $('stageHtml').innerHTML = `<div class="quiz" role="region" aria-label="퀴즈 ${q + 1}번">
+      <span class="qn">문제 ${q + 1} / ${QUIZ.length}</span>
+      <h3>${esc(it.q)}</h3>
+      <div class="opts">${it.c.map((c, k) => {
+        let cls = '', mark = '';
+        if (pk != null){ if (k === it.a){ cls = 'right'; mark = '✓ 정답 · '; } else if (k === pk){ cls = 'wrong'; mark = '✗ 내 답 · '; } }
+        return `<button type="button" class="btn ${cls}" data-act="s5-ans" data-i="${k}" ${pk != null ? 'disabled' : ''}>${mark}${esc(c)}</button>`;
+      }).join('')}</div>
+      ${pk != null ? `<p class="expl box" role="status"><b>${pk === it.a ? '맞았어요!' : '아쉬워요.'}</b> ${esc(it.e)}</p>
+        <div class="row"><button type="button" class="btn go" data-act="s5-next">${q + 1 < QUIZ.length ? '다음 문제 ▶' : '결과 보기 ▶'}</button></div>` : ''}
+    </div>`;
+  }
+  $('panelBody').innerHTML = `
+    <h2><small>5단계</small>핵심 퀴즈</h2>
+    <p class="goal">한 문제씩 풀어요. 답을 고르면 바로 해설이 나와요.</p>
+    <div class="readout" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+      <div><b>${answered} / ${QUIZ.length}</b><span>푼 문제</span></div>
+      <div><b>${score}</b><span>맞힌 문제</span></div>
+    </div>
+    <p class="note">점수는 화면에만 보이고 저장되지 않아요.</p>
+    <div class="box"><p style="font-weight:700;margin-bottom:4px">오늘의 결론</p><ol style="margin:0;padding-left:20px;font-size:14.5px;color:var(--ink-2)">
+      <li>생명 가능 지대는 <b>받는 에너지의 범위</b>로 정해져요.</li>
+      <li>받는 에너지는 거리의 제곱에 반비례해서, 광도가 크면 경계가 멀어져요.</li>
+      <li>두 경계가 같은 배수(√광도 배)로 멀어지니 폭도 넓어져요.</li>
+      <li>바깥쪽 ÷ 안쪽은 늘 ${f2(HZ_RATIO)}, 그래서 로그축에서는 폭이 비슷해 보여요.</li>
+    </ol></div>`;
+}
+
+const STEPS = { 1:{ render:s1Render }, 2:{ render:s2Render }, 3:{ render:s3Render }, 4:{ render:s4Render }, 5:{ render:s5Render } };
+
+/* ── 버튼 처리 (이벤트 위임) ─────────────── */
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
+  const v = b.dataset.v, i = b.dataset.i != null ? +b.dataset.i : null;
+  switch (b.dataset.act){
+    case 'mode': S.mode = v; render(); break;
+    case 'prev': go(S.step - 1); scrollToStage(); break;
+    case 'next': if (!nextGate()){ go(S.step + 1); scrollToStage(); } break;
+    case 's1-dist': S.s1.dist = +v; render(); break;
+    case 's2-star': S.s2.star = i; S.s2.msg = null; render(); break;
+    case 's2-nudge': s2SetPos(S.s2.pos[S.s2.star] + (+v) * 0.01); break;
+    case 's2-rec': s2Record(v); break;
+    case 's2-bands': S.s2.bands = !S.s2.bands; render(); break;
+    case 's2-fill':
+      STARS.forEach((s, k) => { S.s2.rec[k] = { inner:innerAU(s.m), outer:outerAU(s.m) }; });
+      S.s2.msg = { kind:'good', text:'교사 시연: 네 별의 경계를 모형 값으로 모두 채웠어요.' };
+      render(); break;
+    case 's3-curve': S.s3.on[i] = !S.s3.on[i]; render(); break;
+    case 's3-pred': S.s3.pred = v; render(); break;
+    case 's4-axis': s4SetAxis(v === 'log'); break;
+    case 's5-ans': if (S.s5.picks[S.s5.q] == null){ S.s5.picks[S.s5.q] = i; render(); focusFirst('[data-act="s5-next"]'); } break;
+    case 's5-next': S.s5.q++; render(); focusFirst('[data-act="s5-ans"], [data-act="s5-restart"]'); break;
+    case 's5-restart': S.s5 = { q:0, picks:[] }; render(); focusFirst('[data-act="s5-ans"]'); break;
+  }
+});
+function focusFirst(sel){ const el = document.querySelector(sel); if (el) el.focus({ preventScroll:true }); }
+function scrollToStage(){
+  const top = document.querySelector('.layout').getBoundingClientRect().top + scrollY - 8;
+  if (scrollY > top) scrollTo({ top, behavior:'smooth' });
+}
+
+/* 제목을 누르면 처음 화면으로: 1단계 · 거리 1 AU (2~5단계의 측정값·예측·퀴즈 답은 그대로 둠) */
+function goHome(){
+  S.s1.dist = 1;
+  go(1);
+  scrollTo(0, 0); document.body.scrollTop = 0;
+}
+$('homeLink').addEventListener('click', e => { e.preventDefault(); goHome(); });
+
+runSelfCheck();
+render();
+</script>
+</body>
+</html>
