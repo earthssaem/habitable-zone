@@ -8,37 +8,31 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%230a1230%22/><circle cx=%2250%22 cy=%2250%22 r=%2232%22 fill=%22none%22 stroke=%22%233ad07e%22 stroke-width=%2210%22/><circle cx=%2250%22 cy=%2250%22 r=%2213%22 fill=%22%23fff6d8%22/></svg>">
 <style>
   :root{
-    --bg:#050918;
-    --bg-2:rgba(6,11,32,.55);
-    --panel:linear-gradient(180deg,rgba(30,42,100,.62) 0%,rgba(17,26,66,.66) 100%);
-    --panel-solid:#121c48;
-    --panel-2:rgba(255,255,255,.055);
-    --line:rgba(150,170,255,.15);
-    --line-2:rgba(165,182,255,.3);
-    --ink:#f4f6ff;
-    --ink-2:#c8d0ef;
-    --muted:#8f9cc6;
-    --accent:#a593ff;
-    --accent-soft:rgba(150,130,255,.16);
+    --bg:#f3f7fc;
+    --bg-2:#f6f9fd;
+    --panel:#ffffff;
+    --panel-2:#ffffff;
+    --line:#dbe5f4;
+    --line-2:#c9d7ec;
+    --ink:#1b2a41;
+    --ink-2:#3b4b64;
+    --muted:#65758e;
+    --accent:#2563eb;
+    --accent-strong:#1d4ed8;
+    --accent-soft:#e8f0fe;
     --accent-ink:#ffffff;
-    --grad:linear-gradient(135deg,#8a6cff 0%,#5a8cff 100%);
-    --hz:#3ad07e;
-    --hot:#ff9a3c;
-    --cold:#4ea8ff;
-    --star:#ffd76e;
-    --radius:20px;
-    --shadow:0 18px 40px -22px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.06);
+    --hz:#16834a;
+    --hz-soft:#ecf8f1;
+    --hot:#c25a14;
+    --cold:#2266b8;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(20,45,90,.05), 0 6px 18px -8px rgba(20,45,90,.12);
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%; background:var(--bg)}
   body{
     margin:0; min-height:100vh; display:flex; flex-direction:column;
-    background:
-      radial-gradient(55% 45% at 8% -5%, rgba(118,86,255,.26) 0%, transparent 70%),
-      radial-gradient(45% 50% at 100% 0%, rgba(60,120,255,.14) 0%, transparent 70%),
-      radial-gradient(50% 55% at 95% 105%, rgba(40,200,150,.09) 0%, transparent 70%),
-      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='480' height='480'><g fill='%23fff'><circle cx='165' cy='77' r='0.8' fill-opacity='0.25'/><circle cx='37' cy='420' r='1' fill-opacity='0.25'/><circle cx='187' cy='298' r='0.5' fill-opacity='0.8'/><circle cx='109' cy='19' r='0.5' fill-opacity='0.6'/><circle cx='214' cy='35' r='0.6' fill-opacity='0.25'/><circle cx='282' cy='217' r='0.5' fill-opacity='0.8'/><circle cx='63' cy='114' r='1.2' fill-opacity='0.8'/><circle cx='31' cy='295' r='1' fill-opacity='0.6'/><circle cx='25' cy='113' r='0.5' fill-opacity='0.8'/><circle cx='439' cy='68' r='0.7' fill-opacity='0.6'/><circle cx='73' cy='276' r='0.5' fill-opacity='0.8'/><circle cx='157' cy='286' r='1.2' fill-opacity='0.35'/><circle cx='52' cy='297' r='1' fill-opacity='0.35'/><circle cx='190' cy='49' r='1' fill-opacity='0.25'/><circle cx='288' cy='30' r='1' fill-opacity='0.35'/><circle cx='254' cy='348' r='1' fill-opacity='0.6'/><circle cx='397' cy='160' r='0.8' fill-opacity='0.8'/><circle cx='472' cy='232' r='0.7' fill-opacity='0.45'/><circle cx='127' cy='406' r='0.6' fill-opacity='0.35'/><circle cx='41' cy='294' r='0.7' fill-opacity='0.8'/><circle cx='253' cy='448' r='0.7' fill-opacity='0.6'/><circle cx='147' cy='311' r='0.5' fill-opacity='0.25'/><circle cx='262' cy='214' r='0.6' fill-opacity='0.45'/><circle cx='77' cy='477' r='0.8' fill-opacity='0.6'/><circle cx='20' cy='342' r='0.5' fill-opacity='0.8'/><circle cx='293' cy='404' r='0.7' fill-opacity='0.45'/><circle cx='355' cy='179' r='1' fill-opacity='0.6'/><circle cx='296' cy='408' r='0.8' fill-opacity='0.25'/><circle cx='430' cy='47' r='0.7' fill-opacity='0.6'/><circle cx='356' cy='340' r='0.5' fill-opacity='0.25'/><circle cx='374' cy='359' r='0.7' fill-opacity='0.8'/><circle cx='348' cy='420' r='0.8' fill-opacity='0.45'/><circle cx='366' cy='197' r='1.2' fill-opacity='0.45'/><circle cx='11' cy='236' r='0.7' fill-opacity='0.35'/><circle cx='312' cy='59' r='0.8' fill-opacity='0.25'/><circle cx='111' cy='393' r='0.7' fill-opacity='0.35'/><circle cx='378' cy='126' r='0.8' fill-opacity='0.6'/><circle cx='469' cy='446' r='0.8' fill-opacity='0.25'/><circle cx='85' cy='229' r='0.8' fill-opacity='0.8'/><circle cx='142' cy='452' r='0.6' fill-opacity='0.6'/><circle cx='442' cy='281' r='0.7' fill-opacity='0.6'/><circle cx='183' cy='349' r='0.8' fill-opacity='0.35'/><circle cx='77' cy='42' r='0.6' fill-opacity='0.35'/><circle cx='118' cy='337' r='0.6' fill-opacity='0.25'/><circle cx='248' cy='425' r='1' fill-opacity='0.35'/><circle cx='134' cy='144' r='0.5' fill-opacity='0.35'/></g></svg>"),
-      var(--bg);
+    background:radial-gradient(80% 50% at 50% -10%, #e4edfb 0%, transparent 70%), var(--bg);
     color:var(--ink);
     font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
     font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;
@@ -46,54 +40,57 @@
   }
   button{font:inherit}
   h2,h3,p{margin:0}
-  ::selection{background:rgba(150,130,255,.45)}
+  b,strong{color:var(--ink)}
+  ::selection{background:#cfe0ff}
 
-  /* ── 상단: 제목 + 3단계 메뉴 ─────────────── */
+  /* ── 상단: 제목 + 단계 탭 (헤더만 은은한 우주 느낌의 파란 그라데이션) ── */
   .top{
     display:flex; align-items:center; gap:10px 20px; flex-wrap:wrap;
     padding:10px max(16px, calc((100% - 1720px) / 2 + 16px));
-    border-bottom:1px solid var(--line);
-    background:linear-gradient(180deg,rgba(10,16,44,.85) 0%,rgba(7,12,34,.55) 100%);
-    box-shadow:0 10px 30px -20px rgba(0,0,0,.9);
+    color:#fff;
+    background:
+      radial-gradient(1px 1px at 22% 30%, rgba(255,255,255,.55) 50%, transparent 51%),
+      radial-gradient(1px 1px at 47% 72%, rgba(255,255,255,.4) 50%, transparent 51%),
+      radial-gradient(1.2px 1.2px at 63% 22%, rgba(255,255,255,.45) 50%, transparent 51%),
+      radial-gradient(1px 1px at 81% 64%, rgba(255,255,255,.35) 50%, transparent 51%),
+      linear-gradient(100deg,#163066 0%,#1d4596 55%,#2a5fc4 100%);
+    box-shadow:0 2px 10px -4px rgba(20,45,90,.35);
     position:relative; z-index:1;
   }
   .brand{display:flex; align-items:center; gap:12px; min-width:0}
-  .brand .logo{width:42px; height:42px; flex:none; filter:drop-shadow(0 0 10px rgba(58,208,126,.35))}
-  .brand h1{margin:0; font-size:20px; line-height:1.2; letter-spacing:-.4px; white-space:nowrap; font-weight:800}
-  .brand p{margin:0; font-size:12.5px; color:var(--muted)}
+  .brand .logo{width:40px; height:40px; flex:none}
+  .brand h1{margin:0; font-size:20px; line-height:1.2; letter-spacing:-.4px; white-space:nowrap; font-weight:800; color:#fff}
+  .brand p{margin:0; font-size:13px; color:#c9d8f5}
   /* 제목 부분(로고·제목·부제)을 누르면 처음 화면으로 */
-  a.brand{color:inherit;text-decoration:none;border-radius:16px;margin:-4px -8px;padding:4px 8px;-webkit-tap-highlight-color:transparent}
+  a.brand{color:inherit;text-decoration:none;border-radius:14px;margin:-4px -8px;padding:4px 8px;-webkit-tap-highlight-color:transparent}
   a.brand .logo{transition:transform .2s}
-  @media (hover:hover){ a.brand:hover h1{color:var(--accent)} a.brand:hover .logo{transform:rotate(-12deg) scale(1.04)} }
-  a.brand:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  @media (hover:hover){ a.brand:hover h1{text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px} a.brand:hover .logo{transform:rotate(-10deg)} }
+  a.brand:focus-visible{outline:3px solid #fff;outline-offset:2px}
 
-  .tabs{
-    display:flex; gap:4px; margin-left:auto; flex-wrap:wrap; padding:4px;
-    background:rgba(255,255,255,.035); border:1px solid var(--line); border-radius:999px;
-  }
+  .tabs{display:flex; gap:10px; margin-left:auto; align-items:center; flex-wrap:wrap}
+  .tabs .seg{display:flex; gap:2px; padding:3px; border-radius:12px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18)}
   .tabs button{
-    appearance:none; border:1px solid transparent; background:transparent; color:var(--ink-2);
-    min-height:46px; padding:6px 18px 6px 7px; border-radius:999px; cursor:pointer;
-    font-weight:700; font-size:16px; display:flex; align-items:center; gap:9px;
-    transition:background .2s, color .2s, box-shadow .2s;
+    appearance:none; border:0; background:transparent; color:#dbe6fb;
+    min-height:44px; padding:6px 16px 6px 8px; border-radius:9px; cursor:pointer;
+    font-weight:700; font-size:16px; display:flex; align-items:center; gap:8px;
+    transition:background .15s, color .15s;
   }
-  .tabs button b{width:30px; height:30px; border-radius:50%; background:rgba(255,255,255,.08); border:1px solid var(--line-2); color:var(--ink); display:grid; place-items:center; font-size:14px; flex:none}
-  .tabs button[aria-current]{background:var(--grad); color:#fff; box-shadow:0 6px 18px -6px rgba(110,100,255,.75), inset 0 1px 0 rgba(255,255,255,.25)}
-  .tabs button[aria-current] b{background:rgba(255,255,255,.22); border-color:rgba(255,255,255,.35); color:#fff}
-  .tabs button.deep{border:1px dashed var(--line-2); padding-left:16px; margin-left:4px}
-  .tabs button.deep[aria-current]{border:1px solid transparent}
+  .tabs button b{width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,.16); color:#fff; display:grid; place-items:center; font-size:14px; flex:none}
+  .tabs button[aria-current]{background:#fff; color:var(--accent-strong); box-shadow:0 1px 3px rgba(10,30,70,.25)}
+  .tabs button[aria-current] b{background:var(--accent); color:#fff}
+  .tabs button.deep{border:1px solid rgba(255,255,255,.4); padding:6px 16px; min-height:46px; border-radius:12px; color:#eef3ff}
+  .tabs button.deep[aria-current]{border-color:#fff; color:var(--accent-strong)}
   .tabs .short{display:none}
-  @media (hover:hover){ .tabs button:not([aria-current]):hover{color:var(--ink); background:rgba(255,255,255,.06)} }
-  .tabs button:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+  @media (hover:hover){ .tabs button:not([aria-current]):hover{background:rgba(255,255,255,.14); color:#fff} }
+  .tabs button:focus-visible{outline:3px solid #fff; outline-offset:2px}
 
   /* ── 본문 ─────────────────────────────── */
   .wrap{flex:1; width:100%; max-width:1720px; margin:0 auto; padding:16px 16px 18px; display:flex; flex-direction:column; gap:14px}
   .lead{display:flex; align-items:center; gap:4px 14px; flex-wrap:wrap}
-  .lead h2{font-size:23px; letter-spacing:-.5px; font-weight:800; display:flex; align-items:center; gap:10px}
+  .lead h2{font-size:24px; letter-spacing:-.5px; font-weight:800; display:flex; align-items:center; gap:10px; color:var(--ink)}
   .lead h2::before{
-    content:var(--step); font-size:12px; font-weight:800; letter-spacing:.8px; color:#fff;
-    background:var(--grad); border-radius:999px; padding:3px 10px; line-height:1.4;
-    box-shadow:0 4px 14px -6px rgba(110,100,255,.8);
+    content:var(--step); font-size:12.5px; font-weight:800; letter-spacing:.6px; color:var(--accent-strong);
+    background:var(--accent-soft); border:1px solid #c7d8fb; border-radius:8px; padding:2px 9px; line-height:1.4;
   }
   #app[data-view="observe"]  {--step:"STEP 1"}
   #app[data-view="principle"]{--step:"STEP 2"}
@@ -101,15 +98,9 @@
   #app[data-view="deep"]     {--step:"심화"}
   .lead p{color:var(--ink-2)}
   .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
-  .sim{
-    background:
-      radial-gradient(70% 90% at 0% 45%, rgba(255,215,120,.07) 0%, transparent 60%),
-      linear-gradient(180deg,#0c1538 0%,#080e28 100%);
-    border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; min-width:0;
-    box-shadow:var(--shadow);
-  }
+  .sim{background:#fff; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; min-width:0; box-shadow:var(--shadow)}
   .sim svg{display:block; width:100%; height:auto; fill:var(--ink-2); font-family:inherit; user-select:none; -webkit-user-select:none}
-  .sim .ctl{padding:10px 14px; border-top:1px solid var(--line); background:rgba(255,255,255,.025); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+  .sim .ctl{padding:10px 14px; border-top:1px solid var(--line); background:var(--bg-2); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
   .sim svg .drag-zone{touch-action:none; cursor:grab}
   .sim svg.dragging .drag-zone{cursor:grabbing}
   .sim svg [tabindex]:focus{outline:none}
@@ -122,37 +113,34 @@
 
   .btn{
     appearance:none; min-height:48px; min-width:48px; padding:8px 16px;
-    border:1px solid var(--line-2); border-radius:14px; background:var(--panel-2); color:var(--ink);
+    border:1px solid var(--line-2); border-radius:10px; background:#fff; color:var(--ink);
     font-weight:700; font-size:16px; cursor:pointer; line-height:1.25;
     display:inline-flex; align-items:center; justify-content:center; gap:7px;
-    transition:background .15s, border-color .15s, box-shadow .15s, transform .1s;
+    box-shadow:0 1px 1px rgba(20,45,90,.04);
+    transition:background .15s, border-color .15s, color .15s;
   }
-  @media (hover:hover){ .btn:hover:not(:disabled){border-color:rgba(190,200,255,.55); background:rgba(255,255,255,.09)} }
-  .btn:active:not(:disabled){transform:translateY(1px)}
+  @media (hover:hover){ .btn:hover:not(:disabled){border-color:#9db6e3; background:#f5f8fe} }
   .btn:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
-  .btn[aria-pressed="true"]{
-    background:linear-gradient(180deg,rgba(150,128,255,.46),rgba(100,135,255,.3)); color:#fff;
-    border-color:rgba(180,165,255,.9); box-shadow:0 0 18px -6px rgba(140,120,255,.9), inset 0 1px 0 rgba(255,255,255,.12);
-  }
-  .btn:disabled{opacity:.35; cursor:not-allowed}
-  .btn.go{background:var(--grad); color:#fff; border-color:transparent; box-shadow:0 8px 22px -10px rgba(110,100,255,.95), inset 0 1px 0 rgba(255,255,255,.25)}
-  @media (hover:hover){ .btn.go:hover:not(:disabled){background:linear-gradient(135deg,#9a80ff 0%,#6c9aff 100%); border-color:transparent} }
-  .btn.ghost{background:transparent}
-  .btn .chip{width:14px; height:14px; border-radius:50%; flex:none}
+  .btn[aria-pressed="true"]{background:var(--accent-soft); color:var(--accent-strong); border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
+  .btn:disabled{opacity:.45; cursor:not-allowed}
+  .btn.go{background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 2px 6px -2px rgba(37,99,235,.5)}
+  @media (hover:hover){ .btn.go:hover:not(:disabled){background:var(--accent-strong); border-color:var(--accent-strong)} }
+  .btn.ghost{background:transparent; box-shadow:none}
+  .btn .chip{width:14px; height:14px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 1.5px rgba(27,42,65,.35)}
   .lbl{color:var(--muted); font-size:15px; font-weight:700; margin-right:2px}
-  .sep{width:1px; align-self:stretch; background:var(--line-2); margin:0 4px}
+  .sep{width:1px; align-self:stretch; background:var(--line); margin:0 4px}
   .note{font-size:14.5px; color:var(--muted)}
-  .box{background:var(--bg-2); border:1px solid var(--line); border-radius:14px; padding:12px 14px}
-  .summary{border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 14px 14px 0; padding:10px 14px; font-weight:650}
+  .box{background:var(--bg-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px}
+  .summary{border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 12px 12px 0; padding:10px 14px; font-weight:650}
   .hz{color:var(--hz)}
-  .tag{align-self:flex-start; font-size:13px; font-weight:800; color:#d9d0ff; background:var(--accent-soft); border:1px solid rgba(165,147,255,.4); border-radius:999px; padding:2px 12px}
+  .tag{align-self:flex-start; font-size:13px; font-weight:800; color:var(--accent-strong); background:var(--accent-soft); border-radius:6px; padding:2px 10px}
 
   /* ── 1단계: 광도 슬라이더 ─────────────── */
-  .lum{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px 26px; align-items:center; padding:14px 20px 16px; border-top:1px solid var(--line); background:rgba(255,255,255,.025)}
+  .lum{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px 26px; align-items:center; padding:14px 20px 16px; border-top:1px solid var(--line); background:var(--bg-2)}
   .lum .read{display:flex; flex-direction:column; line-height:1.2; min-width:170px}
-  .lum .read label{font-size:14px; color:var(--muted); font-weight:700; letter-spacing:.2px}
-  .lum .read output{font-size:34px; font-weight:800; font-variant-numeric:tabular-nums; letter-spacing:-.8px; white-space:nowrap; color:#fff3c8; text-shadow:0 0 22px rgba(255,215,110,.35)}
-  .lum .read output small{font-size:15px; font-weight:700; color:var(--ink-2); letter-spacing:0; text-shadow:none}
+  .lum .read label{font-size:14.5px; color:var(--muted); font-weight:700}
+  .lum .read output{font-size:34px; font-weight:800; font-variant-numeric:tabular-nums; letter-spacing:-.8px; white-space:nowrap; color:var(--ink)}
+  .lum .read output small{font-size:15px; font-weight:700; color:var(--muted); letter-spacing:0}
   .slider{position:relative; padding-bottom:24px}
   .slider input{
     --p:50%;
@@ -160,20 +148,18 @@
     background:transparent; cursor:pointer; touch-action:pan-y;
   }
   .slider input:focus{outline:none}
-  .slider input:focus-visible{outline:3px solid var(--accent); outline-offset:4px; border-radius:12px}
+  .slider input:focus-visible{outline:3px solid var(--accent); outline-offset:4px; border-radius:10px}
   .slider input::-webkit-slider-runnable-track{
-    height:12px; border-radius:999px;
-    background:linear-gradient(90deg,#6b5a2e 0%,#ffe9a8 var(--p),rgba(255,255,255,.1) var(--p),rgba(255,255,255,.1) 100%);
-    box-shadow:inset 0 1px 2px rgba(0,0,0,.5);
+    height:8px; border-radius:999px;
+    background:linear-gradient(90deg,var(--accent) 0%,var(--accent) var(--p),#dbe4f2 var(--p),#dbe4f2 100%);
   }
   .slider input::-webkit-slider-thumb{
-    -webkit-appearance:none; width:38px; height:38px; margin-top:-13px; border-radius:50%;
-    background:radial-gradient(circle at 38% 34%, #ffffff 0%, #fff4cf 40%, #ffd76e 100%);
-    border:4px solid #0a1130; box-shadow:0 0 0 2px #fff1c2, 0 0 26px 8px rgba(255,215,110,.45);
+    -webkit-appearance:none; width:34px; height:34px; margin-top:-13px; border-radius:50%;
+    background:#fff; border:3px solid var(--accent); box-shadow:0 2px 6px rgba(20,45,90,.25);
   }
-  .slider input::-moz-range-track{height:12px; border-radius:999px; background:rgba(255,255,255,.1)}
-  .slider input::-moz-range-progress{height:12px; border-radius:999px; background:linear-gradient(90deg,#6b5a2e,#ffe9a8)}
-  .slider input::-moz-range-thumb{width:30px; height:30px; border-radius:50%; background:radial-gradient(circle at 38% 34%, #fff 0%, #fff4cf 40%, #ffd76e 100%); border:4px solid #0a1130; box-shadow:0 0 0 2px #fff1c2, 0 0 26px 8px rgba(255,215,110,.45)}
+  .slider input::-moz-range-track{height:8px; border-radius:999px; background:#dbe4f2}
+  .slider input::-moz-range-progress{height:8px; border-radius:999px; background:var(--accent)}
+  .slider input::-moz-range-thumb{width:28px; height:28px; border-radius:50%; background:#fff; border:3px solid var(--accent); box-shadow:0 2px 6px rgba(20,45,90,.25)}
   .slider .ticks{position:absolute; left:0; right:0; bottom:0; height:22px; pointer-events:none}
   .slider .ticks span{position:absolute; transform:translateX(-50%); font-size:14px; font-weight:700; color:var(--muted); white-space:nowrap}
   .quick{display:flex; gap:6px; flex-wrap:wrap}
@@ -190,20 +176,16 @@
   }
 
   .cards{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
-  .val{
-    position:relative; overflow:hidden;
-    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:12px 18px;
-    display:flex; flex-direction:column; gap:2px; min-width:0; box-shadow:var(--shadow);
-  }
-  .val::after{content:""; position:absolute; left:0; right:0; top:0; height:3px; background:linear-gradient(90deg,rgba(58,208,126,.0),rgba(58,208,126,.55),rgba(58,208,126,0))}
-  .val .k{font-size:15px; font-weight:700; color:var(--ink-2); display:flex; align-items:center; gap:8px}
-  .val .k i{width:9px; height:9px; border-radius:50%; background:var(--hz); box-shadow:0 0 10px var(--hz); flex:none}
-  .val .v{font-size:40px; font-weight:800; letter-spacing:-1.2px; font-variant-numeric:tabular-nums; line-height:1.15; white-space:nowrap}
+  .val{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:12px 18px; display:flex; flex-direction:column; gap:2px; min-width:0; box-shadow:var(--shadow)}
+  .val .k{font-size:15.5px; font-weight:700; color:var(--ink-2); display:flex; align-items:center; gap:8px}
+  .val .k i{width:4px; height:16px; border-radius:2px; background:#9fb3d1; flex:none}
+  .val .v{font-size:42px; font-weight:800; letter-spacing:-1.2px; font-variant-numeric:tabular-nums; line-height:1.15; white-space:nowrap; color:var(--ink)}
   .val .v small{font-size:19px; font-weight:700; color:var(--muted); letter-spacing:0; margin-left:5px}
   .val .s{font-size:13.5px; color:var(--muted)}
-  .val.w{border-color:rgba(58,208,126,.5); background:linear-gradient(160deg,rgba(26,92,72,.55) 0%,rgba(16,40,60,.6) 60%,rgba(17,26,66,.66) 100%)}
-  .val.w::after{background:linear-gradient(90deg,rgba(58,208,126,.2),#3ad07e,rgba(58,208,126,.2))}
-  .val.w .v{color:#7ff0b0; text-shadow:0 0 24px rgba(58,208,126,.35)}
+  .val.w{border-color:#b9e2cb; background:var(--hz-soft); box-shadow:inset 4px 0 0 #2fb36b, var(--shadow)}
+  .val.w .k{color:var(--hz)}
+  .val.w .k i{background:#2fb36b}
+  .val.w .v{color:var(--hz)}
   @media (max-width: 600px){
     .val{padding:10px}
     .val .v{font-size:26px; letter-spacing:-.5px}
@@ -216,32 +198,32 @@
 
   /* ── 2단계: 장면 ─────────────────────── */
   .parts{display:flex; gap:8px; flex-wrap:wrap}
-  .scene-no{font-size:13px; font-weight:800; color:var(--accent); letter-spacing:.3px}
-  .side h3{font-size:22px; line-height:1.35; letter-spacing:-.4px; font-weight:800}
+  .scene-no{font-size:13.5px; font-weight:800; color:var(--accent-strong)}
+  .side h3{font-size:22px; line-height:1.35; letter-spacing:-.4px; font-weight:800; color:var(--ink)}
   .side .txt{font-size:17px; color:var(--ink-2)}
   .readline{font-size:17px; font-weight:600; font-variant-numeric:tabular-nums}
   .snav{display:flex; gap:8px}
   .snav .btn{flex:1}
   .dots{display:flex; gap:6px; align-items:center}
-  .dots i{width:8px; height:8px; border-radius:999px; background:rgba(255,255,255,.18); transition:width .25s}
-  .dots i.on{width:24px; background:var(--grad)}
+  .dots i{width:8px; height:8px; border-radius:999px; background:#d3ddec; transition:width .25s}
+  .dots i.on{width:22px; background:var(--accent)}
   .formula{display:flex; flex-direction:column; gap:6px}
-  .formula .eq{font-family:"Times New Roman",serif; font-style:italic; font-size:24px; text-align:center; color:#fff}
+  .formula .eq{font-family:"Times New Roman",serif; font-style:italic; font-size:24px; text-align:center; color:var(--ink)}
   .formula p{font-size:15.5px; color:var(--ink-2)}
 
   /* ── 3단계: 적용 문제 ─────────────────── */
   .qchips{display:flex; gap:10px 18px; flex-wrap:wrap; align-items:center; padding:10px 14px}
   .qgroup{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
-  .qgroup > span{font-size:13.5px; font-weight:800; color:var(--muted); margin-right:2px}
+  .qgroup > span{font-size:14px; font-weight:800; color:var(--muted); margin-right:2px}
   .qgroup + .qgroup{padding-left:16px; border-left:1px solid var(--line)}
-  .qchips .btn{min-width:48px; padding:6px 8px; border-radius:12px}
-  .qchips .btn.done:not([aria-pressed="true"]){border-color:rgba(58,208,126,.55); color:#bff5d6}
+  .qchips .btn{min-width:48px; padding:6px 8px}
+  .qchips .btn.done:not([aria-pressed="true"]){border-color:#9fd3b6; background:var(--hz-soft); color:var(--hz)}
   .score{display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-weight:700; margin-left:auto}
-  .qcard .q{font-size:21px; font-weight:750; line-height:1.45; letter-spacing:-.4px}
+  .qcard .q{font-size:21px; font-weight:750; line-height:1.45; letter-spacing:-.4px; color:var(--ink)}
   .opts{display:flex; flex-direction:column; gap:8px}
   .opts .btn{justify-content:flex-start; text-align:left; min-height:54px; font-size:17px; padding:10px 16px}
-  .opts .btn.right{border-color:#ffffff; background:rgba(255,255,255,.13); box-shadow:0 0 18px -6px rgba(255,255,255,.6)}
-  .opts .btn.wrong{border-style:dashed; color:var(--muted)}
+  .opts .btn.right{border-color:var(--accent); background:var(--accent-soft); color:var(--accent-strong); box-shadow:inset 0 0 0 1px var(--accent)}
+  .opts .btn.wrong{border-style:dashed; color:var(--muted); background:#fafbfd}
   .opts .btn:disabled{opacity:1; cursor:default}
 
   /* ── 심화 ─────────────────────────────── */
@@ -251,23 +233,24 @@
   table.data th{font-size:13px; color:var(--muted); font-weight:700; line-height:1.25}
   table.data td:first-child{font-weight:700; white-space:nowrap}
   table.data tr.cur td{background:var(--accent-soft)}
-  table.data .empty{color:#5d6a95}
-  details{background:var(--bg-2); border:1px solid var(--line); border-radius:14px}
-  details summary{cursor:pointer; padding:10px 12px; min-height:48px; font-weight:700; color:var(--ink-2)}
+  table.data .empty{color:#a3afc2}
+  details{background:var(--bg-2); border:1px solid var(--line); border-radius:12px}
+  details summary{cursor:pointer; padding:10px 12px; min-height:48px; font-weight:700; color:var(--ink)}
   details[open] summary{border-bottom:1px solid var(--line)}
-  details .in{padding:10px 12px; display:flex; flex-direction:column; gap:8px; font-size:15.5px}
+  details .in{padding:10px 12px; display:flex; flex-direction:column; gap:8px; font-size:15.5px; color:var(--ink-2)}
   ul.limits{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:10px; color:var(--ink-2)}
   .feedback{min-height:52px; font-weight:650}
-  .teacher{border:1px dashed rgba(165,147,255,.45); border-radius:14px; padding:6px 8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  .teacher{border:1px dashed var(--line-2); border-radius:12px; padding:6px 8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 
-  footer{padding:2px 20px 10px;font-size:12px;color:var(--muted);text-align:center}
+  footer{padding:2px 20px 10px;font-size:12.5px;color:var(--muted);text-align:center}
   footer .hub{color:inherit;font-weight:500;white-space:nowrap;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:3px}
   footer .hub:hover{color:var(--ink);text-decoration-color:currentColor}
 
   @media (max-width: 900px){
-    .tabs{margin-left:0; width:100%; display:grid; grid-template-columns:repeat(4,minmax(0,1fr))}
+    .tabs{margin-left:0; width:100%; display:grid; grid-template-columns:3fr 1fr; gap:8px}
+    .tabs .seg{display:grid; grid-template-columns:repeat(3,minmax(0,1fr))}
     .tabs button{justify-content:center; padding:6px; font-size:15px}
-    .tabs button.deep{padding:6px; margin-left:0}
+    .tabs button.deep{padding:6px; height:100%}
     .tabs .long{display:none}
     .tabs .short{display:inline}
   }
@@ -282,8 +265,8 @@
     .side .txt{font-size:16px}
     .qcard .q{font-size:19px}
     .qgroup + .qgroup{padding-left:0; border-left:0}
-    .tabs button b{width:24px; height:24px; font-size:13px}
-    .tabs button{gap:5px; font-size:14px; min-height:44px}
+    .tabs button b{width:22px; height:22px; font-size:12.5px}
+    .tabs button{gap:5px; font-size:14px; min-height:42px}
   }
   @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
 
@@ -318,8 +301,8 @@
   @media (min-width: 700px) and (min-height: 540px) and (orientation: portrait){
     .split{display:flex; flex-direction:column; align-items:stretch}
     .split > *{flex:0 1 auto}
-    .split > .sim{flex-grow:1}
-    .split > .side{flex-shrink:12; min-height:220px}   /* 세로 화면: 설명 패널이 먼저 줄고(안에서 스크롤) 그림은 크게 */
+    .split > .sim{flex:1 4 auto}
+    .split > .side{flex:0 .05 auto; min-height:220px}   /* 세로 화면: 그림이 먼저 줄어 설명·버튼이 보이게, 그래도 넘치면 설명 패널 안에서 스크롤 */
   }
   @media (min-width: 700px) and (min-height: 540px) and (max-height: 860px){
     .top{padding-top:6px; padding-bottom:6px}
@@ -384,10 +367,10 @@
 <header class="top">
   <a class="brand" id="homeLink" href="#" title="처음 화면으로" aria-label="생명 가능 지대 탐구실 — 처음 화면으로">
     <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
-      <circle cx="20" cy="20" r="19" fill="#111d47" stroke="#2b3c74"/>
-      <circle cx="20" cy="20" r="13" fill="none" stroke="#3ad07e" stroke-width="5" opacity=".85"/>
-      <circle cx="20" cy="20" r="5.5" fill="#fff6d8"/>
-      <circle cx="31.5" cy="14" r="2.6" fill="#c9d2ee"/>
+      <circle cx="20" cy="20" r="19" fill="#0f2350" stroke="rgba(255,255,255,.35)"/>
+      <circle cx="20" cy="20" r="13" fill="none" stroke="#4ade80" stroke-width="5" opacity=".9"/>
+      <circle cx="20" cy="20" r="5.5" fill="#ffd45c"/>
+      <circle cx="31.5" cy="14" r="2.6" fill="#ffffff"/>
     </svg>
     <div>
       <h1>생명 가능 지대 탐구실</h1>
@@ -395,9 +378,11 @@
     </div>
   </a>
   <nav class="tabs" aria-label="탐구 단계">
+    <div class="seg">
     <button type="button" data-act="view" data-v="observe"><b>1</b><span class="long">변화 관찰하기</span><span class="short">관찰</span></button>
     <button type="button" data-act="view" data-v="principle"><b>2</b><span class="long">원리 알아보기</span><span class="short">원리</span></button>
     <button type="button" data-act="view" data-v="apply"><b>3</b><span class="long">적용하기</span><span class="short">적용</span></button>
+    </div>
     <button type="button" class="deep" data-act="view" data-v="deep"><span class="long">＋ 심화 탐구</span><span class="short">＋ 심화</span></button>
   </nav>
 </header>
@@ -432,11 +417,11 @@ const innerAU = m => innerOf(luminosity(m));
 const outerAU = m => outerOf(luminosity(m));
 
 const ZONES = {
-  hot:  { label:'너무 뜨거움',   energy:'너무 많음', color:'#ff9a3c' },
-  ok:   { label:'생명 가능 지대', energy:'적당함',    color:'#3ad07e' },
-  cold: { label:'너무 차가움',   energy:'너무 적음', color:'#4ea8ff' },
+  hot:  { label:'너무 뜨거움',   energy:'너무 많음', color:'#f08a3e', ink:'#c25a14' },
+  ok:   { label:'생명 가능 지대', energy:'적당함',    color:'#2fb36b', ink:'#16834a' },
+  cold: { label:'너무 차가움',   energy:'너무 적음', color:'#4b95e6', ink:'#2266b8' },
 };
-const SUN_GRAY = '#a8b1c7', STAR_CORE = '#fff6d8';
+const SUN_GRAY = '#94a3b8', STAR_CORE = '#ffc93d', STAR_EDGE = '#d99a00';
 
 const f2 = x => x.toFixed(2);
 const fmtL = L => L < 0.1 ? L.toFixed(3) : L.toFixed(2);
@@ -547,49 +532,54 @@ document.addEventListener('toggle', e => {
 const glowK = L => Math.max(0, Math.min(1, Math.log(L / L_MIN) / Math.log(L_MAX / L_MIN)));
 const glowR = L => 26 + 74 * glowK(L);
 const glowO = L => 0.3 + 0.7 * glowK(L);
-const GLOW_DEF = id => `<radialGradient id="${id}"><stop offset="0" stop-color="#fff3c4" stop-opacity=".95"/><stop offset=".35" stop-color="#ffe7a0" stop-opacity=".45"/><stop offset="1" stop-color="#ffe7a0" stop-opacity="0"/></radialGradient>`;
+const GLOW_DEF = id => `<radialGradient id="${id}"><stop offset="0" stop-color="#ffd25a" stop-opacity=".7"/><stop offset=".4" stop-color="#ffd978" stop-opacity=".32"/><stop offset="1" stop-color="#ffe39a" stop-opacity="0"/></radialGradient>`;
 const starSvg = (x, y, L, gid, core = 13) =>
-  `<circle cx="${x}" cy="${y}" r="${glowR(L).toFixed(1)}" fill="url(#${gid})" opacity="${glowO(L).toFixed(2)}"/><circle cx="${x}" cy="${y}" r="${core}" fill="${STAR_CORE}"/>`;
+  `<circle cx="${x}" cy="${y}" r="${glowR(L).toFixed(1)}" fill="url(#${gid})" opacity="${glowO(L).toFixed(2)}"/><circle cx="${x}" cy="${y}" r="${core}" fill="${STAR_CORE}" stroke="${STAR_EDGE}" stroke-width="1.5"/>`;
 
 /* 같은 축척(0~6 AU) 선형 거리축: 광도가 바뀌어도 축은 그대로.
    폰처럼 좁은 화면(NARROW)에서는 SVG 좌표 폭(VW)을 줄여 글자가 상대적으로 커지게 한다 */
 const AMAX = 6;
 let NARROW = false, VW = 1000, AX0 = 140, AX1 = 950;
+/* 폰, 그리고 세로로 긴 태블릿에서는 그림 좌표 폭을 줄여 글자가 크게 보이게 한다 */
+function isNarrow(){
+  const w = document.documentElement.clientWidth, h = innerHeight;
+  return w < 600 || (w < 1000 && h > w * 1.25);
+}
 function setGeom(){
-  NARROW = document.documentElement.clientWidth < 600;
+  NARROW = isNarrow();
   VW = NARROW ? 600 : 1000; AX0 = NARROW ? 30 : 140; AX1 = NARROW ? 556 : 950;
 }
 const AX = d => AX0 + d / AMAX * (AX1 - AX0);
 /* 줄 이름표: 넓은 화면은 왼쪽, 좁은 화면은 줄 위 왼쪽 */
 function rowLab(y, h, main, sub){
-  if (NARROW) return `<text x="4" y="${y - h / 2 - 10}" font-size="17" font-weight="800" fill="#f2f5ff">${main}${sub ? ` <tspan font-size="15" font-weight="600" fill="#98a6cc">${sub}</tspan>` : ''}</text>`;
+  if (NARROW) return `<text x="4" y="${y - h / 2 - 10}" font-size="17" font-weight="800" fill="#1b2a41">${main}${sub ? ` <tspan font-size="15" font-weight="600" fill="#6b7b94">${sub}</tspan>` : ''}</text>`;
   return sub
-    ? `<text x="${AX0 - 24}" y="${y - 2}" text-anchor="end" font-size="18" font-weight="800" fill="#f2f5ff">${main}</text><text x="${AX0 - 24}" y="${y + 18}" text-anchor="end" font-size="14" fill="#98a6cc">${sub}</text>`
-    : `<text x="${AX0 - 24}" y="${y + 6}" text-anchor="end" font-size="17" font-weight="800" fill="#f2f5ff">${main}</text>`;
+    ? `<text x="${AX0 - 24}" y="${y - 2}" text-anchor="end" font-size="18" font-weight="800" fill="#1b2a41">${main}</text><text x="${AX0 - 24}" y="${y + 18}" text-anchor="end" font-size="14" fill="#6b7b94">${sub}</text>`
+    : `<text x="${AX0 - 24}" y="${y + 6}" text-anchor="end" font-size="17" font-weight="800" fill="#1b2a41">${main}</text>`;
 }
 function axisSvg(y){
-  let h = `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#98a6cc" stroke-width="2"/>`;
+  let h = `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#6b7b94" stroke-width="2"/>`;
   for (let k = 0; k <= AMAX * 2; k++){
     const d = k / 2, major = k % 2 === 0;
-    h += `<line x1="${AX(d)}" y1="${y}" x2="${AX(d)}" y2="${y + (major ? 12 : 6)}" stroke="#98a6cc" stroke-width="${major ? 2 : 1}"/>`;
-    if (major) h += `<text x="${AX(d)}" y="${y + 34}" text-anchor="middle" font-size="22" font-weight="700" fill="#f2f5ff">${d}</text>`;
+    h += `<line x1="${AX(d)}" y1="${y}" x2="${AX(d)}" y2="${y + (major ? 12 : 6)}" stroke="#6b7b94" stroke-width="${major ? 2 : 1}"/>`;
+    if (major) h += `<text x="${AX(d)}" y="${y + 34}" text-anchor="middle" font-size="22" font-weight="700" fill="#1b2a41">${d}</text>`;
   }
-  h += `<text x="${AX(AMAX) + 6}" y="${y + 6}" font-size="18" font-weight="700" fill="#c9d2ee">AU</text>`;
+  h += `<text x="${AX(AMAX) + 6}" y="${y + 6}" font-size="18" font-weight="700" fill="#4a5a75">AU</text>`;
   return h;
 }
 /* 생명 가능 지대 한 줄(정적 그림) */
 function hzRowSvg({ y, L, h = 40, gray = false, reveal = true, values = true }){
   const a = innerOf(L), b = outerOf(L);
-  if (!reveal) return `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#ffffff" stroke-opacity=".25" stroke-dasharray="3 6"/>`;
+  if (!reveal) return `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#1b2a41" stroke-opacity=".25" stroke-dasharray="3 6"/>`;
   let s = '';
   if (!gray){
     s += `<rect x="${AX(0)}" y="${y - h / 2}" width="${AX(a) - AX(0)}" height="${h}" fill="${ZONES.hot.color}" fill-opacity=".12"/>`;
     s += `<rect x="${AX(b)}" y="${y - h / 2}" width="${AX(AMAX) - AX(b)}" height="${h}" fill="${ZONES.cold.color}" fill-opacity=".1"/>`;
   }
-  s += `<rect x="${AX(a)}" y="${y - h / 2}" width="${AX(b) - AX(a)}" height="${h}" rx="4" fill="${gray ? SUN_GRAY : ZONES.ok.color}" fill-opacity="${gray ? .45 : .62}" stroke="${gray ? SUN_GRAY : ZONES.ok.color}" stroke-width="2"/>`;
+  s += `<rect x="${AX(a)}" y="${y - h / 2}" width="${AX(b) - AX(a)}" height="${h}" rx="4" fill="${gray ? SUN_GRAY : ZONES.ok.color}" fill-opacity="${gray ? .3 : .34}" stroke="${gray ? SUN_GRAY : ZONES.ok.color}" stroke-width="2"/>`;
   const gap = Math.max(0, 48 - (AX(b) - AX(a))) / 2;   // 띠가 좁으면 두 값을 살짝 벌림
   if (values) for (const [d, dx] of [[a, -gap], [b, gap]])
-    s += `<text x="${(AX(d) + dx).toFixed(1)}" y="${y + h / 2 + 22}" text-anchor="middle" font-size="17" font-weight="700" fill="${gray ? '#c9d2ee' : '#f2f5ff'}">${f2(d)}</text>`;
+    s += `<text x="${(AX(d) + dx).toFixed(1)}" y="${y + h / 2 + 22}" text-anchor="middle" font-size="17" font-weight="700" fill="${gray ? '#4a5a75' : '#1b2a41'}">${f2(d)}</text>`;
   return s;
 }
 
@@ -615,25 +605,25 @@ VIEWS.observe = function(){
   // 태양 기준 띠(고정)
   g += rowLab(OY_SUN, 30, '태양', NARROW ? '기준 · 광도 1배' : '광도 1배');
   g += `<circle cx="${AX0}" cy="${OY_SUN}" r="9" fill="${SUN_GRAY}"/>`;
-  g += `<line x1="${AX0}" y1="${OY_SUN}" x2="${AX1}" y2="${OY_SUN}" stroke="#ffffff" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
+  g += `<line x1="${AX0}" y1="${OY_SUN}" x2="${AX1}" y2="${OY_SUN}" stroke="#1b2a41" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
   g += `<rect x="${AX(sa)}" y="${OY_SUN - 15}" width="${AX(sb) - AX(sa)}" height="30" rx="4" fill="${SUN_GRAY}" fill-opacity=".45" stroke="${SUN_GRAY}" stroke-width="2"/>`;
-  if (!NARROW) g += `<text x="${(AX(sa) + AX(sb)) / 2}" y="${OY_SUN - 24}" text-anchor="middle" font-size="15" font-weight="700" fill="#c9d2ee">태양의 생명 가능 지대 (기준)</text>`;
+  if (!NARROW) g += `<text x="${(AX(sa) + AX(sb)) / 2}" y="${OY_SUN - 24}" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5a75">태양의 생명 가능 지대 (기준)</text>`;
   for (const d of [sa, sb]) g += `<line x1="${AX(d)}" y1="${OY_SUN + 15}" x2="${AX(d)}" y2="${OY_AX - 4}" stroke="${SUN_GRAY}" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 5"/>`;
   // 지금 별(움직이는 부분은 obsDraw가 갱신)
   g += NARROW
-    ? `<text x="4" y="${OY_CUR - 40}" font-size="17" font-weight="800" fill="#f2f5ff">지금 별 <tspan id="oLbl" font-size="15" font-weight="600" fill="#98a6cc"></tspan></text>`
-    : `<text x="${AX0 - 24}" y="${OY_CUR - 2}" text-anchor="end" font-size="18" font-weight="800" fill="#f2f5ff">지금 별</text><text id="oLbl" x="${AX0 - 24}" y="${OY_CUR + 18}" text-anchor="end" font-size="14" fill="#98a6cc"></text>`;
+    ? `<text x="4" y="${OY_CUR - 40}" font-size="17" font-weight="800" fill="#1b2a41">지금 별 <tspan id="oLbl" font-size="15" font-weight="600" fill="#6b7b94"></tspan></text>`
+    : `<text x="${AX0 - 24}" y="${OY_CUR - 2}" text-anchor="end" font-size="18" font-weight="800" fill="#1b2a41">지금 별</text><text id="oLbl" x="${AX0 - 24}" y="${OY_CUR + 18}" text-anchor="end" font-size="14" fill="#6b7b94"></text>`;
   g += `<rect id="oHot" y="${OY_CUR - 30}" height="60" fill="${ZONES.hot.color}" fill-opacity=".11"/>`;
   g += `<rect id="oCold" y="${OY_CUR - 30}" height="60" fill="${ZONES.cold.color}" fill-opacity=".09"/>`;
-  g += `<rect id="oOk" y="${OY_CUR - 30}" height="60" rx="5" fill="${ZONES.ok.color}" fill-opacity=".62" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
-  g += `<text id="oHotT" y="${OY_CUR + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES.hot.color}">너무 뜨거움</text>`;
-  g += `<text id="oColdT" y="${OY_CUR + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES.cold.color}">너무 차가움</text>`;
-  g += `<text id="oOkT" y="${OY_CUR + 7}" text-anchor="middle" font-size="18" font-weight="800" fill="#06281a">생명 가능 지대</text>`;
+  g += `<rect id="oOk" y="${OY_CUR - 30}" height="60" rx="5" fill="${ZONES.ok.color}" fill-opacity=".34" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
+  g += `<text id="oHotT" y="${OY_CUR + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES.hot.ink}">너무 뜨거움</text>`;
+  g += `<text id="oColdT" y="${OY_CUR + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES.cold.ink}">너무 차가움</text>`;
+  g += `<text id="oOkT" y="${OY_CUR + 7}" text-anchor="middle" font-size="18" font-weight="800" fill="#0d5a32">생명 가능 지대</text>`;
   g += `<path id="oBr" fill="none" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
-  g += `<text id="oBrT" y="${OY_BR + 22}" text-anchor="middle" font-size="16" font-weight="800" fill="${ZONES.ok.color}">폭</text>`;
-  g += `<text id="oInT" y="${OY_VAL}" text-anchor="middle" font-size="18" font-weight="800" fill="#f2f5ff"></text>`;
-  g += `<text id="oOutT" y="${OY_VAL}" text-anchor="middle" font-size="18" font-weight="800" fill="#f2f5ff"></text>`;
-  g += `<circle id="oGlow" cx="${AX0}" cy="${OY_CUR}" fill="url(#oGlowG)"/><circle cx="${AX0}" cy="${OY_CUR}" r="15" fill="${STAR_CORE}"/>`;
+  g += `<text id="oBrT" y="${OY_BR + 22}" text-anchor="middle" font-size="16" font-weight="800" fill="${ZONES.ok.ink}">폭</text>`;
+  g += `<text id="oInT" y="${OY_VAL}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41"></text>`;
+  g += `<text id="oOutT" y="${OY_VAL}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41"></text>`;
+  g += `<circle id="oGlow" cx="${AX0}" cy="${OY_CUR}" fill="url(#oGlowG)"/><circle cx="${AX0}" cy="${OY_CUR}" r="15" fill="${STAR_CORE}" stroke="${STAR_EDGE}" stroke-width="1.5"/>`;
   g += axisSvg(OY_AX);
 
   $('app').innerHTML = `
@@ -812,16 +802,16 @@ const p1 = (x, y, z) => [P1.SX + x * P1.K + z * 0.40 * P1.U, P1.SY - y * P1.U + 
 const FK = () => NARROW ? 1.6 : 1;   // 폰에서 원리 ① 그림의 글자 배율
 function pr1Start(){
   let st = `<defs>${GLOW_DEF('pGlowG')}</defs>`;
-  st += `<circle cx="24" cy="${25 * FK()}" r="${5 * FK()}" fill="#ffe27a"/><text x="${24 + 14 * FK()}" y="${31 * FK()}" font-size="${16 * FK()}" fill="#c9d2ee">${NARROW ? '별빛 (점이 빽빽할수록 에너지가 많아요)' : '별빛 (한 칸에 점이 빽빽할수록 받는 에너지가 많아요)'}</text>`;
+  st += `<circle cx="24" cy="${25 * FK()}" r="${5 * FK()}" fill="#f2a900"/><text x="${24 + 14 * FK()}" y="${31 * FK()}" font-size="${16 * FK()}" fill="#4a5a75">${NARROW ? '별빛 (점이 빽빽할수록 에너지가 많아요)' : '별빛 (한 칸에 점이 빽빽할수록 받는 에너지가 많아요)'}</text>`;
   for (const d of [1, 2, 3]){
     const h = d / 2;
-    st += `<polygon points="${pts([p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)])}" fill="none" stroke="#5a6aa0" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
+    st += `<polygon points="${pts([p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)])}" fill="none" stroke="#a3b1c8" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
   }
-  st += `<line x1="${P1.SX}" y1="${P1.AY}" x2="${P1.SX + 3.25 * P1.K}" y2="${P1.AY}" stroke="#98a6cc" stroke-width="2"/>`;
+  st += `<line x1="${P1.SX}" y1="${P1.AY}" x2="${P1.SX + 3.25 * P1.K}" y2="${P1.AY}" stroke="#6b7b94" stroke-width="2"/>`;
   for (const d of [0, 1, 2, 3]){
     const x = P1.SX + d * P1.K;
-    st += `<line x1="${x}" y1="${P1.AY - 8}" x2="${x}" y2="${P1.AY + 8}" stroke="#98a6cc" stroke-width="2"/>`;
-    st += `<text x="${x}" y="${P1.AY + 18 + 14 * FK()}" text-anchor="middle" font-size="${20 * FK()}" font-weight="700" fill="#f2f5ff">${d === 0 ? '별' : d + ' AU'}</text>`;
+    st += `<line x1="${x}" y1="${P1.AY - 8}" x2="${x}" y2="${P1.AY + 8}" stroke="#6b7b94" stroke-width="2"/>`;
+    st += `<text x="${x}" y="${P1.AY + 18 + 14 * FK()}" text-anchor="middle" font-size="${20 * FK()}" font-weight="700" fill="#1b2a41">${d === 0 ? '별' : d + ' AU'}</text>`;
   }
   $('prStatic').innerHTML = st;
   const from = { ...S.pr.cur }, tg = prTarget(), to = { sL:Math.sqrt(tg.L), d:tg.d };
@@ -841,12 +831,12 @@ function pr1Draw(sLTarget){
   const c = [p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)];
   let s = starSvg(P1.SX, P1.SY, L, 'pGlowG', 16);
   for (let k = 0; k < 4; k++)
-    s += `<polygon points="${P1.SX},${P1.SY} ${pts([c[k], c[(k + 1) % 4]])}" fill="#ffe7a0" fill-opacity="${(0.03 + 0.02 * sL).toFixed(3)}" stroke="#ffe7a0" stroke-opacity=".55"/>`;
-  s += `<polygon points="${pts(c)}" fill="#1d2c66" fill-opacity=".85" stroke="#ffffff" stroke-width="2"/>`;
+    s += `<polygon points="${P1.SX},${P1.SY} ${pts([c[k], c[(k + 1) % 4]])}" fill="#ffcf4d" fill-opacity="${(0.06 + 0.03 * sL).toFixed(3)}" stroke="#e5a300" stroke-opacity=".6"/>`;
+  s += `<polygon points="${pts(c)}" fill="#f1f5fc" fill-opacity=".95" stroke="#1b2a41" stroke-width="2"/>`;
   for (let k = 1; k < d - 1e-6; k++){
     const a1 = p1(d, h - k, -h), a2 = p1(d, h - k, h), b1 = p1(d, h, -h + k), b2 = p1(d, -h, -h + k);
-    s += `<line x1="${a1[0]}" y1="${a1[1]}" x2="${a2[0]}" y2="${a2[1]}" stroke="#ffffff" stroke-opacity=".6"/>`;
-    s += `<line x1="${b1[0]}" y1="${b1[1]}" x2="${b2[0]}" y2="${b2[1]}" stroke="#ffffff" stroke-opacity=".6"/>`;
+    s += `<line x1="${a1[0]}" y1="${a1[1]}" x2="${a2[0]}" y2="${a2[1]}" stroke="#1b2a41" stroke-opacity=".3"/>`;
+    s += `<line x1="${b1[0]}" y1="${b1[1]}" x2="${b2[0]}" y2="${b2[1]}" stroke="#1b2a41" stroke-opacity=".3"/>`;
   }
   // 별빛 점: 광도 1배일 때 1 AU 한 칸에 6×6개 → 점의 수는 광도에 비례
   const n = Math.round(6 * sLTarget), sp = d / n, rr = Math.max(1.3, Math.min(3.6, 0.3 * sp * P1.U));
@@ -855,21 +845,21 @@ function pr1Draw(sLTarget){
     const q = p1(d, h - (i + .5) * sp, -h + (j + .5) * sp);
     dots += `<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${rr.toFixed(2)}"/>`;
   }
-  s += `<g fill="#ffe27a" opacity="${fade.toFixed(2)}">${dots}</g>`;
+  s += `<g fill="#f2a900" opacity="${fade.toFixed(2)}">${dots}</g>`;
   // 행성이 받는 한 칸
   const cell = [p1(d, h, -h), p1(d, h, -h + 1), p1(d, h - 1, -h + 1), p1(d, h - 1, -h)];
   s += `<polygon points="${pts(cell)}" fill="none" stroke="${ZONES.ok.color}" stroke-width="4"/>`;
-  s += `<text x="${Math.max(130 * FK(), cell[0][0] - 6).toFixed(1)}" y="${(cell[0][1] - 12).toFixed(1)}" text-anchor="middle" font-size="${16 * FK()}" font-weight="800" fill="${ZONES.ok.color}">행성이 받는 한 칸</text>`;
+  s += `<text x="${Math.max(130 * FK(), cell[0][0] - 6).toFixed(1)}" y="${(cell[0][1] - 12).toFixed(1)}" text-anchor="middle" font-size="${16 * FK()}" font-weight="800" fill="${ZONES.ok.ink}">행성이 받는 한 칸</text>`;
   const px = P1.SX + d * P1.K;
   s += `<polygon points="${px - 9},${P1.AY - 20} ${px + 9},${P1.AY - 20} ${px},${P1.AY - 6}" fill="${ZONES.ok.color}"/>`;
   // 한 칸이 받는 에너지 막대(0~9)
   const E = L / (d * d), BX0 = NARROW ? 20 : 290, BX1 = 940, BY = NARROW ? 492 : 446, bx = v => BX0 + Math.min(v, 9) / 9 * (BX1 - BX0);
-  s += `<text x="20" y="${NARROW ? BY - 40 : BY + 19}" font-size="${18 * FK()}" font-weight="800" fill="#f2f5ff">한 칸이 받는 에너지</text>`;
-  s += `<rect x="${BX0}" y="${BY}" width="${BX1 - BX0}" height="26" rx="6" fill="#ffffff" fill-opacity=".07" stroke="#2b3c74"/>`;
-  s += `<rect x="${BX0}" y="${BY}" width="${(bx(E) - BX0).toFixed(1)}" height="26" rx="6" fill="#ffe27a"/>`;
-  for (const v of [1, 4, 9]) s += `<line x1="${bx(v)}" y1="${BY - 4}" x2="${bx(v)}" y2="${BY + 30}" stroke="#c9d2ee" stroke-opacity=".7"/><text x="${bx(v)}" y="${BY - 9}" text-anchor="middle" font-size="${15 * FK()}" fill="#c9d2ee">${v}</text>`;
+  s += `<text x="20" y="${NARROW ? BY - 40 : BY + 19}" font-size="${18 * FK()}" font-weight="800" fill="#1b2a41">한 칸이 받는 에너지</text>`;
+  s += `<rect x="${BX0}" y="${BY}" width="${BX1 - BX0}" height="26" rx="6" fill="#1b2a41" fill-opacity=".07" stroke="#c9d6ea"/>`;
+  s += `<rect x="${BX0}" y="${BY}" width="${(bx(E) - BX0).toFixed(1)}" height="26" rx="6" fill="#f2a900"/>`;
+  for (const v of [1, 4, 9]) s += `<line x1="${bx(v)}" y1="${BY - 4}" x2="${bx(v)}" y2="${BY + 30}" stroke="#4a5a75" stroke-opacity=".7"/><text x="${bx(v)}" y="${BY - 9}" text-anchor="middle" font-size="${15 * FK()}" fill="#4a5a75">${v}</text>`;
   const tx = Math.min(bx(E) + 10, BX1 - 56 * FK());
-  s += `<text x="${tx.toFixed(1)}" y="${BY + 13 + 7 * FK()}" font-size="${20 * FK()}" font-weight="800" fill="${tx < bx(E) ? '#0a1230' : '#ffffff'}">${E.toFixed(2)}</text>`;
+  s += `<text x="${tx.toFixed(1)}" y="${BY + 13 + 7 * FK()}" font-size="${20 * FK()}" font-weight="800" fill="#1b2a41">${E.toFixed(2)}</text>`;
   g.innerHTML = s;
 }
 
@@ -880,7 +870,7 @@ function pr2Start(){
   let st = `<defs>${GLOW_DEF('p2Glow')}</defs>`;
   st += rowLab(P2.Y_SUN, 34, '태양');
   st += `<circle cx="${AX0}" cy="${P2.Y_SUN}" r="9" fill="${SUN_GRAY}"/>`;
-  st += `<line x1="${AX0}" y1="${P2.Y_SUN}" x2="${AX1}" y2="${P2.Y_SUN}" stroke="#ffffff" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
+  st += `<line x1="${AX0}" y1="${P2.Y_SUN}" x2="${AX1}" y2="${P2.Y_SUN}" stroke="#1b2a41" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
   st += hzRowSvg({ y:P2.Y_SUN, L:1, h:34, gray:true, values:false });
   st += axisSvg(P2.Y_AX);
   $('prStatic').innerHTML = st;
@@ -899,32 +889,32 @@ function pr2Draw(sc){
   const g = $('prDyn'); if (!g) return;
   const sa = sa1(), sb = sb1(), L = S.pr.cmpL, m0 = Math.sqrt(L), t = S.pr.cur.move, m = lerp(1, m0, t);
   let s = '';
-  for (const d of [sa, sb]) s += `<text x="${AX(d)}" y="${P2.Y_SUN - 26}" text-anchor="middle" font-size="17" font-weight="700" fill="#c9d2ee">${f2(d)}</text>`;
+  for (const d of [sa, sb]) s += `<text x="${AX(d)}" y="${P2.Y_SUN - 26}" text-anchor="middle" font-size="17" font-weight="700" fill="#4a5a75">${f2(d)}</text>`;
   if (sc.cmp !== 'move'){
-    s += `<text x="${AX(sb) + 12}" y="${P2.Y_SUN + 6}" font-size="17" font-weight="800" fill="#c9d2ee">폭 ${f2(widthOf(1))} AU</text>`;
+    s += `<text x="${AX(sb) + 12}" y="${P2.Y_SUN + 6}" font-size="17" font-weight="800" fill="#4a5a75">폭 ${f2(widthOf(1))} AU</text>`;
   }
   if (sc.cmp){
     const a = sa * m, b = sb * m;
-    s += NARROW ? rowLab(P2.Y_CMP, 48, `광도 ${mulName(L)}`) : rowLab(P2.Y_CMP, 48, '광도', mulName(L)).replace('font-size="14" fill="#98a6cc"', 'font-size="17" font-weight="800" fill="#f2f5ff"');
+    s += NARROW ? rowLab(P2.Y_CMP, 48, `광도 ${mulName(L)}`) : rowLab(P2.Y_CMP, 48, '광도', mulName(L)).replace('font-size="14" fill="#6b7b94"', 'font-size="17" font-weight="800" fill="#1b2a41"');
     s += starSvg(AX0, P2.Y_CMP, L, 'p2Glow', 13);
-    s += `<rect x="${AX(a)}" y="${P2.Y_CMP - 24}" width="${AX(b) - AX(a)}" height="48" rx="5" fill="${ZONES.ok.color}" fill-opacity=".62" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
+    s += `<rect x="${AX(a)}" y="${P2.Y_CMP - 24}" width="${AX(b) - AX(a)}" height="48" rx="5" fill="${ZONES.ok.color}" fill-opacity=".34" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
     // 태양의 경계 → 이 별의 경계로 이어지는 대각선 화살표
     for (const [d0, d1, side] of [[sa, a, -1], [sb, b, 1]]){
       const x0 = AX(d0), y0 = P2.Y_SUN + 19, x1 = AX(d1), y1 = P2.Y_CMP - 28;
       const ang = Math.atan2(y1 - y0, x1 - x0), ah = 12;
       const hx = x1 - ah * Math.cos(ang), hy = y1 - ah * Math.sin(ang);
-      s += `<line x1="${x0}" y1="${y0}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#ffffff" stroke-width="2.5"/>`;
-      s += `<polygon points="${x1.toFixed(1)},${y1} ${(hx - 6 * Math.sin(ang)).toFixed(1)},${(hy + 6 * Math.cos(ang)).toFixed(1)} ${(hx + 6 * Math.sin(ang)).toFixed(1)},${(hy - 6 * Math.cos(ang)).toFixed(1)}" fill="#ffffff"/>`;
+      s += `<line x1="${x0}" y1="${y0}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#1b2a41" stroke-width="2.5"/>`;
+      s += `<polygon points="${x1.toFixed(1)},${y1} ${(hx - 6 * Math.sin(ang)).toFixed(1)},${(hy + 6 * Math.cos(ang)).toFixed(1)} ${(hx + 6 * Math.sin(ang)).toFixed(1)},${(hy - 6 * Math.cos(ang)).toFixed(1)}" fill="#1b2a41"/>`;
       if (t > .6){
         const mx = (x0 + x1) / 2 + side * 26, my = (y0 + y1) / 2 + 6;
-        s += `<text x="${mx.toFixed(1)}" y="${my.toFixed(1)}" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff">×${trimNum(m0)}</text>`;
+        s += `<text x="${mx.toFixed(1)}" y="${my.toFixed(1)}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41">×${trimNum(m0)}</text>`;
       }
-      s += `<text x="${AX(d1)}" y="${P2.Y_CMP + 46}" text-anchor="middle" font-size="18" font-weight="800" fill="#f2f5ff">${f2(d1)}</text>`;
+      s += `<text x="${AX(d1)}" y="${P2.Y_CMP + 46}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41">${f2(d1)}</text>`;
     }
     if (sc.cmp === 'width'){
       const by = P2.Y_CMP + 64, cx = Math.min(AX1 - 110, Math.max(AX0 + 110, (AX(a) + AX(b)) / 2));
       s += `<path d="M${AX(a)},${by - 8}V${by}H${AX(b)}V${by - 8}" fill="none" stroke="${ZONES.ok.color}" stroke-width="3"/>`;
-      s += `<text x="${cx}" y="${by + 26}" text-anchor="middle" font-size="19" font-weight="800" fill="${ZONES.ok.color}">폭 ${f2(widthOf(L))} AU (태양의 ${trimNum(m0)}배)</text>`;
+      s += `<text x="${cx}" y="${by + 26}" text-anchor="middle" font-size="19" font-weight="800" fill="${ZONES.ok.ink}">폭 ${f2(widthOf(L))} AU (태양의 ${trimNum(m0)}배)</text>`;
     }
   }
   g.innerHTML = s;
@@ -1003,25 +993,25 @@ function apVisSvg(v, reveal){
   const rowLabel = (y, L, h) => rowLab(y, h, NARROW ? `광도 ${mulName(L)}` : mulName(L)) + starSvg(AX0, y, L, 'aGlow', 11);
   if (v.type === 'compare'){
     const ys = NARROW ? [80, 180, 280] : [70, 155, 240]; H = NARROW ? 375 : 335;
-    if (!NARROW) s += `<text x="20" y="28" font-size="16" fill="#98a6cc">별의 광도 (태양 = 1)</text>`;
+    if (!NARROW) s += `<text x="20" y="28" font-size="16" fill="#6b7b94">별의 광도 (태양 = 1)</text>`;
     v.Ls.forEach((L, i) => { s += hzRowSvg({ y:ys[i], L, h:38, reveal }) + rowLabel(ys[i], L, 38); });
     s += axisSvg(H - 50);
   } else if (v.type === 'judge'){
     const y = 125; H = 250;
-    s += NARROW ? `<text x="4" y="26" font-size="18" font-weight="800" fill="#f2f5ff">광도 ${mulName(v.L)} 별 · 행성 ${trimNum(v.d)} AU</text>`
-                : `<text x="20" y="28" font-size="16" fill="#98a6cc">광도 ${mulName(v.L)} 별과 ${trimNum(v.d)} AU의 행성</text>`;
+    s += NARROW ? `<text x="4" y="26" font-size="18" font-weight="800" fill="#1b2a41">광도 ${mulName(v.L)} 별 · 행성 ${trimNum(v.d)} AU</text>`
+                : `<text x="20" y="28" font-size="16" fill="#6b7b94">광도 ${mulName(v.L)} 별과 ${trimNum(v.d)} AU의 행성</text>`;
     s += hzRowSvg({ y, L:v.L, h:50, reveal }) + (NARROW ? starSvg(AX0, y, v.L, 'aGlow', 11) : rowLabel(y, v.L, 50));
     const x = AX(v.d);
-    s += `<circle cx="${x}" cy="${y}" r="13" fill="#dfe6f5" stroke="#0a1230" stroke-width="2"/>`;
-    s += `<text x="${Math.max(x, NARROW ? 60 : 0)}" y="${y - 38}" text-anchor="middle" font-size="18" font-weight="800" fill="#ffffff">${NARROW ? '행성' : `행성 ${trimNum(v.d)} AU`}</text>`;
-    if (reveal){ const z = zoneOf(fluxAt(v.L, v.d)); s += `<text x="${Math.max(x, NARROW ? 70 : 0)}" y="${y - 62}" text-anchor="middle" font-size="17" font-weight="800" fill="${ZONES[z].color}">${ZONES[z].label}</text>`; }
+    s += `<circle cx="${x}" cy="${y}" r="13" fill="#ffffff" stroke="#1b2a41" stroke-width="2"/>`;
+    s += `<text x="${Math.max(x, NARROW ? 60 : 0)}" y="${y - 38}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41">${NARROW ? '행성' : `행성 ${trimNum(v.d)} AU`}</text>`;
+    if (reveal){ const z = zoneOf(fluxAt(v.L, v.d)); s += `<text x="${Math.max(x, NARROW ? 70 : 0)}" y="${y - 62}" text-anchor="middle" font-size="17" font-weight="800" fill="${ZONES[z].ink}">${ZONES[z].label}</text>`; }
     s += axisSvg(195);
   } else {
     const yS = 70, yT = 175; H = 300;
     s += rowLab(yS, 30, '태양') + `<circle cx="${AX0}" cy="${yS}" r="8" fill="${SUN_GRAY}"/>`;
     s += hzRowSvg({ y:yS, L:1, h:30, gray:true });
     s += hzRowSvg({ y:yT, L:v.L, h:48, reveal }) + rowLabel(yT, v.L, 48);
-    if (!reveal) s += `<text x="${(AX0 + AX1) / 2}" y="${yT + 9}" text-anchor="middle" font-size="26" font-weight="800" fill="#98a6cc">?</text>`;
+    if (!reveal) s += `<text x="${(AX0 + AX1) / 2}" y="${yT + 9}" text-anchor="middle" font-size="26" font-weight="800" fill="#6b7b94">?</text>`;
     else for (const d of [innerOf(1), outerOf(1)]) s += `<line x1="${AX(d)}" y1="${yS + 15}" x2="${AX(d)}" y2="${yT - 24}" stroke="${SUN_GRAY}" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
     s += axisSvg(245);
   }
@@ -1044,10 +1034,10 @@ VIEWS.deep = function(){
 
 /* ── 도전! 생명 가능 지대 찾기 (질량이 다른 별에서 행성을 끌어 경계 기록) ── */
 const STARS = [
-  { m:0.5, short:'0.5배', color:'#ff5b4d', ruler:1,   minor:0.05, label:0.1, r:12 },
-  { m:1,   short:'1배',   color:'#ffd84d', ruler:2.5, minor:0.1,  label:0.5, r:16 },
-  { m:1.5, short:'1.5배', color:'#ffffff', ruler:5,   minor:0.25, label:1,   r:20 },
-  { m:2,   short:'2배',   color:'#a9d3ff', ruler:8,   minor:0.5,  label:1,   r:24 },
+  { m:0.5, short:'0.5배', color:'#ef5a4c', ink:'#c3372b', ruler:1,   minor:0.05, label:0.1, r:12 },
+  { m:1,   short:'1배',   color:'#ffc93d', ink:'#a86f00', ruler:2.5, minor:0.1,  label:0.5, r:16 },
+  { m:1.5, short:'1.5배', color:'#f4f6fb', ink:'#4a5a75', ruler:5,   minor:0.25, label:1,   r:20 },
+  { m:2,   short:'2배',   color:'#8cc4ff', ink:'#2266b8', ruler:8,   minor:0.5,  label:1,   r:24 },
 ];
 S.ch = { star:1, pos:STARS.map(s => +(s.ruler * 0.1).toFixed(2)), rec:STARS.map(() => ({ inner:null, outer:null })), bands:false, msg:null };
 const RX0 = 130, RX1 = 940, RY = 150;
@@ -1068,9 +1058,9 @@ DEEP.challenge = function(){
   const X = d => RX0 + d / max * (RX1 - RX0);
   let h = `<defs>${STARS.map((s, k) => `<radialGradient id="sg${k}"><stop offset="0" stop-color="${s.color}" stop-opacity=".85"/><stop offset="1" stop-color="${s.color}" stop-opacity="0"/></radialGradient>`).join('')}
     <clipPath id="rulerClip"><rect x="${RX0}" y="0" width="${RX1 - RX0}" height="580"/></clipPath></defs>`;
-  h += `<text x="30" y="44" font-size="26" font-weight="800" fill="#f2f5ff">자 범위 <tspan fill="${st.color}">0 ~ ${max} AU</tspan></text>`;
-  h += `<text x="${RX1}" y="44" text-anchor="end" font-size="19" font-weight="700" fill="${st.color}">질량 ${st.short} 별 · 광도 ${fmtL(L)} (태양 = 1)</text>`;
-  h += `<text x="30" y="70" font-size="15" fill="#98a6cc">별마다 자의 축척이 달라요. 행성을 끌어 옮겨 보세요.</text>`;
+  h += `<text x="30" y="44" font-size="26" font-weight="800" fill="#1b2a41">자 범위 <tspan fill="${st.ink}">0 ~ ${max} AU</tspan></text>`;
+  h += `<text x="${RX1}" y="44" text-anchor="end" font-size="19" font-weight="700" fill="${st.ink}">질량 ${st.short} 별 · 광도 ${fmtL(L)} (태양 = 1)</text>`;
+  h += `<text x="30" y="70" font-size="15" fill="#6b7b94">별마다 자의 축척이 달라요. 행성을 끌어 옮겨 보세요.</text>`;
   const band = chBand(i);
   if (band){
     h += `<g clip-path="url(#rulerClip)">`;
@@ -1078,60 +1068,60 @@ DEEP.challenge = function(){
       if (a >= max) continue;
       const xa = X(a), xb = X(Math.min(b, max));
       h += `<rect x="${xa}" y="${RY - 24}" width="${Math.max(0, xb - xa)}" height="48" fill="${ZONES[z].color}" fill-opacity="${z === 'ok' ? .38 : .18}"/>`;
-      if (xb - xa > 70) h += `<text x="${(xa + xb) / 2}" y="${RY - 6}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES[z].color}">${ZONES[z].energy}</text>`;
+      if (xb - xa > 70) h += `<text x="${(xa + xb) / 2}" y="${RY - 6}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES[z].ink}">${ZONES[z].energy}</text>`;
     }
     h += `</g>`;
-    if (band.model) h += `<text x="${RX1}" y="70" text-anchor="end" font-size="15" font-weight="700" fill="#b9a6ff">정답 띠(모형) 표시 중</text>`;
+    if (band.model) h += `<text x="${RX1}" y="70" text-anchor="end" font-size="15" font-weight="700" fill="#2563eb">정답 띠(모형) 표시 중</text>`;
   }
-  h += `<line x1="${RX0}" y1="${RY}" x2="${RX1}" y2="${RY}" stroke="#c9d2ee" stroke-width="3"/>`;
+  h += `<line x1="${RX0}" y1="${RY}" x2="${RX1}" y2="${RY}" stroke="#4a5a75" stroke-width="3"/>`;
   const nMinor = Math.round(max / st.minor);
   for (let k = 0; k <= nMinor; k++){
     const d = k * st.minor, x = X(d), isLab = Math.abs(d / st.label - Math.round(d / st.label)) < 1e-6;
-    h += `<line x1="${x}" y1="${RY}" x2="${x}" y2="${RY + (isLab ? 18 : 9)}" stroke="#c9d2ee" stroke-width="${isLab ? 2.5 : 1.5}"/>`;
-    if (isLab) h += `<text x="${x}" y="${RY + 44}" text-anchor="middle" font-size="22" font-weight="700" fill="#f2f5ff">${trimNum(d)}</text>`;
+    h += `<line x1="${x}" y1="${RY}" x2="${x}" y2="${RY + (isLab ? 18 : 9)}" stroke="#4a5a75" stroke-width="${isLab ? 2.5 : 1.5}"/>`;
+    if (isLab) h += `<text x="${x}" y="${RY + 44}" text-anchor="middle" font-size="22" font-weight="700" fill="#1b2a41">${trimNum(d)}</text>`;
   }
-  h += `<text x="${RX1 + 8}" y="${RY + 6}" font-size="18" font-weight="700" fill="#c9d2ee">AU</text>`;
+  h += `<text x="${RX1 + 8}" y="${RY + 6}" font-size="18" font-weight="700" fill="#4a5a75">AU</text>`;
   const rec = S.ch.rec[i];
   for (const [k, lab] of [['inner', '안쪽'], ['outer', '바깥쪽']]){
     if (rec[k] == null) continue;
     const x = X(rec[k]);
-    h += `<line x1="${x}" y1="${RY - 30}" x2="${x}" y2="${RY + 22}" stroke="#ffffff" stroke-width="2.5" stroke-dasharray="5 4"/>`;
-    h += `<text x="${x}" y="${RY + 72}" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">${lab} ${f2(rec[k])}</text>`;
+    h += `<line x1="${x}" y1="${RY - 30}" x2="${x}" y2="${RY + 22}" stroke="#1b2a41" stroke-width="2.5" stroke-dasharray="5 4"/>`;
+    h += `<text x="${x}" y="${RY + 72}" text-anchor="middle" font-size="15" font-weight="700" fill="#1b2a41">${lab} ${f2(rec[k])}</text>`;
   }
-  h += `<circle cx="${RX0}" cy="${RY}" r="${st.r * 2.6}" fill="url(#sg${i})"/><circle cx="${RX0}" cy="${RY}" r="${st.r}" fill="${st.color}"/>`;
+  h += `<circle cx="${RX0}" cy="${RY}" r="${st.r * 2.6}" fill="url(#sg${i})"/><circle cx="${RX0}" cy="${RY}" r="${st.r}" fill="${st.color}" stroke="#1b2a41" stroke-opacity=".35" stroke-width="1.5"/>`;
   h += `<rect class="drag-zone" x="${RX0 - 6}" y="${RY - 52}" width="${RX1 - RX0 + 12}" height="104" fill="transparent"/>`;
-  h += `<text id="pLabel" y="${RY - 34}" text-anchor="middle" font-size="22" font-weight="800" fill="#ffffff"></text>`;
+  h += `<text id="pLabel" y="${RY - 34}" text-anchor="middle" font-size="22" font-weight="800" fill="#1b2a41"></text>`;
   h += `<g id="planet" class="drag-zone" tabindex="0" role="slider" aria-label="행성 위치(AU)" aria-valuemin="0.01" aria-valuemax="${max}">
           <circle r="34" fill="transparent"/><circle class="focus-ring" r="27" fill="none" stroke="transparent"/>
           <circle id="pRing" r="18" fill="none" stroke-width="5"/>
-          <circle r="12" fill="#dfe6f5"/><circle r="12" fill="none" stroke="#0a1230" stroke-width="1.5"/></g>`;
-  h += `<text x="${GX0 + 16}" y="${GY - 20}" font-size="18" font-weight="700" fill="#f2f5ff">받는 에너지 <tspan font-size="15" font-weight="600" fill="#98a6cc">(지구 = 1)</tspan></text>`;
+          <circle r="12" fill="#ffffff"/><circle r="12" fill="none" stroke="#1b2a41" stroke-width="1.5"/></g>`;
+  h += `<text x="${GX0 + 16}" y="${GY - 20}" font-size="18" font-weight="700" fill="#1b2a41">받는 에너지 <tspan font-size="15" font-weight="600" fill="#6b7b94">(지구 = 1)</tspan></text>`;
   h += `<text id="gVal" x="${GX1}" y="${GY - 18}" text-anchor="end" font-size="24" font-weight="800"></text>`;
   for (const [z, a, b] of [['hot', G_MAX, HZ_INNER_S], ['ok', HZ_INNER_S, HZ_OUTER_S], ['cold', HZ_OUTER_S, 0]]){
     const xa = gX(a), xb = gX(b);
     h += `<rect x="${xa}" y="${GY}" width="${xb - xa}" height="30" fill="${ZONES[z].color}" fill-opacity=".3" stroke="${ZONES[z].color}" stroke-opacity=".7"/>`;
-    h += `<text x="${(xa + xb) / 2}" y="${GY + 21}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES[z].color}">${ZONES[z].energy}</text>`;
+    h += `<text x="${(xa + xb) / 2}" y="${GY + 21}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES[z].ink}">${ZONES[z].energy}</text>`;
   }
   for (const [v, lab, anc] of [[G_MAX, `많음 (${G_MAX} 이상)`, 'start'], [HZ_INNER_S, String(HZ_INNER_S), 'middle'], [HZ_OUTER_S, String(HZ_OUTER_S), 'middle'], [0, '적음 0', 'end']]){
     const x = gX(v);
-    h += `<line x1="${x}" y1="${GY + 30}" x2="${x}" y2="${GY + 38}" stroke="#c9d2ee"/><text x="${x}" y="${GY + 56}" text-anchor="${anc}" font-size="15" font-weight="600" fill="#c9d2ee">${lab}</text>`;
+    h += `<line x1="${x}" y1="${GY + 30}" x2="${x}" y2="${GY + 38}" stroke="#4a5a75"/><text x="${x}" y="${GY + 56}" text-anchor="${anc}" font-size="15" font-weight="600" fill="#4a5a75">${lab}</text>`;
   }
-  h += `<g id="gMark"><polygon points="-9,-14 9,-14 0,-1" fill="#ffffff"/><line x1="0" y1="0" x2="0" y2="30" stroke="#ffffff" stroke-width="3"/></g>`;
-  h += `<line x1="20" y1="350" x2="980" y2="350" stroke="#2b3c74"/>`;
-  h += `<text x="20" y="380" font-size="17" font-weight="700" fill="#f2f5ff">모든 별을 같은 축척으로 비교 <tspan font-size="15" font-weight="600" fill="#98a6cc">(0 ~ ${C_MAX} AU · 위로 갈수록 질량이 큰 별)</tspan></text>`;
+  h += `<g id="gMark"><polygon points="-9,-14 9,-14 0,-1" fill="#1b2a41"/><line x1="0" y1="0" x2="0" y2="30" stroke="#1b2a41" stroke-width="3"/></g>`;
+  h += `<line x1="20" y1="350" x2="980" y2="350" stroke="#c9d6ea"/>`;
+  h += `<text x="20" y="380" font-size="17" font-weight="700" fill="#1b2a41">모든 별을 같은 축척으로 비교 <tspan font-size="15" font-weight="600" fill="#6b7b94">(0 ~ ${C_MAX} AU · 위로 갈수록 질량이 큰 별)</tspan></text>`;
   C_ROWS.forEach((si, r) => {
     const y = C_ROW_Y[r], s = STARS[si], cur = si === i, b = chBand(si), rr = S.ch.rec[si];
-    if (cur) h += `<rect x="20" y="${y - 17}" width="960" height="34" rx="8" fill="#b9a6ff" fill-opacity=".1"/>`;
-    h += `<text x="${CX0 - 26}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="${cur ? 800 : 600}" fill="${cur ? '#ffffff' : '#c9d2ee'}">${s.short}</text>`;
-    h += `<line x1="${CX0}" y1="${y}" x2="${CX1}" y2="${y}" stroke="#3a4b85" stroke-dasharray="2 4"/>`;
+    if (cur) h += `<rect x="20" y="${y - 17}" width="960" height="34" rx="8" fill="#2563eb" fill-opacity=".1"/>`;
+    h += `<text x="${CX0 - 26}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="${cur ? 800 : 600}" fill="${cur ? '#1b2a41' : '#4a5a75'}">${s.short}</text>`;
+    h += `<line x1="${CX0}" y1="${y}" x2="${CX1}" y2="${y}" stroke="#c3cfe2" stroke-dasharray="2 4"/>`;
     if (b) h += `<rect x="${cX(b.inner)}" y="${y - 9}" width="${Math.max(2, cX(b.outer) - cX(b.inner))}" height="18" rx="3" fill="${ZONES.ok.color}" fill-opacity="${b.model ? .5 : .75}"/>`;
-    for (const k of ['inner', 'outer']) if (rr[k] != null) h += `<line x1="${cX(rr[k])}" y1="${y - 13}" x2="${cX(rr[k])}" y2="${y + 13}" stroke="#ffffff" stroke-width="2.5"/>`;
-    h += `<circle cx="${CX0}" cy="${y}" r="${4 + s.r / 4}" fill="${s.color}"/>`;
+    for (const k of ['inner', 'outer']) if (rr[k] != null) h += `<line x1="${cX(rr[k])}" y1="${y - 13}" x2="${cX(rr[k])}" y2="${y + 13}" stroke="#1b2a41" stroke-width="2.5"/>`;
+    h += `<circle cx="${CX0}" cy="${y}" r="${4 + s.r / 4}" fill="${s.color}" stroke="#1b2a41" stroke-opacity=".35"/>`;
   });
-  h += `<circle id="cMark" r="6" fill="#dfe6f5" stroke="#0a1230" stroke-width="1.5"/>`;
-  h += `<line x1="${CX0}" y1="${C_AXIS_Y}" x2="${CX1}" y2="${C_AXIS_Y}" stroke="#98a6cc"/>`;
-  for (let d = 0; d <= C_MAX; d++) h += `<line x1="${cX(d)}" y1="${C_AXIS_Y}" x2="${cX(d)}" y2="${C_AXIS_Y + 6}" stroke="#98a6cc"/><text x="${cX(d)}" y="${C_AXIS_Y + 24}" text-anchor="middle" font-size="15" fill="#c9d2ee">${d}</text>`;
-  h += `<text x="${CX1 + 8}" y="${C_AXIS_Y + 24}" font-size="15" fill="#c9d2ee">AU</text>`;
+  h += `<circle id="cMark" r="6" fill="#ffffff" stroke="#1b2a41" stroke-width="1.5"/>`;
+  h += `<line x1="${CX0}" y1="${C_AXIS_Y}" x2="${CX1}" y2="${C_AXIS_Y}" stroke="#6b7b94"/>`;
+  for (let d = 0; d <= C_MAX; d++) h += `<line x1="${cX(d)}" y1="${C_AXIS_Y}" x2="${cX(d)}" y2="${C_AXIS_Y + 6}" stroke="#6b7b94"/><text x="${cX(d)}" y="${C_AXIS_Y + 24}" text-anchor="middle" font-size="15" fill="#4a5a75">${d}</text>`;
+  h += `<text x="${CX1 + 8}" y="${C_AXIS_Y + 24}" font-size="15" fill="#4a5a75">AU</text>`;
 
   const n = chDone(), msg = S.ch.msg;
   $('deepBody').innerHTML = `
@@ -1182,7 +1172,7 @@ function chUpdate(){
   $('pRing').setAttribute('stroke', col);
   const pl = $('pLabel'); pl.textContent = `${f2(d)} AU`; pl.setAttribute('x', Math.max(RX0 + 40, Math.min(RX1 - 30, x)).toFixed(1));
   $('gMark').setAttribute('transform', `translate(${gX(Sx).toFixed(1)},${GY})`);
-  const gv = $('gVal'); gv.textContent = `${fmtS(Sx)} · ${ZONES[z].energy}`; gv.setAttribute('fill', col);
+  const gv = $('gVal'); gv.textContent = `${fmtS(Sx)} · ${ZONES[z].energy}`; gv.setAttribute('fill', ZONES[z].ink);
   const cm = $('cMark'); cm.setAttribute('cx', cX(d).toFixed(1)); cm.setAttribute('cy', C_ROW_Y[C_ROWS.indexOf(i)]);
   $('posOut').textContent = `${f2(d)} AU`;
 }
@@ -1233,7 +1223,7 @@ function chBind(){
 }
 
 /* ── 에너지–거리 그래프 (광도별 곡선) ── */
-const GR_LS = [ { L:0.25, color:'#ffb3c7' }, { L:1, color:'#ffd84d' }, { L:4, color:'#c9b8ff' }, { L:9, color:'#ffffff' } ];
+const GR_LS = [ { L:0.25, color:'#d6457a' }, { L:1, color:'#d99a00' }, { L:4, color:'#6d4fd6' }, { L:9, color:'#1b2a41' } ];
 DEEP.graph = function(){
   const PX0 = 110, PX1 = 950, PY0 = 50, PY1 = 440, XMAX = 6, YMAX = 2;
   const X = d => PX0 + d / XMAX * (PX1 - PX0), Y = s => PY1 - s / YMAX * (PY1 - PY0);
@@ -1241,16 +1231,16 @@ DEEP.graph = function(){
   let h = `<defs><clipPath id="plot3"><rect x="${PX0}" y="${PY0}" width="${PX1 - PX0}" height="${PY1 - PY0}"/></clipPath></defs>`;
   for (const [z, a, b] of [['hot', YMAX, HZ_INNER_S], ['ok', HZ_INNER_S, HZ_OUTER_S], ['cold', HZ_OUTER_S, 0]]){
     h += `<rect x="${PX0}" y="${Y(a)}" width="${PX1 - PX0}" height="${Y(b) - Y(a)}" fill="${ZONES[z].color}" fill-opacity="${z === 'ok' ? .22 : .07}"/>`;
-    h += `<text x="${PX1 - 10}" y="${(Y(a) + Y(b)) / 2 + 6}" text-anchor="end" font-size="17" font-weight="700" fill="${ZONES[z].color}">받는 에너지 ${ZONES[z].energy}</text>`;
+    h += `<text x="${PX1 - 10}" y="${(Y(a) + Y(b)) / 2 + 6}" text-anchor="end" font-size="17" font-weight="700" fill="${ZONES[z].ink}">받는 에너지 ${ZONES[z].energy}</text>`;
   }
-  for (let s = 0; s <= YMAX + 1e-9; s += 0.5) h += `<line x1="${PX0}" y1="${Y(s)}" x2="${PX1}" y2="${Y(s)}" stroke="#ffffff" stroke-opacity=".06"/><text x="${PX0 - 10}" y="${Y(s) + 6}" text-anchor="end" font-size="16" fill="#c9d2ee">${trimNum(s)}</text>`;
-  for (let d = 0; d <= XMAX; d++) h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${PY1 + 7}" stroke="#98a6cc"/><text x="${X(d)}" y="${PY1 + 26}" text-anchor="middle" font-size="16" fill="#c9d2ee">${d}</text>`;
-  h += `<line x1="${PX0}" y1="${PY0}" x2="${PX0}" y2="${PY1}" stroke="#98a6cc" stroke-width="2"/><line x1="${PX0}" y1="${PY1}" x2="${PX1}" y2="${PY1}" stroke="#98a6cc" stroke-width="2"/>`;
-  h += `<text transform="translate(28 ${(PY0 + PY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#f2f5ff">받는 에너지 (지구 = 1)</text>`;
-  h += `<text x="${(PX0 + PX1) / 2}" y="${PY1 + 52}" text-anchor="middle" font-size="16" font-weight="700" fill="#f2f5ff">별까지의 거리 (AU)</text>`;
+  for (let s = 0; s <= YMAX + 1e-9; s += 0.5) h += `<line x1="${PX0}" y1="${Y(s)}" x2="${PX1}" y2="${Y(s)}" stroke="#1b2a41" stroke-opacity=".06"/><text x="${PX0 - 10}" y="${Y(s) + 6}" text-anchor="end" font-size="16" fill="#4a5a75">${trimNum(s)}</text>`;
+  for (let d = 0; d <= XMAX; d++) h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${PY1 + 7}" stroke="#6b7b94"/><text x="${X(d)}" y="${PY1 + 26}" text-anchor="middle" font-size="16" fill="#4a5a75">${d}</text>`;
+  h += `<line x1="${PX0}" y1="${PY0}" x2="${PX0}" y2="${PY1}" stroke="#6b7b94" stroke-width="2"/><line x1="${PX0}" y1="${PY1}" x2="${PX1}" y2="${PY1}" stroke="#6b7b94" stroke-width="2"/>`;
+  h += `<text transform="translate(28 ${(PY0 + PY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a41">받는 에너지 (지구 = 1)</text>`;
+  h += `<text x="${(PX0 + PX1) / 2}" y="${PY1 + 52}" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a41">별까지의 거리 (AU)</text>`;
   for (const [v, lab] of [[HZ_INNER_S, '안쪽 경계 기준'], [HZ_OUTER_S, '바깥쪽 경계 기준']]){
-    h += `<line x1="${PX0}" y1="${Y(v)}" x2="${PX1}" y2="${Y(v)}" stroke="#ffffff" stroke-width="2" stroke-dasharray="8 6" stroke-opacity=".85"/>`;
-    h += `<text x="${PX0 + 10}" y="${Y(v) - 8}" font-size="15" font-weight="700" fill="#ffffff">${v} · ${lab}</text>`;
+    h += `<line x1="${PX0}" y1="${Y(v)}" x2="${PX1}" y2="${Y(v)}" stroke="#1b2a41" stroke-width="2" stroke-dasharray="8 6" stroke-opacity=".85"/>`;
+    h += `<text x="${PX0 + 10}" y="${Y(v) - 8}" font-size="15" font-weight="700" fill="#1b2a41">${v} · ${lab}</text>`;
   }
   h += `<g clip-path="url(#plot3)">`;
   for (const k of vis){
@@ -1265,7 +1255,7 @@ DEEP.graph = function(){
     h += `<text x="${PX0 - 10}" y="${ly}" text-anchor="end" font-size="15" font-weight="700" fill="${color}">${mulName(L)}</text>`;
     for (const [d, s0] of [[innerOf(L), HZ_INNER_S], [outerOf(L), HZ_OUTER_S]]){
       h += `<line x1="${X(d)}" y1="${Y(s0)}" x2="${X(d)}" y2="${ly - 14}" stroke="${color}" stroke-width="1.5" stroke-dasharray="3 4" stroke-opacity=".7"/>`;
-      h += `<circle cx="${X(d)}" cy="${Y(s0)}" r="6" fill="${color}" stroke="#0a1230" stroke-width="2"/>`;
+      h += `<circle cx="${X(d)}" cy="${Y(s0)}" r="6" fill="${color}" stroke="#1b2a41" stroke-width="2"/>`;
       h += `<text x="${X(d)}" y="${ly}" text-anchor="middle" font-size="15" font-weight="700" fill="${color}">${f2(d)}</text>`;
     }
   });
@@ -1332,32 +1322,32 @@ function mfSvg(){
   const inE = edge(innerAU), outE = edge(outerAU);
   h += `<g clip-path="url(#plot4)">`;
   h += `<polygon points="${X(D_MIN)},${yTop} ${pts(inE)} ${X(D_MIN)},${yBot}" fill="${ZONES.hot.color}" fill-opacity=".12"/>`;
-  h += `<polygon points="${pts(inE)} ${pts(outE.slice().reverse())}" fill="${ZONES.ok.color}" fill-opacity=".5" stroke="${ZONES.ok.color}" stroke-width="1.5"/>`;
+  h += `<polygon points="${pts(inE)} ${pts(outE.slice().reverse())}" fill="${ZONES.ok.color}" fill-opacity=".34" stroke="${ZONES.ok.color}" stroke-width="1.5"/>`;
   h += `<polygon points="${pts(outE)} ${X(D_MAX)},${yBot} ${X(D_MAX)},${yTop}" fill="${ZONES.cold.color}" fill-opacity=".1"/></g>`;
-  h += `<text x="${QX0 + 8}" y="${QY0 - 28}" font-size="15" font-weight="700" fill="${ZONES.hot.color}">왼쪽: 너무 뜨거움</text>`;
-  h += `<text x="${(QX0 + QX1) / 2}" y="${QY0 - 28}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES.ok.color}">초록 띠: 생명 가능 지대</text>`;
-  h += `<text x="${QX1}" y="${QY0 - 28}" text-anchor="end" font-size="15" font-weight="700" fill="${ZONES.cold.color}">오른쪽: 너무 차가움</text>`;
+  h += `<text x="${QX0 + 8}" y="${QY0 - 28}" font-size="15" font-weight="700" fill="${ZONES.hot.ink}">왼쪽: 너무 뜨거움</text>`;
+  h += `<text x="${(QX0 + QX1) / 2}" y="${QY0 - 28}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES.ok.ink}">초록 띠: 생명 가능 지대</text>`;
+  h += `<text x="${QX1}" y="${QY0 - 28}" text-anchor="end" font-size="15" font-weight="700" fill="${ZONES.cold.ink}">오른쪽: 너무 차가움</text>`;
   STARS.forEach(s => {
     const y = Y(s.m);
-    h += `<line x1="${QX0}" y1="${y}" x2="${QX1}" y2="${y}" stroke="#ffffff" stroke-opacity=".25" stroke-dasharray="2 5"/>`;
-    h += `<circle cx="${QX0 - 22}" cy="${y}" r="${4 + s.r / 3}" fill="${s.color}"/><text x="${QX0 - 40}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="700" fill="#f2f5ff">${trimNum(s.m)}</text>`;
+    h += `<line x1="${QX0}" y1="${y}" x2="${QX1}" y2="${y}" stroke="#1b2a41" stroke-opacity=".25" stroke-dasharray="2 5"/>`;
+    h += `<circle cx="${QX0 - 22}" cy="${y}" r="${4 + s.r / 3}" fill="${s.color}" stroke="#1b2a41" stroke-opacity=".35"/><text x="${QX0 - 40}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="700" fill="#1b2a41">${trimNum(s.m)}</text>`;
   });
-  h += `<text transform="translate(26 ${(QY0 + QY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#f2f5ff">별의 질량 (태양 = 1)</text>`;
-  h += `<line x1="${QX0}" y1="${QY1 + 20}" x2="${QX1}" y2="${QY1 + 20}" stroke="#98a6cc" stroke-width="2"/>`;
-  for (const d of [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,2,3,4,5,6,7,8,9,20,30]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 27}" stroke="#98a6cc" opacity="${t.toFixed(2)}"/>`;
-  for (const d of [0.1, 1, 10, 40]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 32}" stroke="#c9d2ee" stroke-width="2" opacity="${t.toFixed(2)}"/><text x="${X(d)}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#f2f5ff" opacity="${t.toFixed(2)}">${d}</text>`;
+  h += `<text transform="translate(26 ${(QY0 + QY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a41">별의 질량 (태양 = 1)</text>`;
+  h += `<line x1="${QX0}" y1="${QY1 + 20}" x2="${QX1}" y2="${QY1 + 20}" stroke="#6b7b94" stroke-width="2"/>`;
+  for (const d of [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,2,3,4,5,6,7,8,9,20,30]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 27}" stroke="#6b7b94" opacity="${t.toFixed(2)}"/>`;
+  for (const d of [0.1, 1, 10, 40]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 32}" stroke="#4a5a75" stroke-width="2" opacity="${t.toFixed(2)}"/><text x="${X(d)}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#1b2a41" opacity="${t.toFixed(2)}">${d}</text>`;
   for (const d of [0, 10, 20, 30, 40]){
     const x = lin(d) * (1 - t) + lg(Math.max(d, D_MIN)) * t;
-    h += `<line x1="${x}" y1="${QY1 + 20}" x2="${x}" y2="${QY1 + 32}" stroke="#c9d2ee" stroke-width="2" opacity="${(1 - t).toFixed(2)}"/><text x="${x}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#f2f5ff" opacity="${(1 - t).toFixed(2)}">${d}</text>`;
+    h += `<line x1="${x}" y1="${QY1 + 20}" x2="${x}" y2="${QY1 + 32}" stroke="#4a5a75" stroke-width="2" opacity="${(1 - t).toFixed(2)}"/><text x="${x}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#1b2a41" opacity="${(1 - t).toFixed(2)}">${d}</text>`;
   }
-  h += `<text x="${QX1}" y="${QY1 + 82}" text-anchor="end" font-size="16" font-weight="700" fill="#f2f5ff">별까지의 거리 (AU, ${S.mf.log ? '로그 눈금' : '선형 눈금'})</text>`;
+  h += `<text x="${QX1}" y="${QY1 + 82}" text-anchor="end" font-size="16" font-weight="700" fill="#1b2a41">별까지의 거리 (AU, ${S.mf.log ? '로그 눈금' : '선형 눈금'})</text>`;
   const y1 = Y(1), innerOp = Math.max(0, Math.min(1, (t - 0.35) / 0.4));
-  if (innerOp < 1) h += `<g opacity="${(1 - innerOp).toFixed(2)}"><line x1="${X(0.39)}" y1="${y1 + 16}" x2="${X(1.52)}" y2="${y1 + 16}" stroke="#ffffff" stroke-opacity=".5"/><text x="${X(1.52) + 8}" y="${y1 + 36}" font-size="14" font-weight="600" fill="#f2f5ff">수성·금성·지구·화성</text></g>`;
+  if (innerOp < 1) h += `<g opacity="${(1 - innerOp).toFixed(2)}"><line x1="${X(0.39)}" y1="${y1 + 16}" x2="${X(1.52)}" y2="${y1 + 16}" stroke="#1b2a41" stroke-opacity=".5"/><text x="${X(1.52) + 8}" y="${y1 + 36}" font-size="14" font-weight="600" fill="#1b2a41">수성·금성·지구·화성</text></g>`;
   PLANETS.forEach((p, k) => {
     const x = X(p.d), oy = PL_OFF[k], op = k < 4 ? innerOp : 1;
-    h += `<circle cx="${x.toFixed(1)}" cy="${y1}" r="${p.r}" fill="${p.c}" stroke="#0a1230" stroke-width="1.5"/>`;
+    h += `<circle cx="${x.toFixed(1)}" cy="${y1}" r="${p.r}" fill="${p.c}" stroke="#1b2a41" stroke-width="1.5"/>`;
     if (op <= 0) return;
-    h += `<g opacity="${op.toFixed(2)}"><line x1="${x.toFixed(1)}" y1="${y1 + Math.sign(oy) * (p.r + 1)}" x2="${x.toFixed(1)}" y2="${y1 + oy - Math.sign(oy) * 13}" stroke="#ffffff" stroke-opacity=".35"/><text x="${x.toFixed(1)}" y="${y1 + oy + (oy > 0 ? 4 : 0)}" text-anchor="middle" font-size="14" font-weight="${p.n === '지구' ? 800 : 600}" fill="#f2f5ff">${p.n}</text></g>`;
+    h += `<g opacity="${op.toFixed(2)}"><line x1="${x.toFixed(1)}" y1="${y1 + Math.sign(oy) * (p.r + 1)}" x2="${x.toFixed(1)}" y2="${y1 + oy - Math.sign(oy) * 13}" stroke="#1b2a41" stroke-opacity=".35"/><text x="${x.toFixed(1)}" y="${y1 + oy + (oy > 0 ? 4 : 0)}" text-anchor="middle" font-size="14" font-weight="${p.n === '지구' ? 800 : 600}" fill="#1b2a41">${p.n}</text></g>`;
   });
   sv.innerHTML = h;
 }
@@ -1441,7 +1431,7 @@ $('homeLink').addEventListener('click', e => { e.preventDefault(); goHome(); });
 
 let lastNarrow = null;
 addEventListener('resize', () => {
-  const n = document.documentElement.clientWidth < 600;
+  const n = isNarrow();
   if (n !== lastNarrow){ lastNarrow = n; if (!drag) render(); }
 });
 runSelfCheck();
