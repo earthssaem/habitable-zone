@@ -73,7 +73,7 @@
   .tabs button:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
 
   /* ── 본문 ─────────────────────────────── */
-  .wrap{flex:1; width:100%; max-width:1320px; margin:0 auto; padding:14px 16px 18px; display:flex; flex-direction:column; gap:14px}
+  .wrap{flex:1; width:100%; max-width:1720px; margin:0 auto; padding:14px 16px 18px; display:flex; flex-direction:column; gap:14px}
   .lead{display:flex; align-items:baseline; gap:4px 14px; flex-wrap:wrap}
   .lead h2{font-size:22px; letter-spacing:-.4px}
   .lead p{color:var(--ink-2)}
@@ -244,6 +244,52 @@
     .tabs button{gap:5px; font-size:14px}
   }
   @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
+
+  /* ── 한 화면 맞춤: 태블릿·전자칠판·PC에서는 페이지 스크롤 없이 한 화면에 ──
+     그림(.svgbox)은 남은 높이에 맞춰 비율을 지키며 줄어들고, 긴 설명 패널은 패널 안에서만 스크롤 */
+  .svgbox{position:relative; min-width:0}
+  .svgbox > svg{display:block; width:100%; height:auto}
+  @media (min-width: 700px) and (min-height: 540px){
+    body{height:100vh; height:100dvh; overflow:hidden}
+    .wrap{flex:1 1 auto; min-height:0; overflow:hidden; padding-bottom:8px}
+    .wrap > *{flex:none}
+    .wrap > .sim, .wrap > .split, .wrap > #deepBody{flex:0 1 auto; min-height:0}
+    .sim{display:flex; flex-direction:column}
+    .sim > *{flex:none}
+    .sim > .svgbox{flex:0 1 auto; min-height:100px; aspect-ratio:var(--ar, 1000 / 400)}
+    .sim > .svgbox > svg{position:absolute; inset:0; width:100%; height:100%}
+    #deepBody{display:flex; flex-direction:column}
+    #deepBody > *{flex:0 1 auto; min-height:0}
+    #deepBody > .card{overflow:auto}
+    .split{grid-template-rows:minmax(0,1fr)}
+    .split > *{min-height:0; max-height:100%}
+    .split > .side{overflow:auto}
+    footer{padding-bottom:6px}
+  }
+  @media (min-width: 700px) and (min-height: 540px) and (max-width: 1000px){
+    .split{display:flex; flex-direction:column; align-items:stretch}
+    .split > *{flex:0 1 auto}
+  }
+  @media (min-width: 700px) and (min-height: 540px) and (orientation: portrait){
+    .split{display:flex; flex-direction:column; align-items:stretch}
+    .split > *{flex:0 1 auto}
+    .split > .side{flex-shrink:12; min-height:220px}   /* 세로 화면: 설명 패널이 먼저 줄고(안에서 스크롤) 그림은 크게 */
+  }
+  @media (min-width: 700px) and (min-height: 540px) and (max-height: 860px){
+    .top{padding-top:6px; padding-bottom:6px}
+    .wrap{padding-top:10px; gap:10px}
+    .lead h2{font-size:20px}
+    .lead p{font-size:16px}
+    .lum{padding-top:10px; padding-bottom:10px}
+    .val{padding:8px 14px}
+    .val .v{font-size:34px}
+    .card{padding:12px}
+    .side{gap:10px}
+    .side h3{font-size:20px}
+    .side .txt{font-size:16px}
+    .qcard .q{font-size:19px}
+    .opts .btn{min-height:48px; padding:8px 12px}
+  }
 </style>
 </head>
 <body>
@@ -373,7 +419,17 @@ function render(){
     if (b.dataset.v === S.view) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
   });
   VIEWS[S.view]();
+  boxSvgs();
   restoreFocus(fk);
+}
+/* 시뮬레이션 그림을 비율 상자(.svgbox)로 감싼다: 한 화면 맞춤에서 남은 높이에 맞춰 줄어들게 */
+function boxSvgs(){
+  document.querySelectorAll('.sim > svg').forEach(svg => {
+    const box = document.createElement('div'), vb = svg.viewBox.baseVal;
+    box.className = 'svgbox';
+    box.style.setProperty('--ar', `${vb.width} / ${vb.height}`);
+    svg.replaceWith(box); box.appendChild(svg);   // 같은 요소를 옮기므로 이벤트 처리기는 그대로
+  });
 }
 function focusKeyOf(el){
   if (!el || !el.dataset || el === document.body) return null;
