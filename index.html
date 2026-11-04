@@ -175,24 +175,48 @@
     .lum .quick .btn{flex:1; min-width:0}
   }
 
+  /* 1단계: 슬라이더(위) → 그림 → 범례·비교(아래)가 한 실험 도구로 이어진다 */
+  .sim > .lum.top{border-top:0; border-bottom:1px solid var(--line)}
+  .sim svg text.num{font-variant-numeric:tabular-nums}
+  .obsbar{justify-content:space-between; gap:8px 18px; padding:8px 14px}
+  .legend{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:14px; font-weight:600; color:var(--ink-2)}
+  .legend li{display:flex; align-items:center; gap:6px; white-space:nowrap}
+  .sw{width:22px; height:12px; border-radius:4px; flex:none; display:inline-block}
+  .sw.hot{background:linear-gradient(90deg,#f6c39a,#fbe1cb)}
+  .sw.ok{background:#bfe6cf; box-shadow:inset 2px 0 0 #16834a, inset -2px 0 0 #16834a}
+  .sw.cold{background:linear-gradient(90deg,#dbe8f8,#b9d2f1)}
+  .sw.sun{background:#dde3eb; box-shadow:inset 0 0 0 1.5px #94a3b8}
+  .sw.base{background:transparent; border:2px dashed #334155}
+  .cmp{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-left:auto}
+  .cmp .btn{min-height:44px; padding:6px 14px; font-size:15px}
+
+  /* 수치 카드: 지금 값이 주인공, 비교 문구는 오른쪽 위에 작게 */
   .cards{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
-  .val{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:12px 18px; display:flex; flex-direction:column; gap:2px; min-width:0; box-shadow:var(--shadow)}
-  .val .k{font-size:15.5px; font-weight:700; color:var(--ink-2); display:flex; align-items:center; gap:8px}
-  .val .k i{width:4px; height:16px; border-radius:2px; background:#9fb3d1; flex:none}
-  .val .v{font-size:42px; font-weight:800; letter-spacing:-1.2px; font-variant-numeric:tabular-nums; line-height:1.15; white-space:nowrap; color:var(--ink)}
-  .val .v small{font-size:19px; font-weight:700; color:var(--muted); letter-spacing:0; margin-left:5px}
-  .val .s{font-size:13.5px; color:var(--muted)}
+  .val{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:9px 16px 10px; min-width:0; box-shadow:var(--shadow);
+    display:grid; grid-template-columns:auto minmax(0,1fr); grid-template-areas:"k s" "v v"; align-items:baseline; column-gap:10px;
+  }
+  .val .k{grid-area:k; font-size:15px; font-weight:700; color:var(--ink-2); white-space:nowrap}
+  .val .s{grid-area:s; font-size:13px; color:var(--muted); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-variant-numeric:tabular-nums}
+  .val .v{grid-area:v; font-size:34px; font-weight:800; letter-spacing:-1px; font-variant-numeric:tabular-nums; line-height:1.15; white-space:nowrap; color:var(--ink)}
+  .val .v small{font-size:17px; font-weight:700; color:var(--muted); letter-spacing:0; margin-left:5px}
   .val.w{border-color:#b9e2cb; background:var(--hz-soft); box-shadow:inset 4px 0 0 #2fb36b, var(--shadow)}
-  .val.w .k{color:var(--hz)}
-  .val.w .k i{background:#2fb36b}
-  .val.w .v{color:var(--hz)}
+  .val.w .k, .val.w .v{color:var(--hz)}
+  @media (max-width: 1000px){
+    .val{grid-template-areas:"k" "v" "s"; grid-template-columns:minmax(0,1fr)}
+    .val .s{text-align:left; min-height:1.4em}
+  }
   @media (max-width: 600px){
-    .val{padding:10px}
-    .val .v{font-size:26px; letter-spacing:-.5px}
-    .val .v small{font-size:14px; margin-left:2px}
-    .val .k{font-size:13.5px; gap:5px}
-    .val .k i{display:none}
-    .val .s{font-size:12.5px}
+    .obsbar{padding:8px 10px}
+    .legend{font-size:12.5px; gap:4px 10px}
+    .cmp{margin-left:0; width:100%}
+    .cmp .lbl{width:100%}
+    .cmp .btn{flex:1}
+    .val{padding:8px 10px}
+    .val .v{font-size:24px; letter-spacing:-.5px}
+    .val .v small{font-size:13px; margin-left:2px}
+    .val .k{font-size:13px}
+    .val .s{font-size:11px; white-space:normal; min-height:2.6em}
   }
   .bottom{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
 
@@ -310,8 +334,8 @@
     .lead h2{font-size:20px}
     .lead p{font-size:16px}
     .lum{padding-top:10px; padding-bottom:10px}
-    .val{padding:8px 16px}
-    .val .v{font-size:34px}
+    .val{padding:7px 16px 8px}
+    .val .v{font-size:30px}
     .card{padding:14px}
     .side{gap:10px}
     .side h3{font-size:20px}
@@ -340,11 +364,14 @@
     .lum .read output small{font-size:18px}
     .slider .ticks span{font-size:16px}
     .quick .btn{min-width:80px}
-    .val{padding:14px 22px}
+    .val{padding:12px 22px}
     .val .k{font-size:18px}
-    .val .v{font-size:52px}
-    .val .v small{font-size:24px}
+    .val .v{font-size:44px}
+    .val .v small{font-size:22px}
     .val .s{font-size:16px}
+    .legend{font-size:16.5px}
+    .sw{width:28px; height:14px}
+    .cmp .btn{font-size:17px; min-height:50px}
     .card{padding:22px}
     .side{gap:14px}
     .side h3{font-size:27px}
@@ -421,7 +448,7 @@ const ZONES = {
   ok:   { label:'생명 가능 지대', energy:'적당함',    color:'#2fb36b', ink:'#16834a' },
   cold: { label:'너무 차가움',   energy:'너무 적음', color:'#4b95e6', ink:'#2266b8' },
 };
-const SUN_GRAY = '#94a3b8', STAR_CORE = '#ffc93d', STAR_EDGE = '#d99a00';
+const SUN_GRAY = '#94a3b8', STAR_CORE = '#ffc93d', STAR_EDGE = '#e0a226';
 
 const f2 = x => x.toFixed(2);
 const fmtL = L => L < 0.1 ? L.toFixed(3) : L.toFixed(2);
@@ -470,7 +497,7 @@ function runSelfCheck(){
 /* ── 상태 (페이지 변수에만: 새로고침하면 사라짐) ── */
 const S = {
   view: 'observe',
-  obs: { L:1, s:1 },              // s: 화면에 그려진 √광도(부드러운 이동용)
+  obs: { L:1, s:1, base:null },   // s: 화면에 그려진 √광도(부드러운 이동용) · base: 학생이 저장한 비교 기준 광도
   pr:  { scene:0, free:null, cmpL:4, formula:{}, cur:{ sL:1, d:1, move:1, fade:1 } },
   ap:  { q:0, picks:[] },
   deep:{ tab:'challenge' },
@@ -532,9 +559,10 @@ document.addEventListener('toggle', e => {
 const glowK = L => Math.max(0, Math.min(1, Math.log(L / L_MIN) / Math.log(L_MAX / L_MIN)));
 const glowR = L => 26 + 74 * glowK(L);
 const glowO = L => 0.3 + 0.7 * glowK(L);
-const GLOW_DEF = id => `<radialGradient id="${id}"><stop offset="0" stop-color="#ffd25a" stop-opacity=".7"/><stop offset=".4" stop-color="#ffd978" stop-opacity=".32"/><stop offset="1" stop-color="#ffe39a" stop-opacity="0"/></radialGradient>`;
+const GLOW_DEF = id => `<radialGradient id="${id}"><stop offset="0" stop-color="#ffcf5a" stop-opacity=".6"/><stop offset=".45" stop-color="#ffd877" stop-opacity=".22"/><stop offset="1" stop-color="#ffe3a0" stop-opacity="0"/></radialGradient>`
+  + `<radialGradient id="${id}C" cx=".5" cy=".5" r=".55" fx=".38" fy=".34"><stop offset="0" stop-color="#fffdf3"/><stop offset=".5" stop-color="#ffe187"/><stop offset="1" stop-color="#f4a62a"/></radialGradient>`;
 const starSvg = (x, y, L, gid, core = 13) =>
-  `<circle cx="${x}" cy="${y}" r="${glowR(L).toFixed(1)}" fill="url(#${gid})" opacity="${glowO(L).toFixed(2)}"/><circle cx="${x}" cy="${y}" r="${core}" fill="${STAR_CORE}" stroke="${STAR_EDGE}" stroke-width="1.5"/>`;
+  `<circle cx="${x}" cy="${y}" r="${glowR(L).toFixed(1)}" fill="url(#${gid})" opacity="${glowO(L).toFixed(2)}"/><circle cx="${x}" cy="${y}" r="${core}" fill="url(#${gid}C)" stroke="${STAR_EDGE}" stroke-width="1"/>`;
 
 /* 같은 축척(0~6 AU) 선형 거리축: 광도가 바뀌어도 축은 그대로.
    폰처럼 좁은 화면(NARROW)에서는 SVG 좌표 폭(VW)을 줄여 글자가 상대적으로 커지게 한다 */
@@ -594,43 +622,77 @@ function lOfPos(p){
   return Math.min(L_MAX, Math.max(L_MIN, Math.round(L * 100) / 100));
 }
 const thumbAt = p => `calc(19px + ${(p / 10).toFixed(2)}% - ${(p / 1000 * 38).toFixed(1)}px)`;   // 엄지(38px) 중심 위치
-let OY_SUN, OY_CUR, OY_AX, OY_VAL, OY_BR;
+/* 1단계 그림 배치. 넓은 화면: 이름표는 왼쪽, 경계 값은 띠 위 / 좁은 화면(폰·세로 태블릿): 이름표는 줄 위, 값은 띠 아래 */
+let OG = null;
+function obsGeom(){
+  if (NARROW && document.documentElement.clientWidth < 600)   // 폰: 그림이 작게 줄어드니 글자를 더 크게
+    return { vb:`0 16 ${VW} 310`, SY:64, SH:22, CY:162, CH:52, sunVal:96, curVal:214, BY:230, AY:284, fs:22, sfs:17, zfs:17, core:14, lfs:22, lsub:18 };
+  return NARROW
+    ? { vb:`0 8 ${VW} 282`, SY:56, SH:20, CY:146, CH:48, sunVal:84, curVal:192, BY:206, AY:252, fs:17, sfs:13, zfs:14, core:13, lfs:17, lsub:14 }
+    : { vb:`0 12 ${VW} 262`, SY:50, SH:24, CY:136, CH:56, sunVal:31, curVal:100, BY:180, AY:230, fs:18, sfs:13.5, zfs:15, core:15, lfs:17, lsub:13.5 };
+}
+/* 띠가 좁을 때 두 값이 겹치지 않게 양쪽으로 벌린다(경계선과 값은 짧은 지시선으로 잇는다) */
+const labelGap = (xa, xb, need) => Math.max(0, need - (xb - xa)) / 2;
 VIEWS.observe = function(){
-  const sa = innerOf(1), sb = outerOf(1);
-  // 넓은 화면: 경계 값은 띠 위 / 좁은 화면: 띠 아래(줄 이름표와 겹치지 않게)
-  if (NARROW){ OY_SUN = 82; OY_CUR = 196; OY_VAL = OY_CUR + 54; OY_BR = OY_CUR + 72; OY_AX = 320; }
-  else       { OY_SUN = 92; OY_CUR = 208; OY_VAL = OY_CUR - 38; OY_BR = OY_CUR + 44; OY_AX = 300; }
-  const vb = NARROW ? `0 26 ${VW} 329` : `0 50 ${VW} 295`;
-  let g = `<defs>${GLOW_DEF('oGlowG')}</defs>`;
-  // 태양 기준 띠(고정)
-  g += rowLab(OY_SUN, 30, '태양', NARROW ? '기준 · 광도 1배' : '광도 1배');
-  g += `<circle cx="${AX0}" cy="${OY_SUN}" r="9" fill="${SUN_GRAY}"/>`;
-  g += `<line x1="${AX0}" y1="${OY_SUN}" x2="${AX1}" y2="${OY_SUN}" stroke="#1b2a41" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
-  g += `<rect x="${AX(sa)}" y="${OY_SUN - 15}" width="${AX(sb) - AX(sa)}" height="30" rx="4" fill="${SUN_GRAY}" fill-opacity=".45" stroke="${SUN_GRAY}" stroke-width="2"/>`;
-  if (!NARROW) g += `<text x="${(AX(sa) + AX(sb)) / 2}" y="${OY_SUN - 24}" text-anchor="middle" font-size="15" font-weight="700" fill="#4a5a75">태양의 생명 가능 지대 (기준)</text>`;
-  for (const d of [sa, sb]) g += `<line x1="${AX(d)}" y1="${OY_SUN + 15}" x2="${AX(d)}" y2="${OY_AX - 4}" stroke="${SUN_GRAY}" stroke-opacity=".55" stroke-width="1.5" stroke-dasharray="4 5"/>`;
-  // 지금 별(움직이는 부분은 obsDraw가 갱신)
+  const G = OG = obsGeom(), sa = innerOf(1), sb = outerOf(1), top = G.CY - G.CH / 2, bot = G.CY + G.CH / 2;
+  const halo = 'stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke"';
+  let g = `<defs>
+    <radialGradient id="oCore" cx=".5" cy=".5" r=".55" fx=".38" fy=".34"><stop offset="0" stop-color="#fffdf3"/><stop offset=".5" stop-color="#ffe187"/><stop offset="1" stop-color="#f4a62a"/></radialGradient>
+    <radialGradient id="oHalo"><stop offset="0" stop-color="#ffcf5a" stop-opacity=".55"/><stop offset=".45" stop-color="#ffd877" stop-opacity=".2"/><stop offset="1" stop-color="#ffe3a0" stop-opacity="0"/></radialGradient>
+    <radialGradient id="oSpread"><stop offset="0" stop-color="#ffd26a" stop-opacity=".45"/><stop offset=".6" stop-color="#ffe2a0" stop-opacity=".12"/><stop offset="1" stop-color="#ffe9b8" stop-opacity="0"/></radialGradient>
+    <linearGradient id="oEnergy" gradientUnits="userSpaceOnUse" x1="${AX0}" y1="0" x2="${AX1}" y2="0">
+      <stop id="oE0" offset="0" stop-color="#f08a3e" stop-opacity=".42"/><stop id="oE1" stop-color="#f6a965" stop-opacity=".14"/>
+      <stop id="oE2" stop-color="#2fb36b" stop-opacity=".36"/><stop id="oE3" stop-color="#2fb36b" stop-opacity=".36"/>
+      <stop id="oE4" stop-color="#7fb0ec" stop-opacity=".13"/><stop id="oE5" offset="1" stop-color="#3b82d6" stop-opacity=".32"/></linearGradient>
+    <clipPath id="oRowClip"><rect x="${AX0}" y="${top - 30}" width="${AX1 - AX0 + 40}" height="${G.CH + 60}"/></clipPath>
+    <marker id="oArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="${ZONES.ok.ink}"/></marker>
+  </defs>`;
+  // ── 태양(기준) 줄: 고정 ──
   g += NARROW
-    ? `<text x="4" y="${OY_CUR - 40}" font-size="17" font-weight="800" fill="#1b2a41">지금 별 <tspan id="oLbl" font-size="15" font-weight="600" fill="#6b7b94"></tspan></text>`
-    : `<text x="${AX0 - 24}" y="${OY_CUR - 2}" text-anchor="end" font-size="18" font-weight="800" fill="#1b2a41">지금 별</text><text id="oLbl" x="${AX0 - 24}" y="${OY_CUR + 18}" text-anchor="end" font-size="14" fill="#6b7b94"></text>`;
-  g += `<rect id="oHot" y="${OY_CUR - 30}" height="60" fill="${ZONES.hot.color}" fill-opacity=".11"/>`;
-  g += `<rect id="oCold" y="${OY_CUR - 30}" height="60" fill="${ZONES.cold.color}" fill-opacity=".09"/>`;
-  g += `<rect id="oOk" y="${OY_CUR - 30}" height="60" rx="5" fill="${ZONES.ok.color}" fill-opacity=".34" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
-  g += `<text id="oHotT" y="${OY_CUR + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES.hot.ink}">너무 뜨거움</text>`;
-  g += `<text id="oColdT" y="${OY_CUR + 6}" text-anchor="middle" font-size="16" font-weight="700" fill="${ZONES.cold.ink}">너무 차가움</text>`;
-  g += `<text id="oOkT" y="${OY_CUR + 7}" text-anchor="middle" font-size="18" font-weight="800" fill="#0d5a32">생명 가능 지대</text>`;
-  g += `<path id="oBr" fill="none" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
-  g += `<text id="oBrT" y="${OY_BR + 22}" text-anchor="middle" font-size="16" font-weight="800" fill="${ZONES.ok.ink}">폭</text>`;
-  g += `<text id="oInT" y="${OY_VAL}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41"></text>`;
-  g += `<text id="oOutT" y="${OY_VAL}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41"></text>`;
-  g += `<circle id="oGlow" cx="${AX0}" cy="${OY_CUR}" fill="url(#oGlowG)"/><circle cx="${AX0}" cy="${OY_CUR}" r="15" fill="${STAR_CORE}" stroke="${STAR_EDGE}" stroke-width="1.5"/>`;
-  g += axisSvg(OY_AX);
+    ? `<text x="4" y="${G.SY - G.SH / 2 - 11}" font-size="${G.lfs}" font-weight="800" fill="#1b2a41" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">태양 <tspan font-size="${G.lsub}" font-weight="600" fill="#6b7b94">기준 · 광도 1배</tspan></text>`
+    : `<text x="${AX0 - 26}" y="${G.SY - 1}" text-anchor="end" font-size="17" font-weight="800" fill="#1b2a41">태양</text><text x="${AX0 - 26}" y="${G.SY + 17}" text-anchor="end" font-size="13.5" fill="#6b7b94">기준 · 광도 1배</text>`;
+  g += `<line x1="${AX0}" y1="${G.SY}" x2="${AX1}" y2="${G.SY}" stroke="#94a3b8" stroke-opacity=".45" stroke-dasharray="2 5"/>`;
+  g += `<rect x="${AX(sa)}" y="${G.SY - G.SH / 2}" width="${AX(sb) - AX(sa)}" height="${G.SH}" rx="6" fill="#cbd5e1" fill-opacity=".7" stroke="#94a3b8" stroke-width="1.5"/>`;
+  g += `<circle cx="${AX0}" cy="${G.SY}" r="${NARROW ? 8 : 9}" fill="url(#oCore)" stroke="#b8a46a" stroke-width="1"/>`;
+  for (const d of [sa, sb]){
+    g += `<line x1="${AX(d)}" y1="${G.SY + G.SH / 2}" x2="${AX(d)}" y2="${top - 2}" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3 4"/>`;
+    g += `<text class="num" x="${AX(d)}" y="${G.sunVal}" text-anchor="middle" font-size="${G.sfs}" font-weight="700" fill="#6b7b94" ${halo}>${f2(d)}</text>`;
+  }
+  // ── 지금 별 줄: 받는 에너지에 따라 색이 바뀌는 띠 + 두 경계선 ──
+  g += NARROW
+    ? `<text x="4" y="${top - 13}" font-size="${G.lfs}" font-weight="800" fill="#1b2a41" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">지금 별 <tspan id="oLbl" font-size="${G.lsub}" font-weight="600" fill="#6b7b94"></tspan></text>`
+    : `<text x="${AX0 - 26}" y="${G.CY - 1}" text-anchor="end" font-size="18" font-weight="800" fill="#1b2a41">지금 별</text><text id="oLbl" class="num" x="${AX0 - 26}" y="${G.CY + 18}" text-anchor="end" font-size="13.5" fill="#6b7b94"></text>`;
+  g += `<g clip-path="url(#oRowClip)"><ellipse id="oSpread" cy="${G.CY}" ry="${G.CH * 0.95}" fill="url(#oSpread)"/></g>`;
+  g += `<rect x="${AX0}" y="${top}" width="${AX1 - AX0}" height="${G.CH}" rx="10" fill="url(#oEnergy)"/>`;
+  g += `<text id="oHotT" y="${G.CY + 5}" text-anchor="middle" font-size="${G.zfs}" font-weight="700" fill="${ZONES.hot.ink}">받는 에너지 많음</text>`;
+  g += `<text id="oColdT" y="${G.CY + 5}" text-anchor="middle" font-size="${G.zfs}" font-weight="700" fill="${ZONES.cold.ink}">받는 에너지 적음</text>`;
+  g += `<text id="oOkT" y="${G.CY + 6}" text-anchor="middle" font-size="${G.zfs + 1.5}" font-weight="800" fill="#0d5a32">생명 가능 지대</text>`;
+  // 학생이 저장한 기준(변화 전): 점선 윤곽으로만
+  const base = S.obs.base;
+  if (base != null){
+    const ba = AX(innerOf(base)), bb = AX(outerOf(base));
+    g += `<rect x="${ba.toFixed(1)}" y="${top - 6}" width="${(bb - ba).toFixed(1)}" height="${G.CH + 12}" rx="8" fill="#ffffff" fill-opacity=".28" stroke="#334155" stroke-width="2" stroke-dasharray="7 5"/>`;
+    if (bb - ba > 64) g += `<text x="${((ba + bb) / 2).toFixed(1)}" y="${bot - 7}" text-anchor="middle" font-size="13" font-weight="700" fill="#334155" ${halo}>기준 ${mulName(base)}</text>`;
+  }
+  g += `<line id="oInL" y1="${top - 5}" y2="${bot + 5}" stroke="${ZONES.ok.ink}" stroke-width="3" stroke-linecap="round"/>`;
+  g += `<line id="oOutL" y1="${top - 5}" y2="${bot + 5}" stroke="${ZONES.ok.ink}" stroke-width="3" stroke-linecap="round"/>`;
+  g += `<path id="oInLead" fill="none" stroke="${ZONES.ok.ink}" stroke-width="1.2"/><path id="oOutLead" fill="none" stroke="${ZONES.ok.ink}" stroke-width="1.2"/>`;
+  g += `<text id="oInT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="800" fill="#1b2a41" ${halo}></text>`;
+  g += `<text id="oOutT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="800" fill="#1b2a41" ${halo}></text>`;
+  // 폭: 양방향 화살표
+  g += `<line id="oBrA" y1="${G.BY}" y2="${G.BY}" stroke="${ZONES.ok.ink}" stroke-width="2.2" marker-start="url(#oArr)" marker-end="url(#oArr)"/>`;
+  g += `<path id="oBrE" fill="none" stroke="${ZONES.ok.ink}" stroke-width="2"/>`;
+  g += `<text id="oBrT" class="num" y="${G.BY + 23}" text-anchor="middle" font-size="${G.fs - 1}" font-weight="800" fill="${ZONES.ok.ink}" ${halo}></text>`;
+  // 별: 크기·색은 그대로, 빛 번짐만 광도에 따라
+  g += `<circle id="oGlow" cx="${AX0}" cy="${G.CY}" fill="url(#oHalo)"/><circle cx="${AX0}" cy="${G.CY}" r="${G.core}" fill="url(#oCore)" stroke="#e0a226" stroke-width="1"/>`;
+  // 거리축 + 지금 경계 표시(축 위 작은 삼각형)
+  g += axisSvg(G.AY);
+  g += `<polygon id="oInM" fill="${ZONES.ok.ink}"/><polygon id="oOutM" fill="${ZONES.ok.ink}"/>`;
 
   $('app').innerHTML = `
     <div class="lead"><h2>변화 관찰하기</h2><p>별의 광도를 바꿔 보세요. 초록 띠는 어디로 움직이고, 폭은 어떻게 달라질까요?</p></div>
-    <section class="sim" aria-label="광도 조절 시뮬레이터">
-      <svg id="obsSv" viewBox="${vb}" role="img" aria-labelledby="obsTitle"><title id="obsTitle">태양과 지금 별의 생명 가능 지대를 0~6 AU 같은 거리축에서 비교한 그림</title>${g}</svg>
-      <div class="lum">
+    <section class="sim obs" aria-label="광도 조절 시뮬레이터">
+      <div class="lum top">
         <div class="read"><label for="lum">별의 광도</label><output id="lumOut" for="lum"></output></div>
         <div class="slider">
           <input type="range" id="lum" min="0" max="1000" step="1" value="${posOfL(S.obs.L).toFixed(0)}" aria-label="별의 광도(태양 = 1)">
@@ -639,14 +701,24 @@ VIEWS.observe = function(){
         <div class="quick" role="group" aria-label="광도 빠른 선택">${L_QUICK.map(n =>
           `<button type="button" class="btn" data-act="lumq" data-v="${n}">${mulName(n)}</button>`).join('')}</div>
       </div>
+      <svg id="obsSv" viewBox="${G.vb}" role="img" aria-labelledby="obsTitle"><title id="obsTitle">태양과 지금 별의 생명 가능 지대를 0~6 AU 같은 거리축에서 비교한 그림</title>${g}</svg>
+      <div class="ctl obsbar">
+        <ul class="legend" aria-label="그림 읽는 법">
+          <li><i class="sw hot"></i>받는 에너지 많음</li><li><i class="sw ok"></i>생명 가능 지대</li><li><i class="sw cold"></i>받는 에너지 적음</li>
+          <li><i class="sw sun"></i>태양(기준)</li>${base != null ? `<li><i class="sw base"></i>저장한 기준 · 광도 ${mulName(base)}</li>` : ''}
+        </ul>
+        <div class="cmp" role="group" aria-label="변화 전과 비교"><span class="lbl">변화 전과 비교</span>${base == null
+          ? `<button type="button" class="btn" data-act="obs-save">지금 광도를 기준으로 저장</button>`
+          : `<button type="button" class="btn" data-act="obs-save">지금 광도로 새 기준</button><button type="button" class="btn ghost" data-act="obs-clear">비교 해제</button>`}</div>
+      </div>
     </section>
-    <section class="cards" aria-label="생명 가능 지대 수치">
-      <div class="val"><span class="k"><i></i>안쪽 경계</span><span class="v" id="vIn"></span><span class="s">태양 ${f2(sa)} AU</span></div>
-      <div class="val"><span class="k"><i></i>바깥쪽 경계</span><span class="v" id="vOut"></span><span class="s">태양 ${f2(sb)} AU</span></div>
-      <div class="val w"><span class="k"><i></i>폭</span><span class="v" id="vW"></span><span class="s">태양 ${f2(widthOf(1))} AU</span></div>
+    <section class="cards" aria-label="생명 가능 지대 수치" aria-live="off">
+      <div class="val"><span class="k">안쪽 경계</span><span class="v" id="vIn"></span><span class="s" id="sIn"></span></div>
+      <div class="val"><span class="k">바깥쪽 경계</span><span class="v" id="vOut"></span><span class="s" id="sOut"></span></div>
+      <div class="val w"><span class="k">폭</span><span class="v" id="vW"></span><span class="s" id="sW"></span></div>
     </section>
     <div class="bottom">
-      <p class="note">※ 빛 번짐은 광도만 나타내요. 광도만으로는 별의 실제 크기와 색을 정할 수 없어요.</p>
+      <p class="note">※ 띠의 색은 행성이 받는 에너지의 많고 적음이고, 별의 빛 번짐은 광도만 나타내요. 광도만으로는 별의 실제 크기·색·온도를 정할 수 없어요.</p>
       <button type="button" class="btn go" data-act="view" data-v="principle">왜 그럴까요? 원리 알아보기 →</button>
     </div>`;
   const inp = $('lum');
@@ -669,41 +741,67 @@ function obsSetL(L, syncSlider){
 }
 function obsTick(){
   const t = Math.sqrt(S.obs.L), s = S.obs.s;
-  S.obs.s = Math.abs(t - s) < 0.0008 ? t : s + (t - s) * 0.22;
+  S.obs.s = Math.abs(t - s) < 0.0008 ? t : s + (t - s) * 0.24;
   obsDraw();
   raf = (S.obs.s !== t && S.view === 'observe') ? requestAnimationFrame(obsTick) : null;
 }
-/* 수치·슬라이더: 목표 광도로 즉시 갱신 */
+/* 슬라이더·광도 표시: 목표 광도로 즉시 */
 function obsNumbers(){
   const L = S.obs.L, inp = $('lum'); if (!inp) return;
   inp.style.setProperty('--p', thumbAt(posOfL(L)));
   inp.setAttribute('aria-valuetext', `태양 광도의 ${f2(L)}배`);
   $('lumOut').innerHTML = `${f2(L)}<small> 배 (태양 = 1)</small>`;
-  $('vIn').innerHTML = `${f2(innerOf(L))}<small>AU</small>`;
-  $('vOut').innerHTML = `${f2(outerOf(L))}<small>AU</small>`;
-  $('vW').innerHTML = `${f2(widthOf(L))}<small>AU</small>`;
   document.querySelectorAll('[data-act="lumq"]').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.v === L)));
 }
-/* 그림: 화면에 그려진 √광도(S.obs.s)로, 속성만 바꾼다 */
+/* 그림과 수치 카드: 화면에 그려진 √광도(S.obs.s)로 부드럽게. 멈추면 목표 광도 값 그대로 */
 function obsDraw(){
-  if (!$('oOk')) return;
-  const L = S.obs.s * S.obs.s, a = innerOf(L), b = outerOf(L), xa = AX(a), xb = AX(b);
+  if (!$('oInL') || !OG) return;
+  const G = OG, settled = S.obs.s === Math.sqrt(S.obs.L);
+  const L = settled ? S.obs.L : S.obs.s * S.obs.s, a = innerOf(L), b = outerOf(L), xa = AX(a), xb = AX(b);
   const set = (id, attrs) => { const el = $(id); for (const k in attrs) el.setAttribute(k, attrs[k]); };
-  set('oHot', { x:AX0, width:(xa - AX0).toFixed(1) });
-  set('oOk', { x:xa.toFixed(1), width:(xb - xa).toFixed(1) });
-  set('oCold', { x:xb.toFixed(1), width:(AX1 - xb).toFixed(1) });
-  set('oGlow', { r:glowR(L).toFixed(1), opacity:glowO(L).toFixed(2) });
-  set('oOkT', { x:((xa + xb) / 2).toFixed(1), opacity:xb - xa > 150 ? 1 : 0 });
-  set('oHotT', { x:((AX0 + 70 + xa) / 2).toFixed(1), opacity:xa - AX0 > 200 ? .85 : 0 });
-  set('oColdT', { x:((xb + AX1) / 2).toFixed(1), opacity:AX1 - xb > 130 ? .85 : 0 });
-  const by = OY_BR;
-  set('oBr', { d:`M${xa.toFixed(1)},${by - 8}V${by}H${xb.toFixed(1)}V${by - 8}` });
-  set('oBrT', { x:((xa + xb) / 2).toFixed(1) });
-  // 띠가 좁을 때 두 값이 겹치지 않게 살짝 벌린다
-  const gap = Math.max(0, 46 - (xb - xa)) / 2;
-  set('oInT', { x:(xa - gap).toFixed(1) }); set('oOutT', { x:(xb + gap).toFixed(1) });
+  const f = x => ((x - AX0) / (AX1 - AX0)), tr = 16 / (AX1 - AX0), top = G.CY - G.CH / 2, bot = G.CY + G.CH / 2;
+  // 받는 에너지 색 띠: 경계에서 짧게 바뀐다
+  set('oE1', { offset:Math.max(0, f(xa) - tr).toFixed(4) }); set('oE2', { offset:f(xa).toFixed(4) });
+  set('oE3', { offset:f(xb).toFixed(4) }); set('oE4', { offset:Math.min(1, f(xb) + tr).toFixed(4) });
+  set('oInL', { x1:xa.toFixed(1), x2:xa.toFixed(1) }); set('oOutL', { x1:xb.toFixed(1), x2:xb.toFixed(1) });
+  // 영역 이름표: 자리가 충분할 때만
+  const tw = id => { const el = $(id); if (!el.dataset.w) el.dataset.w = el.getComputedTextLength() || 120; return +el.dataset.w; };
+  const bs = S.obs.base, bx = bs == null ? null : [AX(innerOf(bs)) - 8, AX(outerOf(bs)) + 8];
+  const zone = (id, x0, x1) => {   // 자리가 충분하고, 저장한 기준 윤곽과 겹치지 않을 때만 이름표를 보인다
+    const w = tw(id), cx = (x0 + x1) / 2, fits = x1 - x0 > w + 20;
+    const onBase = bx && cx - w / 2 < bx[1] && bx[0] < cx + w / 2;
+    set(id, { x:cx.toFixed(1), opacity:fits && !onBase ? 1 : 0 });
+  };
+  zone('oHotT', AX0 + G.core + 26, xa); zone('oOkT', xa, xb); zone('oColdT', xb, AX1);
+  // 경계 값: 경계선 바로 위(좁은 화면은 아래). 겹치면 벌리고 지시선으로 잇는다
+  const gap = labelGap(xa, xb, G.fs * 2.9), ix = xa - gap, ox = xb + gap;
+  set('oInT', { x:ix.toFixed(1) }); set('oOutT', { x:ox.toFixed(1) });
   $('oInT').textContent = f2(a); $('oOutT').textContent = f2(b);
+  const ly = NARROW ? [bot + 5, G.curVal - G.fs + 3] : [top - 5, G.curVal + 4];
+  const lead = (x0, x1) => gap > 0.5 ? `M${x0.toFixed(1)},${ly[0]} L${x1.toFixed(1)},${ly[1]}` : '';
+  set('oInLead', { d:lead(xa, ix) }); set('oOutLead', { d:lead(xb, ox) });
+  // 폭 화살표
+  const by = G.BY;
+  set('oBrA', { x1:(xa + 2).toFixed(1), x2:(xb - 2).toFixed(1), opacity:xb - xa > 18 ? 1 : 0 });
+  set('oBrE', { d:`M${xa.toFixed(1)},${by - 8}V${by + 8}M${xb.toFixed(1)},${by - 8}V${by + 8}` });
+  const bw = (G.fs - 1) * 5.4 / 2, bcx = Math.max(AX0 + bw, Math.min(AX1 - bw, (xa + xb) / 2));
+  set('oBrT', { x:bcx.toFixed(1) }); $('oBrT').textContent = `폭 ${f2(b - a)} AU`;
+  // 축 위 경계 표시
+  const tri = x => `${x.toFixed(1)},${G.AY - 2} ${(x - 6).toFixed(1)},${G.AY - 12} ${(x + 6).toFixed(1)},${G.AY - 12}`;
+  set('oInM', { points:tri(xa) }); set('oOutM', { points:tri(xb) });
+  // 별빛: 광도가 클수록 진하고 넓게
+  const k = glowK(L);
+  set('oGlow', { r:(G.core + 14 + 60 * k).toFixed(1), opacity:(0.35 + 0.65 * k).toFixed(2) });
+  const rx = 70 + 230 * k;
+  set('oSpread', { cx:(AX0 + rx * 0.35).toFixed(1), rx:rx.toFixed(1), opacity:(0.3 + 0.7 * k).toFixed(2) });
   $('oLbl').textContent = `광도 ${f2(L)}배`;
+  // 수치 카드: 현재 값 + 비교(저장한 기준, 없으면 태양)
+  const base = S.obs.base, ref = base ?? 1, m = Math.sqrt(L / ref);
+  const sub = v => (base == null && Math.abs(m - 1) < 0.005) ? '태양과 같아요'
+    : `${base == null ? '태양' : `기준(${mulName(base)})`} ${f2(v)} AU의 ${m.toFixed(2)}배`;
+  $('vIn').innerHTML = `${f2(a)}<small>AU</small>`; $('sIn').textContent = sub(innerOf(ref));
+  $('vOut').innerHTML = `${f2(b)}<small>AU</small>`; $('sOut').textContent = sub(outerOf(ref));
+  $('vW').innerHTML = `${f2(b - a)}<small>AU</small>`; $('sW').textContent = sub(widthOf(ref));
 }
 
 /* ==========================================================
@@ -1393,6 +1491,8 @@ document.addEventListener('click', e => {
       if (b.closest('.wrap')) scrollTo({ top:0, behavior:reduceMotion() ? 'auto' : 'smooth' });
       break;
     case 'lumq': obsSetL(+v, true); break;
+    case 'obs-save': S.obs.base = S.obs.L; render(); break;
+    case 'obs-clear': S.obs.base = null; render(); break;
     case 'pr-part': S.pr.scene = PART_FIRST[+v]; S.pr.free = null; render(); break;
     case 'pr-scene': S.pr.scene = Math.max(0, Math.min(PR_SCENES.length - 1, +v)); S.pr.free = null; render(); break;
     case 'pr-L': case 'pr-d': {
@@ -1423,7 +1523,7 @@ document.addEventListener('click', e => {
 /* 제목을 누르면 처음 화면으로: 1단계 · 광도 1배 (적용 문제의 답과 도전 기록은 그대로 둠) */
 function goHome(){
   S.view = 'observe';
-  S.obs.L = 1; S.obs.s = 1;
+  S.obs.L = 1; S.obs.s = 1; S.obs.base = null;
   render();
   scrollTo(0, 0); document.body.scrollTop = 0;
 }
