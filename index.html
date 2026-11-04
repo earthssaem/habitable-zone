@@ -231,9 +231,65 @@
   .dots{display:flex; gap:6px; align-items:center}
   .dots i{width:8px; height:8px; border-radius:999px; background:#d3ddec; transition:width .25s}
   .dots i.on{width:22px; background:var(--accent)}
-  .formula{display:flex; flex-direction:column; gap:6px}
+  .formula{display:flex; flex-direction:column; gap:10px}
   .formula .eq{font-family:"Times New Roman",serif; font-style:italic; font-size:24px; text-align:center; color:var(--ink)}
   .formula p{font-size:15.5px; color:var(--ink-2)}
+
+  /* 수식 표기: 외부 라이브러리 없이 HTML·CSS로 분수·제곱근을 그린다 */
+  .math{font-family:"Times New Roman","Noto Serif KR","Nanum Myeongjo",serif; font-size:21px; line-height:1.5; color:var(--ink); white-space:nowrap}
+  .math .mv{font-style:italic}
+  .math .kl{font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif; font-size:.72em; font-weight:700; color:var(--ink-2)}
+  .mfrac{display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 .12em; font-size:.9em; line-height:1.2}
+  .mfrac > span{padding:0 .2em}
+  .mfrac > span:first-child{border-bottom:1.4px solid currentColor; padding-bottom:.1em}
+  .mfrac > span:last-child{padding-top:.1em}
+  .msqrt{display:inline-flex; align-items:stretch; vertical-align:middle; margin-left:.04em}
+  .msqrt::before{content:""; width:.6em; flex:none; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 30' preserveAspectRatio='none'%3E%3Cpath d='M.6 18.5 3 16.8 6 29 9.7.7' fill='none' stroke='%231b2a41' stroke-width='1.4' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%}
+  .msqrt > span{border-top:1.4px solid #1b2a41; padding:.08em .12em 0 .06em; display:inline-flex; align-items:center}
+  .eqs{display:grid; grid-template-columns:auto auto; justify-content:start; column-gap:.35em; row-gap:.5em; align-items:center}
+  .eqs > :nth-child(odd){text-align:right}
+  .mbox{overflow-x:auto; overflow-y:hidden; padding:2px 2px 4px; -webkit-overflow-scrolling:touch}
+  .fineprint{font-size:13px; line-height:1.5; color:var(--muted)}
+
+  /* ② 폭이 넓어지는 이유: 단계 목록 · 흐름 · 핵심 관계 · 계산 과정 */
+  ol.steps{margin:0; padding:0; list-style:none; counter-reset:st; display:flex; flex-direction:column; gap:9px}
+  ol.steps li{counter-increment:st; position:relative; padding-left:34px; font-size:16.5px; line-height:1.5; color:var(--ink-2)}
+  ol.steps li::before{content:counter(st); position:absolute; left:0; top:1px; width:24px; height:24px; border-radius:50%; background:var(--accent-soft); color:var(--accent-strong); font-weight:800; font-size:13.5px; display:grid; place-items:center}
+  ol.steps li.later{color:var(--muted)}
+  ol.steps li.later::before{background:#eef1f6; color:var(--muted)}
+  .flow{display:flex; align-items:center; flex-wrap:wrap; gap:6px 8px}
+  .flow .fl{padding:6px 12px; border-radius:10px; font-weight:800; font-size:17px; border:1px solid var(--line); white-space:nowrap}
+  .flow .fl.l{background:#fff6dd; border-color:#f3d48b; color:#835600}
+  .flow .fl.d{background:var(--accent-soft); border-color:#c7d8fb; color:var(--accent-strong)}
+  .flow .fl.w{background:var(--hz-soft); border-color:#b9e2cb; color:var(--hz)}
+  .flow .ar{color:var(--muted); font-weight:800}
+  .keyrel{border:1px solid #c7d8fb; background:linear-gradient(180deg,#f4f8ff 0%,#ffffff 100%); border-radius:14px; padding:14px 16px; display:flex; flex-direction:column; gap:10px}
+  .keyrel .kh{font-size:13px; font-weight:800; color:var(--accent-strong); letter-spacing:.3px}
+  .keyrel .kr{display:grid; grid-template-columns:104px minmax(0,1fr); align-items:center; gap:4px 12px}
+  .keyrel .kr .math{font-size:27px}
+  .keyrel .kr b{font-size:18px; line-height:1.35; color:var(--ink)}
+  .keyrel .cond{font-size:13.5px; line-height:1.5; color:var(--muted)}
+  .keyrel > .btn{align-self:flex-start; min-height:42px; font-size:15px}
+  .calc{display:flex; flex-direction:column; gap:14px; padding-top:12px; border-top:1px dashed var(--line-2)}
+  .cstep{display:flex; flex-direction:column; gap:4px}
+  .cstep .ct{font-size:13.5px; font-weight:800; color:var(--accent-strong)}
+  .cstep .cn{font-size:14.5px; line-height:1.5; color:var(--ink-2)}
+  .nw{white-space:nowrap}
+  .numcmp{border-top:1px solid var(--line); padding:10px 18px 12px; display:flex; flex-direction:column; gap:6px}
+  table.data.cmp2{font-size:15.5px; width:auto; min-width:min(100%, 480px)}
+  table.cmp2 caption{caption-side:top; text-align:left; font-size:13.5px; font-weight:700; color:var(--muted); padding-bottom:2px}
+  table.cmp2 th, table.cmp2 td{padding:4px 6px}
+  table.cmp2 tbody th{text-align:left; font-weight:700; color:var(--ink-2); font-size:14.5px; white-space:nowrap}
+  table.cmp2 td:last-child{font-weight:800; color:var(--hz)}
+  @media (max-width: 600px){ .numcmp{padding:8px 10px 10px} table.data.cmp2{font-size:14px; width:100%} }
+  @media (max-width: 600px){
+    .keyrel{padding:12px}
+    .keyrel .kr{grid-template-columns:minmax(0,1fr)}
+    .keyrel .kr .math{font-size:25px}
+    .keyrel .kr b{font-size:16.5px}
+    .math{font-size:19px}
+    .flow .fl{font-size:15.5px; padding:5px 10px}
+  }
 
   /* ── 3단계: 적용 문제 ─────────────────── */
   .qchips{display:flex; gap:10px 18px; flex-wrap:wrap; align-items:center; padding:10px 14px}
@@ -326,7 +382,9 @@
     .split{display:flex; flex-direction:column; align-items:stretch}
     .split > *{flex:0 1 auto}
     .split > .sim{flex:1 4 auto}
-    .split > .side{flex:0 .05 auto; min-height:220px}   /* 세로 화면: 그림이 먼저 줄어 설명·버튼이 보이게, 그래도 넘치면 설명 패널 안에서 스크롤 */
+    .split > .side{flex:0 .05 auto; min-height:220px}
+    #app[data-view="principle"] .split > .side{max-height:58%}   /* 펼친 계산 과정이 길어도 그림·버튼을 덮지 않게 */
+    #app[data-view="principle"] .split > .sim > .svgbox{min-height:min(240px, 22vh)}   /* 세로 화면: 그림이 먼저 줄어 설명·버튼이 보이게, 그래도 넘치면 설명 패널 안에서 스크롤 */
   }
   @media (min-width: 700px) and (min-height: 540px) and (max-height: 860px){
     .top{padding-top:6px; padding-bottom:6px}
@@ -384,6 +442,16 @@
     .opts .btn{font-size:20px; min-height:62px}
     .formula .eq{font-size:28px}
     .formula p, details .in{font-size:18px}
+    .math{font-size:25px}
+    .keyrel .kr{grid-template-columns:128px minmax(0,1fr)}
+    .keyrel .kr .math{font-size:33px}
+    .keyrel .kr b{font-size:22px}
+    .keyrel .cond, .fineprint, .keyrel .kh, .cstep .ct{font-size:15.5px}
+    .cstep .cn{font-size:17px}
+    ol.steps li{font-size:19.5px; padding-left:40px}
+    ol.steps li::before{width:28px; height:28px; font-size:15px}
+    .flow .fl{font-size:21px; padding:8px 16px}
+    table.data.cmp2{font-size:17.5px}
     table.data{font-size:17.5px}
     table.data th{font-size:15px}
     footer{font-size:14px}
@@ -808,6 +876,14 @@ function obsDraw(){
    2단계: 원리 알아보기 (장면 넘기기 + 직접 해 보기)
    ========================================================== */
 const sa1 = () => innerOf(1), sb1 = () => outerOf(1);
+/* 수식 표기 도우미: 분수·제곱근·변수 (HTML·CSS로 그림) */
+const mv = x => `<i class="mv">${x}</i>`;
+const mfrac = (a, b) => `<span class="mfrac"><span>${a}</span><span>${b}</span></span>`;
+const msqrt = x => `<span class="msqrt"><span>${x}</span></span>`;
+const SQRT_L = msqrt(mv('L'));
+/* 경계·폭의 계수: 안쪽 1/√1.1, 바깥쪽 1/√0.35, 폭 = 그 차이 (반올림 전 값으로 계산) */
+const K_IN = 1 / Math.sqrt(HZ_INNER_S), K_OUT = 1 / Math.sqrt(HZ_OUTER_S), K_W = K_OUT - K_IN;
+const ROUND_NOTE = '※ 화면의 수치는 소수 둘째 자리까지 반올림한 값입니다. 실제 계산에서는 반올림하지 않은 값을 사용하므로 표시된 수치를 직접 계산한 결과와 약간 다를 수 있습니다.';
 const PR_SCENES = [
   { part:1, L:1, d:1, title:'광도 1배인 별, 1 AU',
     text:() => '별에서 1 AU 떨어진 행성이 받는 에너지를 1이라고 해요. 노란 점은 별빛이에요. 한 칸에 점이 빽빽할수록 받는 에너지가 많아요.' },
@@ -820,13 +896,63 @@ const PR_SCENES = [
   { part:2, title:'태양의 생명 가능 지대',
     text:() => `받는 에너지가 ${HZ_INNER_S}인 곳이 안쪽 경계, ${HZ_OUTER_S}인 곳이 바깥쪽 경계예요. 태양에서는 ${f2(sa1())} ~ ${f2(sb1())} AU, 폭은 ${f2(widthOf(1))} AU예요.` },
   { part:2, cmp:'move', title:() => `광도 ${mulName(S.pr.cmpL)} 별: 두 경계가 모두 ${trimNum(Math.sqrt(S.pr.cmpL))}배 거리로`,
-    text:() => { const L = S.pr.cmpL, m = trimNum(Math.sqrt(L));
-      return `①에서 본 것처럼 광도가 ${mulName(L)}면 같은 에너지를 받는 거리가 ${m}배가 돼요. 그래서 에너지가 ${HZ_INNER_S}인 곳(안쪽 경계)은 ${f2(sa1())} → ${f2(innerOf(L))} AU, ${HZ_OUTER_S}인 곳(바깥쪽 경계)은 ${f2(sb1())} → ${f2(outerOf(L))} AU로 둘 다 ${m}배가 돼요.`; } },
+    text:() => '①에서 본 것처럼 같은 에너지를 받는 위치는 광도에 따라 옮겨 가요. 차례대로 따라가 봐요.',
+    html:() => { const L = S.pr.cmpL, m = trimNum(Math.sqrt(L)), up = L > 1;
+      return `<ol class="steps">
+        <li>별의 광도가 <b>${mulName(L)}</b>가 돼요.</li>
+        <li>같은 에너지를 받으려면 별에서 <b>√${trimNum(L)} = ${m}배</b> ${up ? '먼 곳' : '거리, 즉 더 가까운 곳'}에 있어야 해요.</li>
+        <li>그래서 안쪽 경계(받는 에너지 ${HZ_INNER_S})와 바깥쪽 경계(받는 에너지 ${HZ_OUTER_S})가 <b>모두 ${m}배</b> 거리로 옮겨 가요: 안쪽 ${f2(sa1())} → ${f2(innerOf(L))} AU, 바깥쪽 ${f2(sb1())} → ${f2(outerOf(L))} AU.</li>
+        <li class="later">따라서 두 경계 사이의 거리인 폭도 ${m}배가 돼요. (다음 장면)</li></ol>`; } },
   { part:2, cmp:'width', formula:'b', title:() => `그래서 폭도 ${trimNum(Math.sqrt(S.pr.cmpL))}배`,
-    text:() => { const L = S.pr.cmpL, m = trimNum(Math.sqrt(L));
-      return `두 경계가 모두 같은 배수(${m}배)로 움직이니 그 사이 거리도 ${m}배예요: ${f2(widthOf(1))} → ${f2(widthOf(L))} AU. 별이 밝아서 그냥 넓어지는 것이 아니라, 같은 에너지를 받는 위치가 √(광도)배로 옮겨 가기 때문이에요.`; } },
+    text:() => '',
+    html:() => { const L = S.pr.cmpL, m = trimNum(Math.sqrt(L)), up = L > 1, open = !!S.pr.formula.b;
+      return `
+        <div class="flow" role="img" aria-label="광도 ${mulName(L)}, 경계 거리 ${m}배, 생명 가능 지대 폭 ${m}배"><span class="fl l">광도 ${mulName(L)}</span><span class="ar">→</span><span class="fl d">경계 거리 ${m}배</span><span class="ar">→</span><span class="fl w">생명 가능 지대 폭 ${m}배</span></div>
+        <p class="txt">안쪽 경계와 바깥쪽 경계가 <b>같은 배율(${m}배)</b>로 ${up ? '멀어지기' : '가까워지기'} 때문에, 그 사이 거리인 폭도 ${m}배가 돼요. 별이 밝아서 빛이 더 넓게 퍼지기 때문이 아니라, 같은 에너지를 받는 위치가 두 경계 모두 옮겨 가기 때문이에요.</p>
+        <section class="keyrel" aria-label="핵심 관계">
+          <p class="kh">핵심 관계</p>
+          <div class="kr"><span class="math">${mv('d')} ∝ ${SQRT_L}</span><b>같은 복사 에너지를 받는 거리 <span class="nw">∝ √광도</span></b></div>
+          <div class="kr"><span class="math">${mv('W')} ∝ ${SQRT_L}</span><b>생명 가능 지대의 폭 <span class="nw">∝ √광도</span></b></div>
+          <p class="cond">안쪽 경계(받는 에너지 ${HZ_INNER_S})와 바깥쪽 경계(${HZ_OUTER_S})의 에너지 기준을 고정한 이 모형에서 성립하는 관계예요. (${mv('d')}: 거리, ${mv('W')}: 폭, ${mv('L')}: 광도, 태양 = 1)</p>
+          <button type="button" class="btn" data-act="pr-formula" data-v="b" aria-expanded="${open}">${open ? '계산 과정 접기' : '계산 과정 보기'}</button>
+          ${open ? prCalc(L) : ''}
+        </section>`; } },
 ];
 const PART_FIRST = { 1:0, 2:4 };
+/* 그림 아래 수치 비교(태양 ↔ 비교할 별) + 반올림 안내 */
+function prNumTable(L){
+  const m = trimNum(Math.sqrt(L)), row = (k, f) => `<tr><th scope="row">${k}</th><td>${f2(f(1))}</td><td>${f2(f(L))}</td><td>×${m}</td></tr>`;
+  return `<div class="numcmp">
+    <table class="data cmp2"><caption>수치 비교 (AU)</caption>
+      <thead><tr><th></th><th>광도 1배 (태양)</th><th>광도 ${mulName(L)}</th><th>배율</th></tr></thead>
+      <tbody>${row('안쪽 경계', innerOf)}${row('바깥쪽 경계', outerOf)}${row('폭', widthOf)}</tbody></table>
+    <p class="fineprint">${ROUND_NOTE}</p></div>`;
+}
+/* '계산 과정 보기'를 펼쳤을 때: 받는 에너지 → 거리 → 경계 → 폭 */
+function prCalc(L){
+  const m = Math.sqrt(L), fr = (a, b) => mfrac(a, b);
+  return `<div class="calc">
+    <div class="cstep"><p class="ct">① 받는 에너지</p>
+      <div class="mbox"><span class="math">${mv('S')} = ${fr(mv('L'), mv('d') + '<sup>2</sup>')}</span></div>
+      <p class="cn">${mv('S')}: 받는 에너지(지구 = 1) · ${mv('L')}: 광도(태양 = 1) · ${mv('d')}: 거리(AU)</p></div>
+    <div class="cstep"><p class="ct">② 거리</p>
+      <div class="mbox"><span class="math">${mv('d')} = ${msqrt(fr(mv('L'), mv('S')))}</span></div>
+      <p class="cn">받는 에너지 ${mv('S')}가 같으면 거리 ${mv('d')}는 ${SQRT_L}에 비례해요.</p></div>
+    <div class="cstep"><p class="ct">③ 안쪽·바깥쪽 경계</p>
+      <div class="mbox"><div class="math eqs">
+        <span><span class="kl">안쪽 경계</span> ${mv('d')}<sub>안</sub></span><span>= ${msqrt(fr(mv('L'), HZ_INNER_S))} ≈ ${K_IN.toFixed(3)}${SQRT_L}</span>
+        <span><span class="kl">바깥쪽 경계</span> ${mv('d')}<sub>밖</sub></span><span>= ${msqrt(fr(mv('L'), HZ_OUTER_S))} ≈ ${K_OUT.toFixed(3)}${SQRT_L}</span>
+      </div></div></div>
+    <div class="cstep"><p class="ct">④ 생명 가능 지대의 폭</p>
+      <div class="mbox"><div class="math eqs">
+        <span>${mv('W')}</span><span>= ${msqrt(fr(mv('L'), HZ_OUTER_S))} − ${msqrt(fr(mv('L'), HZ_INNER_S))}</span>
+        <span></span><span>= (${fr(1, msqrt(HZ_OUTER_S))} − ${fr(1, msqrt(HZ_INNER_S))})${SQRT_L}</span>
+        <span></span><span>≈ ${K_W.toFixed(3)}${SQRT_L} <span class="kl">(AU)</span></span>
+      </div></div>
+      <p class="cn">광도 ${mulName(L)}: ${SQRT_L} = ${trimNum(m)} → ${mv('W')} ≈ ${K_W.toFixed(3)} × ${trimNum(m)} ≈ ${f2(widthOf(L))} AU</p></div>
+    <p class="fineprint">※ ${K_IN.toFixed(3)}, ${K_OUT.toFixed(3)}, ${K_W.toFixed(3)}은 소수 셋째 자리까지 반올림한 값이라 ‘≈’로 썼어요. ${ROUND_NOTE.slice(2)}</p>
+  </div>`;
+}
 function prTarget(){
   const sc = PR_SCENES[S.pr.scene], f = S.pr.free;
   return { L:f ? f.L : sc.L, d:f ? f.d : sc.d };
@@ -851,19 +977,19 @@ VIEWS.principle = function(){
   } else if (sc.cmp){
     ctl = `<span class="lbl">비교할 별의 광도</span>${[0.25, 4, 9].map(v => `<button type="button" class="btn" data-act="pr-cmp" data-v="${v}" aria-pressed="${v === S.pr.cmpL}">${mulName(v)}</button>`).join('')}`;
   }
-  const fkey = sc.formula, fopen = fkey && S.pr.formula[fkey], m = trimNum(Math.sqrt(S.pr.cmpL));
+  const fkey = sc.formula, fopen = fkey && S.pr.formula[fkey];
   let formula = '';
-  if (fkey && !free){
+  if (fkey === 'a' && !free){   // ② 장면의 '계산 과정 보기'는 핵심 관계 카드 안에 있다
     formula = `<button type="button" class="btn" data-act="pr-formula" data-v="${fkey}" aria-expanded="${!!fopen}">${fopen ? '수식 접기' : '수식으로 확인하기'}</button>`;
-    if (fopen) formula += fkey === 'a' ? `
-      <div class="box formula"><div class="eq">받는 에너지 = 광도 ÷ (거리)²</div>
-        <p>S = L / d² &nbsp;(S: 받는 에너지, 지구 = 1 · L: 광도, 태양 = 1 · d: 거리, AU)</p>
-        <p>광도 4배, 2 AU → 4 ÷ 2² = 1 &nbsp;·&nbsp; 광도 9배, 3 AU → 9 ÷ 3² = 1</p>
-        <p>그래서 같은 에너지를 받는 거리는 √(광도)배: √4 = 2, √9 = 3</p></div>` : `
-      <div class="box formula"><div class="eq">d = √(L / S)</div>
-        <p>안쪽 경계 = √(L ÷ ${HZ_INNER_S}), &nbsp;바깥쪽 경계 = √(L ÷ ${HZ_OUTER_S})</p>
-        <p>폭 = √(L ÷ ${HZ_OUTER_S}) − √(L ÷ ${HZ_INNER_S}) = (${f2(sb1())} − ${f2(sa1())}) × √L ≈ ${f2(widthOf(1))} × √L</p>
-        <p>광도 ${mulName(S.pr.cmpL)} → √${trimNum(S.pr.cmpL)} = ${m} → 두 경계와 폭이 모두 ${m}배</p></div>`;
+    if (fopen) formula += `
+      <div class="box formula">
+        <div class="mbox"><span class="math"><span class="kl">받는 에너지</span> ${mv('S')} = ${mfrac(mv('L'), mv('d') + '<sup>2</sup>')}</span></div>
+        <p>${mv('S')}: 받는 에너지(지구 = 1) · ${mv('L')}: 광도(태양 = 1) · ${mv('d')}: 거리(AU)</p>
+        <div class="mbox"><div class="math eqs">
+          <span><span class="kl">광도 4배, 2 AU</span></span><span>${mv('S')} = ${mfrac(4, '2<sup>2</sup>')} = 1</span>
+          <span><span class="kl">광도 9배, 3 AU</span></span><span>${mv('S')} = ${mfrac(9, '3<sup>2</sup>')} = 1</span>
+        </div></div>
+        <p>그래서 같은 에너지를 받는 거리는 √광도 배예요: √4 = 2, √9 = 3 → <span class="math" style="font-size:1.15em">${mv('d')} ∝ ${SQRT_L}</span></p></div>`;
   }
   $('app').innerHTML = `
     <div class="lead"><h2>원리 알아보기</h2><p>왜 광도가 크면 생명 가능 지대가 멀어지고 넓어질까요?</p></div>
@@ -874,13 +1000,15 @@ VIEWS.principle = function(){
     <div class="split">
       <section class="sim" aria-label="원리 그림">
         <svg id="prSv" viewBox="${part === 1 ? (NARROW ? '0 0 1000 530' : '0 0 1000 490') : `0 0 ${VW} 400`}" role="img" aria-label="${esc(title)}"><g id="prStatic"></g><g id="prDyn"></g></svg>
+        ${sc.cmp === 'width' && !free ? prNumTable(S.pr.cmpL) : ''}
         ${ctl ? `<div class="ctl">${ctl}</div>` : ''}
       </section>
       <aside class="side card" aria-live="polite">
         <div class="dots" aria-hidden="true">${inPart.map((_, i) => `<i class="${i === k ? 'on' : ''}"></i>`).join('')}</div>
         <p class="scene-no">${free ? '자유 탐구' : `장면 ${k + 1} / ${inPart.length}`}</p>
         <h3>${esc(title)}</h3>
-        <p class="txt">${esc(text)}</p>
+        ${text ? `<p class="txt">${esc(text)}</p>` : ''}
+        ${!free && sc.html ? sc.html() : ''}
         ${read}
         ${formula}
         <nav class="snav" aria-label="장면 이동">
@@ -1039,7 +1167,7 @@ const AP = [
     e:`같은 에너지를 받는 거리는 √(광도)배로 멀어져요. √9 = 3이므로 ${f2(innerOf(1))} → ${f2(innerOf(9))} AU, 3배예요.` },
   { cat:'예측', q:'광도가 태양의 4배인 별의 생명 가능 지대 폭은 태양의 몇 배일까요?',
     c:['같다(1배)', '2배', '4배', '16배'], a:1, vis:{ type:'predict', L:4 },
-    e:`두 경계가 모두 √4 = 2배로 멀어지므로 폭도 2배예요: ${f2(widthOf(1))} → ${f2(widthOf(4))} AU.` },
+    e:`두 경계가 모두 √4 = 2배로 멀어지므로 폭도 2배예요: ${f2(widthOf(1))} → ${f2(widthOf(4))} AU. (화면 값은 반올림한 값이라 직접 곱한 값과 조금 다를 수 있어요.)` },
   { cat:'예측', q:'별의 광도가 태양의 0.25배로 줄면 생명 가능 지대는 어떻게 될까요?',
     c:['별에 가까워지고 폭이 좁아진다', '별에 가까워지고 폭이 넓어진다', '별에서 멀어지고 폭이 좁아진다', '변하지 않는다'], a:0, vis:{ type:'predict', L:0.25 },
     e:`√0.25 = 0.5이므로 두 경계와 폭이 모두 0.5배가 돼요: ${f2(innerOf(0.25))} ~ ${f2(outerOf(0.25))} AU, 폭 ${f2(widthOf(0.25))} AU.` },
@@ -1503,7 +1631,15 @@ document.addEventListener('click', e => {
       render(); break;
     }
     case 'pr-cmp': S.pr.cmpL = +v; render(); break;
-    case 'pr-formula': S.pr.formula[v] = !S.pr.formula[v]; render(); break;
+    case 'pr-formula': {
+      S.pr.formula[v] = !S.pr.formula[v]; render();
+      const side = document.querySelector('#app .side'), c = side && side.querySelector('.calc, .formula');
+      if (S.pr.formula[v] && c){   // 펼친 계산 과정이 보이도록
+        if (side.scrollHeight > side.clientHeight + 1) side.scrollTop += c.getBoundingClientRect().top - side.getBoundingClientRect().top - 80;
+        else if (c.getBoundingClientRect().bottom > innerHeight) c.scrollIntoView({ block:'nearest' });
+      }
+      break;
+    }
     case 'ap-go': S.ap.q = Math.max(0, Math.min(AP.length - 1, +v)); render(); break;
     case 'ap-ans': if (S.ap.picks[S.ap.q] == null){ S.ap.picks[S.ap.q] = +v; render(); } break;
     case 'ap-reset': S.ap = { q:0, picks:[] }; render(); break;
