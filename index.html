@@ -332,7 +332,31 @@
   .opts .btn .mk{flex:none; font-size:11.5px; font-weight:700; padding:2px 8px; border-radius:999px; margin-right:4px; color:#fff}
   .opts .btn.right .mk{background:var(--hz-line)}
   .opts .btn.wrong .mk{background:var(--bad)}
-  .qcard p.box{border-left:2px solid var(--accent); border-radius:0 10px 10px 0}
+  .qchips .btn.trying::after{content:""; position:absolute; top:5px; right:5px; width:6px; height:6px; border-radius:50%; box-shadow:inset 0 0 0 1.5px var(--star)}
+  .score b{color:var(--ink)}
+  /* 3단계 탐구: 단계(예측 → 조작 → 판정)와 피드백 */
+  .apstep{display:flex; flex-direction:column; gap:8px}
+  .apstep .sh{margin:0; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; color:var(--accent-ink)}
+  .apstep .sh b{width:22px; height:22px; border-radius:50%; display:grid; place-items:center; font-size:12px; background:var(--accent-soft); color:var(--accent-ink); flex:none}
+  .apstep.ok .sh b{background:var(--hz-line); color:#fff}
+  .apstep.off{opacity:.45}
+  .readout{margin:0; font-size:15px; color:var(--ink-2)}
+  .apbtns{display:flex; gap:8px; flex-wrap:wrap}
+  .apbtns .btn{min-height:40px; font-size:14.5px}
+  .hint{margin:0; font-size:14.5px; line-height:1.6; color:var(--ink-2); background:var(--accent-soft); border-radius:10px; padding:10px 12px}
+  .opts.row{flex-direction:row; flex-wrap:wrap}
+  .opts.row .btn{min-height:44px; justify-content:center; padding:6px 16px}
+  .fb{border:1px solid var(--line); border-left:3px solid var(--accent); border-radius:0 10px 10px 0; padding:10px 14px; font-size:15.5px; line-height:1.6; color:var(--ink-2); background:var(--surface)}
+  .fb.good{border-left-color:var(--hz-line); background:var(--hz-soft)}
+  .fb.try{border-left-color:var(--star); background:var(--star-soft)}
+  .fb b{color:var(--ink)}
+  .fb ul.pts{margin:6px 0 0; padding-left:18px; display:flex; flex-direction:column; gap:4px}
+  .donebadge{font-size:11px; font-weight:700; padding:1px 8px; border-radius:999px; background:var(--hz-line); color:#fff; margin-left:6px; vertical-align:1px}
+  .apctl{flex-wrap:nowrap; gap:14px}
+  .apctl .slider{flex:1; min-width:0}
+  .apctl output{font-weight:700; font-size:17px; min-width:78px; text-align:right; font-feature-settings:"tnum"}
+  .slider input:disabled{cursor:not-allowed; opacity:.4}
+  .sim svg .pl{cursor:pointer}
 
   /* ── 심화 ─────────────────────────────── */
   table.data{width:100%; border-collapse:collapse; font-size:15px}
@@ -610,7 +634,7 @@ const S = {
   view: 'observe',
   obs: { L:1, s:1, base:null },   // s: 화면에 그려진 √광도(부드러운 이동용) · base: 학생이 저장한 비교 기준 광도
   pr:  { scene:0, free:null, cmpL:4, formula:{}, cur:{ sL:1, d:1, move:1, fade:1 } },
-  ap:  { q:0, picks:[] },
+  ap:  null,                     // 3단계 탐구 상태(아래 apFresh()로 초기화)
   deep:{ tab:'challenge' },
   ch:  null,                      // 도전 활동 상태(아래에서 초기화)
   gr:  { on:[false, true, true, false] },
@@ -1218,101 +1242,408 @@ function pr2Draw(sc){
 }
 
 /* ==========================================================
-   3단계: 적용하기 (비교 · 판단 · 예측 · 퀴즈)
+   3단계: 적용하기 — 예측하고, 조작하고, 관찰해서 개념을 적용하는 탐구 10개
+   (경계 거리를 외우거나 계산하지 않아도 되도록, 판단에 필요한 자료·조작을 그림에 함께 준다)
    ========================================================== */
-const JUDGE = ['너무 뜨거움 (안쪽 경계보다 가까움)', '생명 가능 지대 안', '너무 차가움 (바깥쪽 경계보다 멂)'];
-function judgeQ(L, d){
-  const Sx = fluxAt(L, d), z = zoneOf(Sx);
-  const where = { hot:'안쪽 경계보다 가까워 받는 에너지가 너무 많아요', ok:'두 경계 사이에 있어요', cold:'바깥쪽 경계보다 멀어 받는 에너지가 너무 적어요' }[z];
-  return { cat:'판단', q:`광도가 태양의 ${mulName(L)}인 별에서 ${trimNum(d)} AU 떨어진 행성은 어디에 있을까요?`,
-    c:JUDGE, a:{ hot:0, ok:1, cold:2 }[z], vis:{ type:'judge', L, d },
-    e:`이 별의 생명 가능 지대는 ${f2(innerOf(L))} ~ ${f2(outerOf(L))} AU예요. ${trimNum(d)} AU는 ${where}. (받는 에너지: 지구의 ${fmtS(Sx)}배)` };
-}
+const AP_NAV = [['A', '비교'], ['B', '자료 해석'], ['C', '예측·확인'], ['D', '조건 조절'], ['E', '개념 적용']];
+const AP_TYPE = { A:'비교하기', B:'자료 해석하기', C:'예측하고 확인하기', D:'조건 조절하기', E:'개념 적용하기' };
+const ZONE_CHOICES = ['받는 에너지가 너무 많은 영역', '생명 가능 지대 안', '받는 에너지가 너무 적은 영역'];
+const ZONE_IDX = { hot:0, ok:1, cold:2 };
+const B1_PLANETS = [['A', 0.8], ['B', 1.2], ['C', 1.7], ['D', 2.6], ['E', 3.5]];   // 광도 2.25배 별: 생명 가능 지대 약 1.43–2.06 AU → C만 안
 const AP = [
-  { cat:'비교', q:'광도가 태양의 0.25배, 1배, 9배인 세 별이 있어요. 생명 가능 지대의 폭이 가장 넓은 별은?',
-    c:['0.25배 별', '1배 별', '9배 별', '셋 다 같다'], a:2, vis:{ type:'compare', Ls:[9, 1, 0.25] },
-    e:`폭은 0.25배 별 ${f2(widthOf(0.25))}, 1배 별 ${f2(widthOf(1))}, 9배 별 ${f2(widthOf(9))} AU예요. 광도가 클수록 두 경계가 모두 멀어지면서 폭도 넓어져요.` },
-  judgeQ(4, 1.5), judgeQ(0.25, 1), judgeQ(9, 4),
-  { cat:'예측', q:'광도가 태양의 9배인 별의 안쪽 경계는 태양의 몇 배 거리일까요?',
-    c:['3배', '9배', '81배', '4.5배'], a:0, vis:{ type:'predict', L:9 },
-    e:`같은 에너지를 받는 거리는 √(광도)배로 멀어져요. √9 = 3이므로 ${f2(innerOf(1))} → ${f2(innerOf(9))} AU, 3배예요.` },
-  { cat:'예측', q:'광도가 태양의 4배인 별의 생명 가능 지대 폭은 태양의 몇 배일까요?',
-    c:['같다(1배)', '2배', '4배', '16배'], a:1, vis:{ type:'predict', L:4 },
-    e:`두 경계가 모두 √4 = 2배로 멀어지므로 폭도 2배예요: ${f2(widthOf(1))} → ${f2(widthOf(4))} AU. (화면 값은 반올림한 값이라 직접 곱한 값과 조금 다를 수 있어요.)` },
-  { cat:'예측', q:'별의 광도가 태양의 0.25배로 줄면 생명 가능 지대는 어떻게 될까요?',
-    c:['별에 가까워지고 폭이 좁아진다', '별에 가까워지고 폭이 넓어진다', '별에서 멀어지고 폭이 좁아진다', '변하지 않는다'], a:0, vis:{ type:'predict', L:0.25 },
-    e:`√0.25 = 0.5이므로 두 경계와 폭이 모두 0.5배가 돼요: ${f2(innerOf(0.25))} ~ ${f2(outerOf(0.25))} AU, 폭 ${f2(widthOf(0.25))} AU.` },
-  { cat:'퀴즈', q:'별까지의 거리가 3배가 되면 행성이 받는 에너지는 몇 배가 될까요?',
-    c:['3배', '1/3배', '1/9배', '9배'], a:2,
-    e:'빛이 3 × 3 = 9배 넓은 면적으로 퍼지므로, 같은 면적이 받는 에너지는 1/9배예요.' },
-  { cat:'퀴즈', q:'광도가 큰 별일수록 생명 가능 지대의 폭이 넓은 까닭으로 가장 알맞은 것은?',
-    c:['별이 밝아서 빛이 더 넓은 범위를 비추기 때문', '같은 에너지를 받는 위치가 √(광도)배 멀어져, 두 경계 사이 거리도 √(광도)배가 되기 때문', '바깥쪽 경계만 멀어지고 안쪽 경계는 그대로이기 때문'], a:1,
-    e:'안쪽 경계와 바깥쪽 경계가 모두 같은 배수(√광도배)로 멀어져요. 그래서 그 사이 거리인 폭도 같은 배수로 커져요.' },
-  { cat:'퀴즈', q:'어떤 행성이 생명 가능 지대 안에 있다면, 그 행성에는 반드시 생명체가 있을까요?',
-    c:['반드시 있다', '그렇지 않다'], a:1,
-    e:'생명 가능 지대는 받는 에너지만 따진 단순한 모형이에요. 액체 물이 실제로 있으려면 대기의 양과 성분 같은 조건도 맞아야 하고, 생명 가능 지대 안에 있다고 해서 생명체가 있다는 보장은 없어요.' },
+  { type:'A', kind:'cmpReveal', L:4,
+    q:'광도가 4배가 되면 생명 가능 지대의 위치와 폭은 어떻게 변할까요?',
+    intro:'그림의 태양 생명 가능 지대를 보고, 광도가 4배인 별에서는 어떻게 될지 먼저 예측해 보세요.',
+    c:['별에서 더 멀어지고 폭도 넓어진다', '별에서 더 멀어지지만 폭은 좁아진다', '별에 더 가까워지고 폭도 넓어진다'], a:0,
+    why:() => `두 경계가 모두 √4 = 2배 거리로 옮겨 가요(안쪽 ${f2(innerOf(1))} → ${f2(innerOf(4))} AU, 바깥쪽 ${f2(outerOf(1))} → ${f2(outerOf(4))} AU). 그래서 생명 가능 지대는 별에서 멀어지고, 두 경계 사이인 폭도 ${f2(widthOf(1))} → ${f2(widthOf(4))} AU로 2배가 돼요.` },
+  { type:'A', kind:'observeL', ctl:{ key:'L', a:0.25, b:1, log:true, snaps:[0.25, 0.5, 1], ticks:[0.25, 0.5, 1], label:'별의 광도' }, L0:1,
+    q:'광도가 작아질수록 생명 가능 지대의 위치와 폭은 어떻게 변하나요?',
+    intro:'그림 아래 슬라이더로 별의 광도를 1배에서 0.25배까지 줄이며 태양(회색)과 비교해 보세요.',
+    c:['별에 가까워지고 폭은 좁아진다', '별에 가까워지지만 폭은 넓어진다', '별에서 멀어지고 폭은 좁아진다'], a:0,
+    why:() => `광도가 0.25배가 되면 같은 에너지를 받는 거리가 √0.25 = 0.5배가 돼요. 두 경계가 모두 별 쪽으로 다가오고(${f2(innerOf(1))}–${f2(outerOf(1))} → ${f2(innerOf(0.25))}–${f2(outerOf(0.25))} AU), 폭도 ${f2(widthOf(1))} → ${f2(widthOf(0.25))} AU로 절반이 돼요.`,
+    retry:'다시 관찰해 보세요. 초록 띠의 두 경계가 태양(회색)보다 별 쪽으로 갔는지 바깥쪽으로 갔는지, 띠의 길이는 어떻게 되었는지 보세요.' },
+  { type:'B', kind:'pickPlanet', L:2.25,
+    q:'그림에서 생명 가능 지대 안에 있는 행성은 어느 것일까요?',
+    intro:'광도가 태양의 2.25배인 별이에요. 초록 띠(생명 가능 지대)의 두 경계와 거리축을 읽어 판단해 보세요. 그림의 행성을 눌러도 돼요.' },
+  { type:'B', kind:'zoneInfo', L:4, d:1.5,
+    q:'광도가 태양의 4배인 별에서 1.5 AU 떨어진 행성은 어디에 있을까요?',
+    intro:'계산하지 않아도 돼요. 아래 버튼으로 판단에 필요한 자료를 확인한 뒤 골라 보세요.' },
+  { type:'C', kind:'predictL', measure:'dist', target:4, ctl:{ key:'L', a:1, b:9, log:true, snaps:[1, 2, 4, 9], ticks:[1, 4, 9], label:'별의 광도' }, L0:1,
+    q:'광도가 4배가 되면 생명 가능 지대의 경계 거리는 몇 배가 될까요?',
+    c:['2배', '4배', '변하지 않음'], a:0,
+    right:'예측이 맞았어요. 광도가 4배가 되면 같은 복사 에너지를 받는 거리는 2배가 됩니다.',
+    why:() => `같은 에너지를 받는 거리는 √광도에 비례해요. √4 = 2이므로 안쪽 ${f2(innerOf(1))} → ${f2(innerOf(4))} AU, 바깥쪽 ${f2(outerOf(1))} → ${f2(outerOf(4))} AU로 두 경계가 모두 2배 거리가 돼요.` },
+  { type:'C', kind:'predictL', measure:'width', target:9, ctl:{ key:'L', a:1, b:9, log:true, snaps:[1, 2, 4, 9], ticks:[1, 4, 9], label:'별의 광도' }, L0:1,
+    q:'광도가 9배가 되면 생명 가능 지대의 폭은 몇 배가 될까요?',
+    c:['3배', '9배', '변하지 않음'], a:0,
+    right:'예측이 맞았어요. 광도 9배 → 경계 거리 3배 → 생명 가능 지대 폭 3배예요.',
+    why:() => `√9 = 3이므로 두 경계가 모두 3배 거리로 옮겨 가요. 그래서 그 사이 거리인 폭도 ${f2(widthOf(1))} → ${f2(widthOf(9))} AU로 3배가 돼요.` },
+  { type:'C', kind:'predictD', target:2, ctl:{ key:'d', a:0.5, b:4, snaps:[1, 2, 3], ticks:[1, 2, 3, 4], label:'행성 거리' }, d0:1, L:1,
+    q:'행성이 별에서 멀어질수록 받는 복사 에너지는 어떻게 변할까요?',
+    intro:'광도가 1배인 별이에요. 행성을 1 AU에서 2 AU로 옮기면 받는 에너지가 어떻게 될지 먼저 예측해 보세요.',
+    c:['1/2배로 줄어든다', '1/4배로 줄어든다', '변하지 않는다'], a:1,
+    right:'예측이 맞았어요. 거리가 2배가 되면 같은 빛이 2 × 2 = 4배 넓은 면적으로 퍼져서, 받는 에너지는 1/4배가 돼요.',
+    why:() => '받는 에너지는 거리의 제곱에 반비례해요(S = L / d²). 행성을 3 AU까지 옮겨 보면 1/9배가 되는 것도 확인할 수 있어요.' },
+  { type:'D', kind:'missionD', L:4, d0:1.5, ctl:{ key:'d', a:0.5, b:5.5, snaps:[], ticks:[1, 2, 3, 4, 5], label:'행성 거리' },
+    q:'행성의 공전 거리를 조절하여 생명 가능 지대 안으로 이동시켜 보세요.',
+    intro:'별의 광도는 태양의 4배로 고정되어 있어요. 행성의 거리만 바꿀 수 있어요(슬라이더 또는 그림에서 끌기).' },
+  { type:'D', kind:'missionL', d:1, L0:2, ctl:{ key:'L', a:0.25, b:4, log:true, snaps:[0.25, 0.5, 1, 2, 4], ticks:[0.25, 0.5, 1, 2, 4], label:'별의 광도' },
+    q:'행성의 공전 거리는 바꾸지 않고, 별의 광도만 조절하여 행성이 생명 가능 지대 안에 있도록 만들어 보세요.',
+    intro:'행성은 1 AU에 고정되어 있어요. 별의 광도만 바꿀 수 있고, 생명 가능 지대는 광도에 따라 바로 움직여요.' },
+  { type:'E', kind:'concept', L:1.5, d:1.4,
+    q:'이 행성에 액체 상태의 물이나 생명체가 반드시 존재한다고 말할 수 있을까요?',
+    intro:'가상의 외계 행성이 별의 생명 가능 지대 안에서 공전하고 있어요.',
+    c:['반드시 존재한다고 말할 수 있다', '반드시 존재한다고 말할 수는 없다'], a:1,
+    retry:'다시 생각해 볼까요? 생명 가능 지대는 별에서 받는 에너지만으로 정한 영역이에요. 이것만으로 행성의 실제 환경을 다 알 수 있을까요?' },
 ];
-const AP_GROUPS = [['비교', '비교'], ['판단', '판단'], ['예측', '예측'], ['퀴즈', '퀴즈']];
-VIEWS.apply = function(){
-  const qi = S.ap.q, it = AP[qi], pk = S.ap.picks[qi];
-  const score = AP.reduce((n, x, k) => n + (S.ap.picks[k] === x.a ? 1 : 0), 0);
-  const answered = S.ap.picks.filter(p => p != null).length;
-  const chips = AP_GROUPS.map(([cat, name]) => `<div class="qgroup"><span>${name}</span>${AP.map((x, k) => x.cat !== cat ? '' :
-    `<button type="button" class="btn ${S.ap.picks[k] != null ? 'done' : ''}" data-act="ap-go" data-v="${k}" aria-pressed="${k === qi}" aria-label="${k + 1}번 문제${S.ap.picks[k] != null ? ' (풀었음)' : ''}">${k + 1}</button>`).join('')}</div>`).join('');
-  const vis = it.vis ? apVisSvg(it.vis, pk != null) : '';
-  $('app').innerHTML = `
-    <div class="lead"><h2>적용하기</h2><p>배운 개념으로 비교하고, 판단하고, 예측해 보세요.</p></div>
-    <nav class="qchips card" aria-label="문제 선택">${chips}
-      <span class="score">맞힌 문제 ${score} / ${AP.length}${answered ? ` <button type="button" class="btn ghost" data-act="ap-reset">다시 풀기</button>` : ''}</span></nav>
-    <div class="split ${vis ? '' : 'solo'}">
-      ${vis ? `<section class="sim" aria-label="문제 그림"><p class="figcap"><b>FIG. 3</b>문제 그림 · 같은 축척(0–6 AU)</p>${vis}</section>` : ''}
-      <section class="side card qcard" aria-live="polite">
-        <span class="tag">${it.cat === '퀴즈' ? '핵심 퀴즈' : it.cat + '하기'} · ${qi + 1}번</span>
-        <p class="q">${esc(it.q)}</p>
-        <div class="opts">${it.c.map((c, k) => {
-          let cls = '', mark = '';
-          if (pk != null){ if (k === it.a){ cls = 'right'; mark = '<span class="mk">정답</span>'; } else if (k === pk){ cls = 'wrong'; mark = '<span class="mk">내 답</span>'; } }
-          return `<button type="button" class="btn ${cls}" data-act="ap-ans" data-v="${k}" ${pk != null ? 'disabled' : ''}>${mark}${esc(c)}</button>`;
-        }).join('')}</div>
-        ${pk != null ? `<p class="box" role="status"><b>${pk === it.a ? '맞았어요!' : '다시 생각해 봐요.'}</b> ${esc(it.e)}</p>`
-          : `<p class="note">${it.vis ? '답을 고르면 그림에 생명 가능 지대가 나타나요.' : '답을 고르면 해설이 나와요.'}</p>`}
-        <nav class="snav" aria-label="문제 이동">
-          <button type="button" class="btn" data-act="ap-go" data-v="${qi - 1}" ${qi === 0 ? 'disabled' : ''}><span class="ico" aria-hidden="true">←</span>이전</button>
-          ${qi < AP.length - 1 ? `<button type="button" class="btn go" data-act="ap-go" data-v="${qi + 1}">다음 문제<span class="ico" aria-hidden="true">→</span></button>`
-            : `<button type="button" class="btn go" data-act="view" data-v="deep">심화 탐구<span class="ico" aria-hidden="true">→</span></button>`}
-        </nav>
-      </section>
-    </div>
-    <p class="note">더 해 보고 싶다면 위쪽 <b>＋ 심화 탐구</b>에서 <b>도전! 생명 가능 지대 찾기</b>를 해 보세요.</p>`;
-};
-function apVisSvg(v, reveal){
-  let s = `<defs>${GLOW_DEF('aGlow')}</defs>`, H;
-  const rowLabel = (y, L, h) => rowLab(y, h, NARROW ? `광도 ${mulName(L)}` : mulName(L)) + starSvg(AX0, y, L, 'aGlow', 11);
-  if (v.type === 'compare'){
-    const ys = NARROW ? [80, 180, 280] : [70, 155, 240]; H = NARROW ? 375 : 335;
-    if (!NARROW) s += `<text x="20" y="28" font-size="16" fill="#9FB0C4">별의 광도 (태양 = 1)</text>`;
-    v.Ls.forEach((L, i) => { s += hzRowSvg({ y:ys[i], L, h:38, reveal }) + rowLabel(ys[i], L, 38); });
-    s += axisSvg(H - 50);
-  } else if (v.type === 'judge'){
-    const y = 125; H = 250;
-    s += NARROW ? `<text x="4" y="26" font-size="18" font-weight="700" fill="#E8EEF6">광도 ${mulName(v.L)} 별 · 행성 ${trimNum(v.d)} AU</text>`
-                : `<text x="20" y="28" font-size="16" fill="#9FB0C4">광도 ${mulName(v.L)} 별과 ${trimNum(v.d)} AU의 행성</text>`;
-    s += hzRowSvg({ y, L:v.L, h:50, reveal }) + (NARROW ? starSvg(AX0, y, v.L, 'aGlow', 11) : rowLabel(y, v.L, 50));
-    const x = AX(v.d);
-    s += `<circle cx="${x}" cy="${y}" r="13" fill="#ffffff" stroke="#E8EEF6" stroke-width="2"/>`;
-    s += `<text x="${Math.max(x, NARROW ? 60 : 0)}" y="${y - 38}" text-anchor="middle" font-size="18" font-weight="700" fill="#E8EEF6">${NARROW ? '행성' : `행성 ${trimNum(v.d)} AU`}</text>`;
-    if (reveal){ const z = zoneOf(fluxAt(v.L, v.d)); s += `<text x="${Math.max(x, NARROW ? 70 : 0)}" y="${y - 62}" text-anchor="middle" font-size="17" font-weight="700" fill="${ZONES[z].ink}">${ZONES[z].label}</text>`; }
-    s += axisSvg(195);
-  } else {
-    const yS = 70, yT = 175; H = 300;
-    s += rowLab(yS, 30, '태양') + `<circle cx="${AX0}" cy="${yS}" r="8" fill="${SUN_GRAY}"/>`;
-    s += hzRowSvg({ y:yS, L:1, h:30, gray:true });
-    s += hzRowSvg({ y:yT, L:v.L, h:48, reveal }) + rowLabel(yT, v.L, 48);
-    if (!reveal) s += `<text x="${(AX0 + AX1) / 2}" y="${yT + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="#9FB0C4">?</text>`;
-    else for (const d of [innerOf(1), outerOf(1)]) s += `<line x1="${AX(d)}" y1="${yS + 15}" x2="${AX(d)}" y2="${yT - 24}" stroke="${SUN_GRAY}" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
-    s += axisSvg(245);
+const apFresh = () => ({ q:0, st:AP.map(it => ({ touched:false, done:false, pick:null, tries:[], revealed:false, seen:false, verified:false,
+  hz:false, hint:false, verdict:null, L:it.L0 ?? it.L ?? 1, d:it.d0 ?? it.d ?? 1 })) });
+S.ap = apFresh();
+const apStatus = k => S.ap.st[k].done ? 'done' : (S.ap.st[k].touched ? 'trying' : 'new');
+const B1_ANSWER = B1_PLANETS.findIndex(([, d]) => zoneOf(fluxAt(AP[2].L, d)) === 'ok');
+const apAnswer = it => it.kind === 'pickPlanet' ? B1_ANSWER : it.kind === 'zoneInfo' ? ZONE_IDX[zoneOf(fluxAt(it.L, it.d))] : it.a;
+
+/* ── 그림 ── */
+const AP_HALO = 'stroke="#0D1726" stroke-width="4" stroke-linejoin="round" paint-order="stroke"';
+const AP_H = { cmpReveal:290, observeL:290, predictL:290, pickPlanet:230, zoneInfo:290, predictD:300, missionD:220, missionL:220, concept:220 };
+function apPlanet(x, y, o = {}){
+  const r = o.r || 12, act = o.act ? ` data-act="${o.act}" data-v="${o.v}" class="pl"` : '';
+  return `<g${act}>${o.act ? `<circle cx="${x}" cy="${y}" r="26" fill="transparent"/>` : ''}`
+    + `<circle cx="${x}" cy="${y}" r="${r}" fill="${o.dim ? '#56677E' : '#DCE6F2'}" stroke="${o.ring || '#0D1726'}" stroke-width="${o.ring ? 3 : 1.5}"/>`
+    + (o.label ? `<text x="${x}" y="${y - r - 10}" text-anchor="middle" font-size="17" font-weight="700" fill="${o.dim ? '#9FB0C4' : '#E8EEF6'}" ${AP_HALO}>${o.label}</text>` : '') + '</g>';
+}
+/* 두 경계를 태양 경계에서 이어 주는 가는 화살표(×배수) */
+function apLinks(ySun, yStar, L){
+  const m = Math.sqrt(L); let s = '';
+  for (const d0 of [innerOf(1), outerOf(1)]){
+    const x0 = AX(d0), x1 = AX(d0 * m), y0 = ySun + 17, y1 = yStar - 28;
+    s += `<line x1="${x0}" y1="${y0}" x2="${x1.toFixed(1)}" y2="${y1}" stroke="#8EB9DB" stroke-width="1.4" stroke-dasharray="4 4"/>`;
+    s += `<polygon points="${x1.toFixed(1)},${y1 + 3} ${(x1 - 4).toFixed(1)},${y1 - 5} ${(x1 + 4).toFixed(1)},${y1 - 5}" fill="#8EB9DB"/>`;
   }
-  return `<svg viewBox="0 0 ${VW} ${H}" role="img" aria-label="${reveal ? '생명 가능 지대가 표시된 그림' : '문제 그림'}">${s}</svg>`;
+  const xm = (AX(outerOf(1)) + AX(outerOf(1) * m)) / 2 + 14;
+  s += `<text x="${xm.toFixed(1)}" y="${(ySun + yStar) / 2 + 4}" font-size="16" font-weight="700" fill="#8EB9DB" ${AP_HALO}>×${trimNum(m)}</text>`;
+  return s;
+}
+const apWidthLab = (y, L, star) => {
+  const x = AX(outerOf(L)) + 12, m = Math.sqrt(L);
+  return `<text x="${x.toFixed(1)}" y="${y + 6}" font-size="15" font-weight="700" fill="${star ? ZONES.ok.ink : '#C5D0DC'}" ${AP_HALO}>폭 ${f2(widthOf(L))}${NARROW ? '' : ' AU'}${star && Math.abs(m - 1) > 1e-6 ? ` (×${f2(m)})` : ''}</text>`;
+};
+function apFig(it, st){
+  const N = NARROW, H = AP_H[it.kind] + (N ? 20 : 0);
+  let s = `<defs>${GLOW_DEF('aGlow')}</defs>`;
+  const title = t => `<text x="${N ? 4 : 20}" y="26" font-size="${N ? 17 : 15}" font-weight="700" fill="${N ? '#E8EEF6' : '#9FB0C4'}">${t}</text>`;
+  const star = (y, L) => starSvg(AX0, y, L, 'aGlow', 12);
+  const sunRow = y => rowLab(y, 30, '태양', '광도 1배') + `<circle cx="${AX0}" cy="${y}" r="8" fill="${SUN_GRAY}"/>` + hzRowSvg({ y, L:1, h:30, gray:true });
+  const yS = N ? 80 : 70, yT = N ? 200 : 180, yAx = H - 50;
+  const dragZone = y => `<rect class="drag-zone" x="${AX(0) - 6}" y="${y - 40}" width="${AX1 - AX0 + 12}" height="80" fill="transparent"/>`;
+  switch (it.kind){
+    case 'cmpReveal': {
+      s += sunRow(yS) + rowLab(yT, 48, '광도 4배', NARROW ? '' : '별') + star(yT, it.L);
+      if (st.revealed) s += hzRowSvg({ y:yT, L:it.L, h:48 }) + apLinks(yS, yT, it.L);
+      else s += hzRowSvg({ y:yT, L:it.L, h:48, reveal:false }) + `<text x="${(AX0 + AX1) / 2}" y="${yT + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="#9FB0C4">?</text>`;
+      break;
+    }
+    case 'observeL': case 'predictL': {
+      const L = st.L;
+      s += `<text x="${AX1}" y="26" text-anchor="end" font-size="16" font-weight="700" fill="#8EB9DB">경계 거리: 태양의 ${f2(Math.sqrt(L))}배</text>`;
+      s += sunRow(yS) + rowLab(yT, 48, '지금 별', `광도 ${f2(L)}배`) + star(yT, L) + hzRowSvg({ y:yT, L, h:48 });
+      if (it.kind === 'observeL' || it.measure === 'width') s += apWidthLab(yS, 1, false) + apWidthLab(yT, L, true);
+      if (Math.abs(L - 1) > 1e-6) s += apLinks(yS, yT, L);
+      break;
+    }
+    case 'pickPlanet': {
+      const y = 125, done = st.done;
+      s += N ? title(`광도 ${mulName(it.L)}인 별`) : rowLab(y, 44, '별', `광도 ${mulName(it.L)}`);
+      s += star(y, it.L) + hzRowSvg({ y, L:it.L, h:44 });
+      B1_PLANETS.forEach(([n, d], k) => {
+        const wrong = st.tries.includes(k), right = done && k === B1_ANSWER;
+        s += apPlanet(AX(d), y, { label:n, act:'ap-pick', v:k, dim:wrong, ring:right ? '#5FD3A2' : (wrong ? '#F39A86' : null) });
+      });
+      break;
+    }
+    case 'zoneInfo': {
+      if (st.hint) s += sunRow(yS) + apLinks(yS, yT, it.L);
+      s += rowLab(yT, 48, '광도 4배', NARROW ? '' : '별') + star(yT, it.L);
+      s += hzRowSvg({ y:yT, L:it.L, h:48, reveal:st.hz || st.done });
+      s += apPlanet(AX(it.d), yT, { label:NARROW ? '행성' : `행성 ${trimNum(it.d)} AU`, ring:st.done ? '#F6B47C' : null });
+      break;
+    }
+    case 'predictD': {
+      const y = 80, d = st.d, Sx = fluxAt(it.L, d), BY = H - 34, BX0 = AX0, BX1 = AX1, bx = v => BX0 + Math.min(v, 4) / 4 * (BX1 - BX0);
+      s += N ? title('광도 1배인 별') : rowLab(y, 40, '별', '광도 1배');
+      s += star(y, it.L) + `<line x1="${AX0}" y1="${y}" x2="${AX1}" y2="${y}" stroke="#52678A" stroke-dasharray="3 6"/>`;
+      s += `<circle cx="${AX(1)}" cy="${y}" r="12" fill="none" stroke="#C5D0DC" stroke-width="2" stroke-dasharray="4 3"/>`;
+      s += `${Math.abs(d - 1) > 0.25 ? `<text x="${AX(1)}" y="${y - 22}" text-anchor="middle" font-size="15" fill="#C5D0DC">처음 1 AU</text>` : ''}`;
+      s += apPlanet(AX(d), y, { label:`${f2(d)} AU` }) + dragZone(y);
+      s += axisSvg(y + 50);
+      // 받는 에너지 막대 (0~4, 1 AU = 1)
+      s += `<text x="${N ? 4 : BX0}" y="${BY - 12}" font-size="${N ? 17 : 16}" font-weight="700" fill="#E8EEF6">받는 에너지 <tspan fill="#F6B47C">${fmtS(Sx)}</tspan> <tspan font-size="15" font-weight="500" fill="#9FB0C4">(지구 = 1${Math.abs(d - Math.round(d)) < 1e-9 && d > 1 ? ` · 1 AU의 1/${Math.round(d) ** 2}` : ''})</tspan></text>`;
+      s += `<rect x="${BX0}" y="${BY}" width="${BX1 - BX0}" height="20" rx="5" fill="#E8EEF6" fill-opacity=".07" stroke="#2A3B53"/>`;
+      s += `<rect x="${BX0}" y="${BY}" width="${(bx(Sx) - BX0).toFixed(1)}" height="20" rx="5" fill="#E99A52"/>`;
+      s += `<line x1="${bx(1)}" y1="${BY - 4}" x2="${bx(1)}" y2="${BY + 24}" stroke="#C5D0DC"/><text x="${bx(1) + 5}" y="${BY - 4}" font-size="15" fill="#C5D0DC">1</text>`;
+      return { H, body:s };
+    }
+    case 'missionD': {
+      const y = 110;
+      s += N ? title('광도 4배인 별 (고정)') : rowLab(y, 44, '별', '광도 4배 (고정)');
+      s += star(y, it.L) + hzRowSvg({ y, L:it.L, h:44, reveal:st.hz || st.done, values:true });
+      const v = st.verdict, ring = v === 'ok' ? '#5FD3A2' : (v ? '#F39A86' : null);
+      s += apPlanet(AX(st.d), y, { label:`${f2(st.d)} AU`, ring }) + dragZone(y);
+      break;
+    }
+    case 'missionL': {
+      const y = 110, L = st.L;
+      s += N ? title(`별의 광도 ${f2(L)}배`) : rowLab(y, 44, '별', `광도 ${f2(L)}배`);
+      s += star(y, L) + hzRowSvg({ y, L, h:44 });
+      const v = st.verdict, ring = v === 'ok' ? '#5FD3A2' : (v ? '#F39A86' : null);
+      s += apPlanet(AX(it.d), y, { label:'행성 1 AU (고정)', ring });
+      break;
+    }
+    case 'concept': {
+      const y = 110;
+      s += N ? title(`광도 ${mulName(it.L)}인 별`) : rowLab(y, 44, '별', `광도 ${mulName(it.L)}`);
+      s += star(y, it.L) + hzRowSvg({ y, L:it.L, h:44 });
+      s += apPlanet(AX(it.d), y, { label:'가상의 외계 행성' });
+      break;
+    }
+  }
+  s += axisSvg(yAx);
+  return { H, body:s };
+}
+
+/* ── 오른쪽: 질문·예측·조작 안내·판정·피드백 ── */
+const apStep = (n, title, body, state = '') => `<div class="apstep ${state}"><p class="sh"><b>${state === 'ok' ? '✓' : n}</b>${title}</p>${body}</div>`;
+const apFb = (cls, html) => `<div class="fb ${cls}" role="status">${html}</div>`;
+/* 선택지: mode 'predict'는 예측(확인 전까지 바꿀 수 있음), 'answer'는 고르면 바로 판정(틀리면 다른 것을 다시 고름) */
+function apOpts(it, st, mode, enabled, labels){
+  const c = labels || it.c, ans = apAnswer(it), locked = mode === 'predict' ? st.verified || st.revealed : st.done;
+  return `<div class="opts">${c.map((t, k) => {
+    let cls = '', mark = '', dis = !enabled || locked;
+    if (mode === 'predict'){
+      if (locked){ if (k === ans){ cls = 'right'; mark = '<span class="mk">정답</span>'; } else if (k === st.pick){ cls = 'wrong'; mark = '<span class="mk">내 예측</span>'; } }
+    } else {
+      if (st.tries.includes(k)){ cls = 'wrong'; mark = '<span class="mk">다시 생각</span>'; dis = true; }
+      if (st.done && k === ans){ cls = 'right'; mark = '<span class="mk">정답</span>'; }
+    }
+    const pressed = mode === 'predict' && !locked ? ` aria-pressed="${k === st.pick}"` : '';
+    return `<button type="button" class="btn ${cls}" data-act="ap-pick" data-v="${k}"${pressed} ${dis ? 'disabled' : ''}>${mark}${esc(t)}</button>`;
+  }).join('')}</div>`;
+}
+function apSideHTML(){
+  const qi = S.ap.q, it = AP[qi], st = S.ap.st[qi];
+  let b = '';
+  const near = (x, edge, unit) => Math.abs(x - edge) < 0.02 ? ` 경계(${edge.toFixed(3)}${unit})에 아주 가까워요.` : '';
+  switch (it.kind){
+    case 'cmpReveal':
+      b += apStep(1, '예측하기', apOpts(it, st, 'predict', true), st.revealed ? 'ok' : '');
+      b += apStep(2, '비교하기', `<button type="button" class="btn go" data-act="ap-reveal" ${st.pick == null || st.revealed ? 'disabled' : ''}>두 생명 가능 지대 비교하기</button>`, st.revealed ? 'ok' : (st.pick == null ? 'off' : ''));
+      if (st.revealed) b += apFb(st.pick === it.a ? 'good' : 'try', `<b>${st.pick === it.a ? '예측이 맞았어요.' : '예상과 달랐나요?'}</b> ${st.pick === it.a ? '' : '두 생명 가능 지대의 경계가 실제로 얼마나 이동했는지 비교해 보세요. '}${it.why()}`);
+      break;
+    case 'observeL':
+      b += apStep(1, '광도 줄이기', `<p class="readout">지금 광도 <b>${f2(st.L)}배</b> ${st.seen ? '· 0.25배까지 관찰했어요' : '· 슬라이더로 0.25배까지 줄여 보세요'}</p>`, st.seen ? 'ok' : '');
+      b += apStep(2, '관찰한 내용 고르기', apOpts(it, st, 'answer', st.seen), st.done ? 'ok' : (st.seen ? '' : 'off'));
+      if (st.done) b += apFb('good', `<b>맞아요.</b> ${it.why()}`);
+      else if (st.tries.length) b += apFb('try', `<b>예상과 달랐나요?</b> ${it.retry}`);
+      break;
+    case 'pickPlanet': {
+      b += apStep(1, '행성 고르기', `<div class="opts row">${B1_PLANETS.map(([n], k) => {
+        const wrong = st.tries.includes(k), right = st.done && k === B1_ANSWER;
+        return `<button type="button" class="btn ${wrong ? 'wrong' : ''} ${right ? 'right' : ''}" data-act="ap-pick" data-v="${k}" ${wrong || st.done ? 'disabled' : ''}>행성 ${n}</button>`; }).join('')}</div>`, st.done ? 'ok' : '');
+      const last = st.tries[st.tries.length - 1];
+      if (st.done){ const [n, d] = B1_PLANETS[B1_ANSWER]; b += apFb('good', `<b>맞아요!</b> 행성 ${n}(${trimNum(d)} AU)는 안쪽 경계(${f2(innerOf(it.L))} AU)와 바깥쪽 경계(${f2(outerOf(it.L))} AU) 사이에 있어요. 경계 값과 거리축만 읽으면 계산 없이 판단할 수 있어요.`); }
+      else if (last != null){ const [n, d] = B1_PLANETS[last], z = zoneOf(fluxAt(it.L, d));
+        b += apFb('try', `<b>아직 아니에요.</b> 행성 ${n}(${trimNum(d)} AU)는 ${z === 'hot' ? '안쪽 경계보다 별에 가까워 받는 에너지가 너무 많아요' : '바깥쪽 경계보다 멀어 받는 에너지가 너무 적어요'}. 초록 띠의 두 경계 사이에 있는 행성을 찾아보세요.`); }
+      break;
+    }
+    case 'zoneInfo': {
+      const info = `<div class="apbtns"><button type="button" class="btn" data-act="ap-hz" aria-pressed="${st.hz || st.done}" ${st.done ? 'disabled' : ''}>생명 가능 지대 ${st.hz || st.done ? '숨기기' : '보기'}</button>
+        <button type="button" class="btn" data-act="ap-hint" aria-pressed="${st.hint}">힌트 ${st.hint ? '숨기기' : '보기'}</button></div>`
+        + (st.hint ? `<p class="hint">광도가 4배가 되면 같은 에너지를 받는 거리가 √4 = 2배가 돼요. 그림 위쪽 태양의 생명 가능 지대(${f2(innerOf(1))}–${f2(outerOf(1))} AU)를 2배 거리로 옮긴 곳이 이 별의 생명 가능 지대예요.</p>` : '');
+      b += apStep(1, '근거 확인하기', info, st.hz || st.hint || st.done ? 'ok' : '');
+      b += apStep(2, '판단하기', apOpts(it, st, 'answer', true, ZONE_CHOICES), st.done ? 'ok' : '');
+      if (st.done) b += apFb('good', `<b>맞아요!</b> 이 별의 생명 가능 지대는 ${f2(innerOf(it.L))}–${f2(outerOf(it.L))} AU예요. 1.5 AU는 안쪽 경계(${f2(innerOf(it.L))} AU)보다 별에 가까워서 받는 에너지가 너무 많아요(지구의 ${fmtS(fluxAt(it.L, it.d))}배).`);
+      else if (st.tries.length) b += apFb('try', `<b>다시 확인해 볼까요?</b> ${st.hz ? '행성이 초록 띠의 안쪽 경계보다 왼쪽(별 쪽)에 있는지, 오른쪽에 있는지 보세요.' : '생명 가능 지대 보기나 힌트 보기로 경계가 어디인지 먼저 확인해 보세요.'}`);
+      break;
+    }
+    case 'predictL': case 'predictD': {
+      const isL = it.kind === 'predictL', tgt = isL ? `광도를 ${it.target}배로` : `행성을 ${it.target} AU로`;
+      const now = isL ? `지금 광도 <b>${f2(st.L)}배</b>` : `지금 거리 <b>${f2(st.d)} AU</b> · 받는 에너지 <b>${fmtS(fluxAt(it.L, st.d))}</b>`;
+      b += apStep(1, '예측하기', apOpts(it, st, 'predict', true), st.verified ? 'ok' : '');
+      b += apStep(2, '직접 확인하기', `<p class="readout">${st.pick == null ? '먼저 예측을 고르면 슬라이더를 쓸 수 있어요.' : `그림 아래 슬라이더${isL ? '' : '나 그림의 행성'}로 ${tgt} 바꿔 보세요.`}</p>${st.pick != null ? `<p class="readout">${now}</p>` : ''}`, st.verified ? 'ok' : (st.pick == null ? 'off' : ''));
+      if (st.verified) b += apFb(st.pick === it.a ? 'good' : 'try', `<b>${st.pick === it.a ? it.right : '예상과 달랐나요?'}</b> ${st.pick === it.a ? '' : (isL ? '두 생명 가능 지대의 경계가 실제로 얼마나 이동했는지 비교해 보세요. ' : '1 AU에서 받는 에너지(1)와 2 AU에서 받는 에너지(0.25)를 비교해 보세요. ')}${it.why()}`);
+      break;
+    }
+    case 'missionD': case 'missionL': {
+      const isD = it.kind === 'missionD', L = isD ? it.L : st.L, d = isD ? st.d : it.d;
+      const ctrl = isD
+        ? `<p class="readout">행성 거리 <b>${f2(d)} AU</b></p><div class="apbtns"><button type="button" class="btn" data-act="ap-hz" aria-pressed="${st.hz || st.done}" ${st.done ? 'disabled' : ''}>힌트: 생명 가능 지대 ${st.hz || st.done ? '숨기기' : '보기'}</button></div>`
+        : `<p class="readout">별의 광도 <b>${f2(L)}배</b> · 행성 거리 <b>1 AU</b></p>`;
+      b += apStep(1, isD ? '행성 거리 조절하기' : '별의 광도 조절하기', ctrl, st.done ? 'ok' : '');
+      b += apStep(2, '판정하기', `<button type="button" class="btn go" data-act="ap-judge">판정하기</button>`, st.done ? 'ok' : '');
+      const v = st.verdict;
+      if (v === 'ok') b += apFb('good', `<b>성공! 행성이 생명 가능 지대 안에 위치하도록 조건을 조절했어요.</b> ${isD
+        ? `광도 4배인 별의 생명 가능 지대는 약 ${f2(innerOf(L))}–${f2(outerOf(L))} AU예요. 지금 ${f2(d)} AU에서 받는 에너지는 지구의 ${fmtS(fluxAt(L, d))}배예요.`
+        : `1 AU의 행성은 별의 광도가 약 ${f2(HZ_OUTER_S)}–${f2(HZ_INNER_S)}배일 때 생명 가능 지대 안에 있어요. 공전 거리가 같아도 별의 광도가 바뀌면 생명 가능 지대에 포함되는지가 달라져요.`}`);
+      else if (v) b += apFb('try', `<b>아직 생명 가능 지대 밖에 있어요.</b> ${isD
+        ? (v === 'hot' ? `행성이 안쪽 경계보다 별에 가까워 받는 에너지가 너무 많아요. 별에서 더 멀리 옮겨 보세요.${near(d, innerOf(L), ' AU')}` : `행성이 바깥쪽 경계보다 멀어 받는 에너지가 너무 적어요. 별 쪽으로 옮겨 보세요.${near(d, outerOf(L), ' AU')}`)
+        : (v === 'hot' ? `별이 너무 밝아서 1 AU가 안쪽 경계보다 안쪽이에요. 광도를 줄여 보세요.${near(L, HZ_INNER_S, '배')}` : `별이 너무 어두워서 1 AU가 바깥쪽 경계보다 바깥이에요. 광도를 높여 보세요.${near(L, HZ_OUTER_S, '배')}`)} 현재 행성의 위치와 안쪽·바깥쪽 경계를 비교해 보세요.`);
+      else if (st.done) b += apFb('good', '<b>탐구 완료.</b> 조건을 바꿔 다시 판정해 봐도 좋아요.');
+      break;
+    }
+    case 'concept':
+      b += apStep(1, '판단하기', apOpts(it, st, 'answer', true), st.done ? 'ok' : '');
+      if (st.done) b += apFb('good', `<b>맞아요. 반드시 존재한다고 말할 수는 없어요.</b><ul class="pts">
+        <li>생명 가능 지대는 별에서 받는 <b>복사 에너지</b>만으로 정한 영역이에요.</li>
+        <li>실제로 액체 상태의 물이 있는지는 대기의 양과 성분 같은 조건에 따라 달라져요.</li>
+        <li>그래서 생명 가능 지대 안에 있다고 해서 생명체의 존재가 보장되지는 않아요.</li></ul>`);
+      else if (st.tries.length) b += apFb('try', `<b>다시 생각해 볼까요?</b> ${it.retry.replace('다시 생각해 볼까요? ', '')}`);
+      break;
+  }
+  return `<p class="tag">${AP_TYPE[it.type]} · ${qi + 1}번${st.done ? ' <span class="donebadge">완료</span>' : ''}</p>
+    <p class="q">${esc(it.q)}</p>${it.intro ? `<p class="txt">${esc(it.intro)}</p>` : ''}
+    ${b}
+    <nav class="snav" aria-label="문제 이동">
+      <button type="button" class="btn" data-act="ap-go" data-v="${qi - 1}" ${qi === 0 ? 'disabled' : ''}><span class="ico" aria-hidden="true">←</span>이전</button>
+      ${qi < AP.length - 1 ? `<button type="button" class="btn go" data-act="ap-go" data-v="${qi + 1}">다음 탐구<span class="ico" aria-hidden="true">→</span></button>`
+        : `<button type="button" class="btn go" data-act="view" data-v="deep">심화 탐구<span class="ico" aria-hidden="true">→</span></button>`}
+    </nav>`;
+}
+function apNavHTML(){
+  const qi = S.ap.q, n = S.ap.st.filter(s => s.done).length, any = S.ap.st.some(s => s.touched);
+  const word = { done:'완료', trying:'진행 중', new:'시작 전' };
+  return AP_NAV.map(([t, name]) => `<div class="qgroup"><span>${name}</span>${AP.map((x, k) => x.type !== t ? '' :
+    `<button type="button" class="btn ${apStatus(k)}" data-act="ap-go" data-v="${k}" aria-pressed="${k === qi}" title="${word[apStatus(k)]}" aria-label="${k + 1}번 탐구 (${word[apStatus(k)]})">${k + 1}</button>`).join('')}</div>`).join('')
+    + `<span class="score">완료한 탐구 <b>${n} / ${AP.length}</b>${any ? ` <button type="button" class="btn ghost" data-act="ap-reset">처음부터</button>` : ''}</span>`;
+}
+
+/* ── 슬라이더(광도 또는 거리): 위치 0~1000 ↔ 값 ── */
+const apPosOf = (c, v) => 1000 * (c.log ? Math.log(v / c.a) / Math.log(c.b / c.a) : (v - c.a) / (c.b - c.a));
+function apValOf(c, p){
+  p = Math.max(0, Math.min(1000, p));
+  let v = c.log ? c.a * Math.pow(c.b / c.a, p / 1000) : c.a + (c.b - c.a) * p / 1000;
+  for (const n of c.snaps) if (c.log ? Math.abs(Math.log10(v / n)) < 0.012 : Math.abs(v - n) < 0.03) return n;
+  return Math.min(c.b, Math.max(c.a, Math.round(v * 100) / 100));
+}
+const apFmt = (c, v) => c.key === 'L' ? `${f2(v)}배` : `${f2(v)} AU`;
+function apCtlHTML(it, st){
+  const c = it.ctl; if (!c) return '';
+  const v = st[c.key], off = (it.kind === 'predictL' || it.kind === 'predictD') && st.pick == null;
+  return `<div class="ctl apctl"><span class="lbl">${c.label}</span>
+    <div class="slider"><input type="range" id="apR" min="0" max="1000" step="1" value="${apPosOf(c, v).toFixed(0)}" aria-label="${c.label}" aria-valuetext="${apFmt(c, v)}" ${off ? 'disabled' : ''} style="--p:${thumbAt(apPosOf(c, v))}">
+      <div class="ticks" aria-hidden="true">${c.ticks.map(n => `<span style="left:${thumbAt(apPosOf(c, n))}">${c.key === 'L' ? mulName(n) : n}</span>`).join('')}</div></div>
+    <output id="apOut" for="apR">${apFmt(c, v)}</output></div>`;
+}
+/* 조작 결과 확인: 관찰 완료·예측 확인 같은 진행 상태를 갱신 */
+function apCheck(it, st){
+  if (it.kind === 'observeL' && st.L <= it.ctl.a + 1e-9) st.seen = true;
+  if (it.kind === 'predictL' && st.pick != null && Math.abs(st.L - it.target) < 1e-9){ st.verified = true; st.done = true; }
+  if (it.kind === 'predictD' && st.pick != null && Math.abs(st.d - it.target) < 1e-9){ st.verified = true; st.done = true; }
+}
+function apSetVal(v){
+  const it = AP[S.ap.q], st = S.ap.st[S.ap.q], c = it.ctl;
+  if (st[c.key] === v) return;
+  const was = st.verified;
+  st[c.key] = v; st.touched = true; st.verdict = null;
+  apCheck(it, st); apRefresh();
+  if (st.verified && !was) apShowFb();
+}
+/* 그림·오른쪽 단·문제 목록만 다시 그린다(슬라이더는 그대로 두어 끄는 중에도 끊기지 않게) */
+function apRefresh(){
+  const it = AP[S.ap.q], st = S.ap.st[S.ap.q];
+  if (!$('apSv')) return;
+  $('apSv').innerHTML = apFig(it, st).body;
+  $('apSide').innerHTML = apSideHTML();
+  $('apNav').innerHTML = apNavHTML();
+  const inp = $('apR'), c = it.ctl;
+  if (inp && c){
+    const p = apPosOf(c, st[c.key]);
+    if (Math.abs(+inp.value - p) > 0.5) inp.value = p.toFixed(0);
+    inp.style.setProperty('--p', thumbAt(p)); inp.setAttribute('aria-valuetext', apFmt(c, st[c.key]));
+    $('apOut').textContent = apFmt(c, st[c.key]);
+  }
+}
+let apDrag = null;
+VIEWS.apply = function(){
+  const qi = S.ap.q, it = AP[qi], st = S.ap.st[qi], F = apFig(it, st);
+  $('app').innerHTML = `
+    <div class="lead"><h2>적용하기</h2><p>예측하고, 직접 조절하고, 관찰해서 배운 개념을 적용해 보세요.</p></div>
+    <nav class="qchips card" id="apNav" aria-label="탐구 선택">${apNavHTML()}</nav>
+    <div class="split">
+      <section class="sim" aria-label="탐구 그림"><p class="figcap"><b>FIG. 3</b>${esc(AP_TYPE[it.type])} · 같은 축척(0–6 AU)</p>
+        <svg id="apSv" viewBox="0 0 ${VW} ${F.H}" role="img" aria-label="탐구 그림">${F.body}</svg>
+        ${apCtlHTML(it, st)}
+      </section>
+      <section class="side card qcard" id="apSide">${apSideHTML()}</section>
+    </div>
+    <p class="note">더 해 보고 싶다면 위쪽 <b>심화 탐구</b>에서 <b>도전! 생명 가능 지대 찾기</b>를 해 보세요.</p>`;
+  const c = it.ctl, inp = $('apR');
+  if (inp){
+    inp.addEventListener('input', () => apSetVal(apValOf(c, +inp.value)));
+    inp.addEventListener('keydown', e => {
+      const big = e.key === 'PageUp' || e.key === 'PageDown', dir = { ArrowRight:1, ArrowUp:1, PageUp:1, ArrowLeft:-1, ArrowDown:-1, PageDown:-1 }[e.key];
+      if (dir == null) return;
+      e.preventDefault();
+      if (c.key === 'd') apSetVal(Math.min(c.b, Math.max(c.a, Math.round((st.d + dir * (big ? 0.1 : 0.01)) * 100) / 100)));
+      else apSetVal(apValOf(c, apPosOf(c, st.L) + dir * (big ? 100 : 10)));
+    });
+  }
+  // 행성 끌기(거리를 바꾸는 탐구): 그림에서 행성 줄을 누르거나 끌면 거리가 바뀐다
+  if (c && c.key === 'd'){
+    const sv = $('apSv');
+    const dOf = e => { const m = sv.getScreenCTM(); if (!m) return null; const x = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse()).x;
+      return apValOf(c, apPosOf(c, Math.max(c.a, Math.min(c.b, (x - AX0) / (AX1 - AX0) * AMAX)))); };
+    const off = () => it.kind === 'predictD' && S.ap.st[S.ap.q].pick == null;
+    sv.addEventListener('pointerdown', e => {
+      if (!e.target.closest('.drag-zone') || off() || (e.pointerType === 'mouse' && e.button !== 0)) return;
+      e.preventDefault(); apDrag = e.pointerId; try { sv.setPointerCapture(e.pointerId); } catch(_) {}
+      sv.classList.add('dragging'); const v = dOf(e); if (v != null) apSetVal(v);
+    });
+    sv.addEventListener('pointermove', e => { if (apDrag === e.pointerId){ const v = dOf(e); if (v != null) apSetVal(v); } });
+    const end = e => { if (apDrag === e.pointerId){ apDrag = null; sv.classList.remove('dragging'); } };
+    ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(t => sv.addEventListener(t, end));
+    sv.addEventListener('touchstart', e => { if (e.target.closest('.drag-zone') && !off()) e.preventDefault(); }, { passive:false });
+    sv.addEventListener('touchmove', e => { if (apDrag != null) e.preventDefault(); }, { passive:false });
+  }
+};
+/* 버튼 처리(이벤트 위임에서 호출) */
+function apAct(act, v){
+  const it = AP[S.ap.q], st = S.ap.st[S.ap.q];
+  switch (act){
+    case 'ap-go': S.ap.q = Math.max(0, Math.min(AP.length - 1, +v)); break;
+    case 'ap-reset': S.ap = apFresh(); break;
+    case 'ap-pick': {
+      const k = +v;
+      if (it.kind === 'cmpReveal' || it.kind === 'predictL' || it.kind === 'predictD'){
+        if (st.revealed || st.verified) return;
+        st.pick = k; st.touched = true; apCheck(it, st);
+      } else {
+        if (st.done || st.tries.includes(k) || (it.kind === 'observeL' && !st.seen)) return;
+        st.touched = true;
+        if (k === apAnswer(it)){ st.done = true; st.pick = k; } else st.tries.push(k);
+      }
+      break;
+    }
+    case 'ap-reveal': if (st.pick == null || st.revealed) return; st.revealed = true; st.done = true; break;
+    case 'ap-hz': st.hz = !st.hz; st.touched = true; break;
+    case 'ap-hint': st.hint = !st.hint; st.touched = true; break;
+    case 'ap-judge': {
+      st.touched = true;
+      st.verdict = zoneOf(fluxAt(it.kind === 'missionD' ? it.L : st.L, it.kind === 'missionD' ? st.d : it.d));   // 반올림하지 않은 경계로 판정
+      if (st.verdict === 'ok') st.done = true;
+      break;
+    }
+  }
+  render();
+  apShowFb();
+}
+/* 새 피드백이 설명 단 안에서 가려져 있으면 보이게 스크롤 */
+function apShowFb(){
+  const side = $('apSide'), fb = side && side.querySelector('.fb');
+  if (!fb) return;
+  if (side.scrollHeight > side.clientHeight + 1){
+    const nav = side.querySelector('.snav'), over = fb.getBoundingClientRect().bottom - (nav ? nav.getBoundingClientRect().top : side.getBoundingClientRect().bottom) + 8;
+    if (over > 0) side.scrollTop += over;
+  } else if (fb.getBoundingClientRect().bottom > innerHeight) fb.scrollIntoView({ block:'nearest' });
 }
 
 /* ==========================================================
@@ -1719,9 +2050,7 @@ document.addEventListener('click', e => {
       }
       break;
     }
-    case 'ap-go': S.ap.q = Math.max(0, Math.min(AP.length - 1, +v)); render(); break;
-    case 'ap-ans': if (S.ap.picks[S.ap.q] == null){ S.ap.picks[S.ap.q] = +v; render(); } break;
-    case 'ap-reset': S.ap = { q:0, picks:[] }; render(); break;
+    case 'ap-go': case 'ap-reset': case 'ap-pick': case 'ap-reveal': case 'ap-hz': case 'ap-hint': case 'ap-judge': apAct(b.dataset.act, v); break;
     case 'deep-tab': S.deep.tab = v; render(); break;
     case 'ch-star': S.ch.star = +v; S.ch.msg = null; render(); break;
     case 'ch-nudge': chSetPos(S.ch.pos[S.ch.star] + (+v) * 0.01); break;
@@ -1748,7 +2077,7 @@ let lastNarrow = null;
 let fitTimer = null;
 addEventListener('resize', () => {
   const n = isNarrow();
-  if (n !== lastNarrow){ lastNarrow = n; if (!drag) render(); return; }
+  if (n !== lastNarrow){ lastNarrow = n; if (!drag && apDrag == null) render(); return; }
   clearTimeout(fitTimer); fitTimer = setTimeout(() => { if (!drag) fitCheck(); }, 120);
 });
 runSelfCheck();
