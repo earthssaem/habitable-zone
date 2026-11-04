@@ -18,8 +18,11 @@
     --surface:#FFFFFF;     /* 도판(그림)·표 바탕 */
     --tint:#FAFBF9;        /* 도판 아래 조작 줄 */
     --ink:#243447;         /* 기본 글자 */
-    --ink-2:#4C5D6E;       /* 본문 보조 */
-    --muted:#748394;       /* 라벨·캡션 */
+    --ink-2:#3C4D5F;       /* 본문 보조 */
+    --muted:#5F6F81;       /* 라벨·캡션 */
+    --plate:#0D1726;       /* 도판: 별이 있는 우주 */
+    --plate-ink:#E8EEF6;
+    --plate-muted:#9FB0C4;
     --line:#E3E8EB;        /* 가는 구분선 */
     --line-2:#CFD7DC;      /* 조작 요소 테두리 */
     --accent:#4F7895;      /* 기본 인터랙션 */
@@ -46,7 +49,7 @@
   html{-webkit-text-size-adjust:100%; background:var(--bg)}
   body{
     margin:0; min-height:100vh; display:flex; flex-direction:column; background:var(--bg); color:var(--ink);
-    font-family:var(--sans); font-size:16.5px; line-height:1.55; -webkit-font-smoothing:antialiased;
+    font-family:var(--sans); font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
     word-break:keep-all; overflow-wrap:anywhere; font-feature-settings:"tnum";
   }
   button{font:inherit}
@@ -65,7 +68,7 @@
   .brand .bt{display:flex; flex-direction:column; line-height:1.15; min-width:0}
   .brand .kick{font-size:10.5px; font-weight:700; letter-spacing:.16em; color:var(--muted)}
   .brand h1{margin:0; font-size:18px; font-weight:700; letter-spacing:-.02em; white-space:nowrap}
-  .brand p{margin:0 0 0 4px; padding-left:14px; border-left:1px solid var(--line-2); font-size:13px; color:var(--muted); align-self:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .brand p{margin:0 0 0 4px; padding-left:14px; border-left:1px solid var(--line-2); font-size:14px; color:var(--muted); align-self:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
   /* 제목 부분을 누르면 처음 화면으로 */
   a.brand{color:inherit; text-decoration:none; border-radius:10px; padding:6px 8px; margin:0 -8px; -webkit-tap-highlight-color:transparent}
   @media (hover:hover){ a.brand:hover h1{color:var(--accent-ink)} }
@@ -75,7 +78,7 @@
   .tabs .seg{display:flex; align-items:stretch; gap:4px}
   .tabs button{
     appearance:none; border:0; background:transparent; cursor:pointer; position:relative;
-    padding:0 12px; color:var(--muted); font-size:15px; font-weight:600; display:flex; align-items:center; gap:8px;
+    padding:0 12px; color:var(--ink-2); font-size:16px; font-weight:600; display:flex; align-items:center; gap:8px;
     transition:color .15s;
   }
   .tabs button b{font-size:12px; font-weight:700; letter-spacing:.06em; color:#A3AFB9; transition:color .15s}
@@ -95,19 +98,23 @@
   .lead{display:flex; align-items:baseline; gap:4px 16px; flex-wrap:wrap}
   .lead h2{font-size:22px; font-weight:700; letter-spacing:-.025em; display:flex; align-items:baseline; gap:12px}
   .lead h2::before{content:var(--step); white-space:pre; font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--accent)}
-  .lead p{color:var(--muted); font-size:15.5px}
+  .lead p{color:var(--ink-2); font-size:16px}
 
   /* 도판: 흰 바탕 + 가는 테두리. 그림 위에 작은 캡션 */
-  .sim{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; min-width:0}
-  .sim svg{display:block; width:100%; height:auto; fill:var(--ink-2); font-family:inherit; user-select:none; -webkit-user-select:none}
+  .sim{
+    background:radial-gradient(90% 120% at 6% 50%, #1B2A44 0%, transparent 60%), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cg fill='%23ffffff'%3E%3Ccircle cx='231' cy='286' r='0.8' fill-opacity='0.5'/%3E%3Ccircle cx='260' cy='300' r='0.6' fill-opacity='0.3'/%3E%3Ccircle cx='411' cy='262' r='0.8' fill-opacity='0.7'/%3E%3Ccircle cx='406' cy='95' r='0.5' fill-opacity='0.5'/%3E%3Ccircle cx='155' cy='72' r='0.5' fill-opacity='0.7'/%3E%3Ccircle cx='414' cy='355' r='1.1' fill-opacity='0.2'/%3E%3Ccircle cx='304' cy='202' r='0.8' fill-opacity='0.7'/%3E%3Ccircle cx='332' cy='80' r='0.9' fill-opacity='0.2'/%3E%3Ccircle cx='270' cy='32' r='0.5' fill-opacity='0.2'/%3E%3Ccircle cx='97' cy='123' r='0.9' fill-opacity='0.2'/%3E%3Ccircle cx='398' cy='237' r='0.7' fill-opacity='0.5'/%3E%3Ccircle cx='302' cy='100' r='0.9' fill-opacity='0.3'/%3E%3Ccircle cx='327' cy='150' r='0.8' fill-opacity='0.2'/%3E%3Ccircle cx='339' cy='43' r='0.8' fill-opacity='0.4'/%3E%3Ccircle cx='208' cy='282' r='0.5' fill-opacity='0.4'/%3E%3Ccircle cx='161' cy='388' r='0.6' fill-opacity='0.7'/%3E%3Ccircle cx='147' cy='15' r='0.5' fill-opacity='0.7'/%3E%3Ccircle cx='392' cy='55' r='0.8' fill-opacity='0.2'/%3E%3Ccircle cx='148' cy='197' r='0.5' fill-opacity='0.2'/%3E%3Ccircle cx='350' cy='0' r='0.6' fill-opacity='0.3'/%3E%3Ccircle cx='26' cy='240' r='0.8' fill-opacity='0.5'/%3E%3Ccircle cx='214' cy='37' r='0.9' fill-opacity='0.3'/%3E%3Ccircle cx='398' cy='345' r='0.7' fill-opacity='0.4'/%3E%3Ccircle cx='44' cy='159' r='0.7' fill-opacity='0.2'/%3E%3Ccircle cx='209' cy='388' r='0.5' fill-opacity='0.3'/%3E%3Ccircle cx='126' cy='361' r='0.5' fill-opacity='0.2'/%3E%3Ccircle cx='30' cy='238' r='0.8' fill-opacity='0.3'/%3E%3Ccircle cx='349' cy='286' r='0.6' fill-opacity='0.5'/%3E%3Ccircle cx='260' cy='97' r='1.1' fill-opacity='0.3'/%3E%3Ccircle cx='214' cy='329' r='0.8' fill-opacity='0.2'/%3E%3Ccircle cx='202' cy='215' r='0.6' fill-opacity='0.2'/%3E%3Ccircle cx='138' cy='411' r='0.9' fill-opacity='0.4'/%3E%3Ccircle cx='10' cy='107' r='0.6' fill-opacity='0.5'/%3E%3Ccircle cx='308' cy='328' r='0.9' fill-opacity='0.2'/%3E%3Ccircle cx='21' cy='74' r='0.6' fill-opacity='0.5'/%3E%3Ccircle cx='132' cy='4' r='0.9' fill-opacity='0.4'/%3E%3Ccircle cx='151' cy='197' r='0.5' fill-opacity='0.2'/%3E%3Ccircle cx='46' cy='106' r='0.9' fill-opacity='0.3'/%3E%3Ccircle cx='7' cy='307' r='0.7' fill-opacity='0.4'/%3E%3Ccircle cx='318' cy='232' r='0.6' fill-opacity='0.7'/%3E%3Ccircle cx='247' cy='294' r='0.6' fill-opacity='0.5'/%3E%3Ccircle cx='93' cy='321' r='0.6' fill-opacity='0.4'/%3E%3Ccircle cx='116' cy='418' r='0.9' fill-opacity='0.3'/%3E%3Ccircle cx='371' cy='97' r='0.6' fill-opacity='0.7'/%3E%3Ccircle cx='100' cy='351' r='0.8' fill-opacity='0.5'/%3E%3Ccircle cx='309' cy='40' r='0.8' fill-opacity='0.2'/%3E%3Ccircle cx='53' cy='55' r='0.5' fill-opacity='0.7'/%3E%3Ccircle cx='130' cy='122' r='1.1' fill-opacity='0.5'/%3E%3Ccircle cx='131' cy='215' r='0.9' fill-opacity='0.5'/%3E%3Ccircle cx='150' cy='266' r='0.6' fill-opacity='0.2'/%3E%3Ccircle cx='64' cy='116' r='0.8' fill-opacity='0.7'/%3E%3Ccircle cx='334' cy='315' r='0.9' fill-opacity='0.2'/%3E%3Ccircle cx='143' cy='108' r='0.6' fill-opacity='0.2'/%3E%3Ccircle cx='35' cy='137' r='0.8' fill-opacity='0.5'/%3E%3Ccircle cx='127' cy='30' r='0.5' fill-opacity='0.3'/%3E%3Ccircle cx='144' cy='188' r='0.9' fill-opacity='0.7'/%3E%3Ccircle cx='67' cy='47' r='0.7' fill-opacity='0.3'/%3E%3Ccircle cx='230' cy='169' r='1.1' fill-opacity='0.7'/%3E%3Ccircle cx='299' cy='71' r='0.9' fill-opacity='0.2'/%3E%3Ccircle cx='9' cy='243' r='0.7' fill-opacity='0.4'/%3E%3Ccircle cx='17' cy='10' r='0.9' fill-opacity='0.2'/%3E%3Ccircle cx='246' cy='34' r='1.1' fill-opacity='0.4'/%3E%3Ccircle cx='163' cy='69' r='0.5' fill-opacity='0.2'/%3E%3Ccircle cx='231' cy='279' r='0.7' fill-opacity='0.2'/%3E%3Ccircle cx='377' cy='377' r='1.1' fill-opacity='0.3'/%3E%3Ccircle cx='406' cy='174' r='0.7' fill-opacity='0.2'/%3E%3Ccircle cx='350' cy='242' r='0.5' fill-opacity='0.5'/%3E%3Ccircle cx='404' cy='15' r='0.8' fill-opacity='0.7'/%3E%3Ccircle cx='7' cy='319' r='1.1' fill-opacity='0.5'/%3E%3Ccircle cx='194' cy='298' r='0.5' fill-opacity='0.7'/%3E%3C/g%3E%3C/svg%3E"), var(--plate);
+    border:1px solid #1E2C42; border-radius:var(--radius); overflow:hidden; min-width:0;
+  }
+  .sim > .lum.top, .sim > .numcmp{background:var(--surface)}
+  .sim svg{display:block; width:100%; height:auto; fill:var(--plate-muted); font-family:inherit; user-select:none; -webkit-user-select:none}
   .sim svg text{font-feature-settings:"tnum"}
-  .figcap{margin:0; padding:10px 16px 0; font-size:12.5px; color:var(--muted); display:flex; gap:10px; align-items:baseline; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-  .figcap b{font-size:10.5px; font-weight:700; letter-spacing:.14em; color:var(--ink-2); flex:none; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  .figcap{margin:0; padding:10px 16px 0; font-size:14px; color:var(--plate-muted); display:flex; gap:10px; align-items:baseline; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .figcap b{font-size:11px; font-weight:700; letter-spacing:.14em; color:#F2B26E; flex:none; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
   .sim .ctl{padding:9px 14px; border-top:1px solid var(--line); background:var(--tint); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
   .sim svg .drag-zone{touch-action:none; cursor:grab}
   .sim svg.dragging .drag-zone{cursor:grabbing}
   .sim svg [tabindex]:focus{outline:none}
-  .sim svg [tabindex]:focus-visible .focus-ring{stroke:var(--accent); stroke-width:2.5}
+  .sim svg [tabindex]:focus-visible .focus-ring{stroke:#F2B26E; stroke-width:2.5}
 
   .split{display:grid; grid-template-columns:minmax(0,1.85fr) minmax(0,1fr); gap:24px; align-items:start}
   .split.solo{grid-template-columns:minmax(0,1fr); max-width:820px; width:100%}
@@ -137,7 +144,7 @@
   .btn .chip{width:12px; height:12px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 1px rgba(36,52,71,.3)}
   .lbl{color:var(--muted); font-size:13px; font-weight:600; margin-right:4px}
   .sep{width:1px; align-self:stretch; background:var(--line); margin:0 6px}
-  .note{font-size:13.5px; color:var(--muted)}
+  .note{font-size:14.5px; color:var(--ink-2)}
   .box{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:11px 14px}
   .summary{border-left:2px solid var(--accent); padding:4px 0 4px 14px; color:var(--ink); font-weight:600}
   .hz{color:var(--hz)}
@@ -157,7 +164,7 @@
   .lum .read{display:flex; flex-direction:column; line-height:1.1; min-width:178px}
   .lum .read label{font-size:13px; font-weight:700; color:var(--star-ink); display:flex; align-items:center; gap:6px}
   .lum .read label::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--star)}
-  .lum .read output{font-size:42px; font-weight:300; letter-spacing:-.03em; white-space:nowrap; color:var(--ink); font-feature-settings:"tnum"}
+  .lum .read output{font-size:42px; font-weight:600; letter-spacing:-.03em; white-space:nowrap; color:var(--ink); font-feature-settings:"tnum"}
   .lum .read output small{font-size:14px; font-weight:500; color:var(--muted); letter-spacing:0; margin-left:4px}
   .slider{position:relative; padding-bottom:22px}
   .slider input{
@@ -173,10 +180,10 @@
   .slider input::-moz-range-progress{height:4px; border-radius:999px; background:var(--star)}
   .slider input::-moz-range-thumb{width:24px; height:24px; border-radius:50%; background:#fff; border:2px solid var(--star); box-shadow:0 1px 3px rgba(36,52,71,.22)}
   .slider .ticks{position:absolute; left:0; right:0; bottom:0; height:20px; pointer-events:none}
-  .slider .ticks span{position:absolute; transform:translateX(-50%); font-size:12.5px; font-weight:600; color:var(--muted); white-space:nowrap}
+  .slider .ticks span{position:absolute; transform:translateX(-50%); font-size:14px; font-weight:600; color:var(--ink-2); white-space:nowrap}
   /* 빠른 선택: 차분한 분할 버튼 */
   .quick{display:flex; gap:2px; padding:3px; border-radius:11px; background:#EFF2F0}
-  .quick .btn{min-width:62px; min-height:40px; padding:4px 10px; border-color:transparent; background:transparent; color:var(--ink-2); font-weight:600}
+  .quick .btn{min-width:62px; min-height:40px; padding:4px 10px; border-color:transparent; background:transparent; color:var(--ink-2); font-weight:600; font-size:16px}
   .quick .btn[aria-pressed="true"]{background:#fff; border-color:var(--line-2); color:var(--ink); box-shadow:0 1px 2px rgba(36,52,71,.08)}
   @media (hover:hover){ .quick .btn:hover:not(:disabled){background:rgba(255,255,255,.6); border-color:transparent} .quick .btn[aria-pressed="true"]:hover{background:#fff; border-color:var(--line-2)} }
   @media (max-width: 1000px){
@@ -192,7 +199,7 @@
 
   /* 범례 + 변화 전과 비교 (도판 아래 줄) */
   .obsbar{justify-content:space-between; gap:8px 18px}
-  .legend{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:12.5px; color:var(--ink-2)}
+  .legend{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:14px; color:var(--ink-2)}
   .legend li{display:flex; align-items:center; gap:6px; white-space:nowrap}
   .sw{width:18px; height:10px; border-radius:3px; flex:none; display:inline-block}
   .sw.hot{background:linear-gradient(90deg,#F2BE8C,#FBE6D2)}
@@ -210,13 +217,13 @@
     display:grid; grid-template-columns:minmax(0,1fr); grid-template-areas:"k" "v" "s";
   }
   .val:first-child{border-left:0; padding-left:4px}
-  .val .k{grid-area:k; font-size:13px; font-weight:700; color:var(--ink-2); white-space:nowrap; display:flex; align-items:center; gap:7px}
-  .val .s{grid-area:s; font-size:12.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px}
-  .val .v{grid-area:v; font-size:40px; font-weight:300; letter-spacing:-.03em; line-height:1.12; white-space:nowrap; color:var(--ink); font-feature-settings:"tnum"}
+  .val .k{grid-area:k; font-size:15px; font-weight:700; color:var(--ink-2); white-space:nowrap; display:flex; align-items:center; gap:7px}
+  .val .s{grid-area:s; font-size:14px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px}
+  .val .v{grid-area:v; font-size:40px; font-weight:600; letter-spacing:-.03em; line-height:1.12; white-space:nowrap; color:var(--ink); font-feature-settings:"tnum"}
   .val .v small{font-size:15px; font-weight:500; color:var(--muted); letter-spacing:0; margin-left:5px}
   .val.w .k{color:var(--hz)}
   .val.w .k::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--hz-line)}
-  .val.w .v{color:var(--hz); font-weight:400}
+  .val.w .v{color:var(--hz)}
   @media (max-width: 1000px){
     .val .s{min-height:1.4em}
   }
@@ -239,7 +246,7 @@
   /* ── 2단계: 장면 ─────────────────────── */
   .scene-no{font-size:13px; font-weight:600; color:var(--muted); font-feature-settings:"tnum"}
   .side h3{font-size:22px; line-height:1.32; letter-spacing:-.025em; font-weight:700; color:var(--ink)}
-  .side .txt{font-size:16px; line-height:1.65; color:var(--ink-2)}
+  .side .txt{font-size:17px; line-height:1.65; color:var(--ink-2)}
   .readline{font-size:15.5px; line-height:1.6}
   .snav{display:flex; gap:8px}
   .snav .btn{flex:1}
@@ -265,7 +272,7 @@
   .eqs{display:grid; grid-template-columns:auto auto; justify-content:start; column-gap:.35em; row-gap:.5em; align-items:center}
   .eqs > :nth-child(odd){text-align:right}
   .mbox{overflow-x:auto; overflow-y:hidden; padding:2px 2px 4px; -webkit-overflow-scrolling:touch}
-  .fineprint{font-size:12.5px; line-height:1.55; color:var(--muted)}
+  .fineprint{font-size:13.5px; line-height:1.55; color:var(--muted)}
 
   /* ② 폭이 넓어지는 이유 */
   ol.steps{margin:0; padding:0; list-style:none; counter-reset:st; display:flex; flex-direction:column; gap:10px}
@@ -284,7 +291,7 @@
   .keyrel .kr{display:grid; grid-template-columns:100px minmax(0,1fr); align-items:center; gap:4px 14px}
   .keyrel .kr .math{font-size:26px}
   .keyrel .kr b{font-size:17px; line-height:1.4; font-weight:700; color:var(--ink)}
-  .keyrel .cond{font-size:12.5px; line-height:1.55; color:var(--muted)}
+  .keyrel .cond{font-size:13.5px; line-height:1.55; color:var(--muted)}
   .keyrel > .btn{align-self:flex-start; min-height:38px; font-size:14px}
   .calc{display:flex; flex-direction:column; gap:14px; padding-top:12px; border-top:1px dashed var(--line-2)}
   .cstep{display:flex; flex-direction:column; gap:3px}
@@ -318,7 +325,7 @@
   .score{display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:14px; font-weight:600; color:var(--ink-2); margin-left:auto}
   .qcard .q{font-size:20px; font-weight:700; line-height:1.45; letter-spacing:-.02em; color:var(--ink)}
   .opts{display:flex; flex-direction:column; gap:8px}
-  .opts .btn{justify-content:flex-start; text-align:left; min-height:50px; font-size:16px; font-weight:500; padding:8px 16px; border-radius:10px}
+  .opts .btn{justify-content:flex-start; text-align:left; min-height:50px; font-size:17px; font-weight:500; padding:8px 16px; border-radius:10px}
   .opts .btn.right{border-color:var(--hz-line); background:var(--hz-soft); color:var(--hz); font-weight:700}
   .opts .btn.wrong{border-color:#E7C2BA; background:var(--bad-soft); color:var(--bad)}
   .opts .btn:disabled{opacity:1; cursor:default}
@@ -546,9 +553,9 @@ const innerAU = m => innerOf(luminosity(m));
 const outerAU = m => outerOf(luminosity(m));
 
 const ZONES = {
-  hot:  { label:'너무 뜨거움',   energy:'너무 많음', color:'#E99A52', ink:'#A9622A' },
-  ok:   { label:'생명 가능 지대', energy:'적당함',    color:'#35A782', ink:'#1F7A5C' },
-  cold: { label:'너무 차가움',   energy:'너무 적음', color:'#7FA6C4', ink:'#3F6F91' },
+  hot:  { label:'너무 뜨거움',   energy:'너무 많음', color:'#E99A52', ink:'#F6B47C' },
+  ok:   { label:'생명 가능 지대', energy:'적당함',    color:'#35A782', ink:'#5FD3A2' },
+  cold: { label:'너무 차가움',   energy:'너무 적음', color:'#7FA6C4', ink:'#93BEE0' },
 };
 const SUN_GRAY = '#A7B1BA', STAR_CORE = '#F2C14E', STAR_EDGE = '#D9893F';
 
@@ -682,34 +689,34 @@ function setGeom(){
 const AX = d => AX0 + d / AMAX * (AX1 - AX0);
 /* 줄 이름표: 넓은 화면은 왼쪽, 좁은 화면은 줄 위 왼쪽 */
 function rowLab(y, h, main, sub){
-  if (NARROW) return `<text x="4" y="${y - h / 2 - 10}" font-size="17" font-weight="700" fill="#243447">${main}${sub ? ` <tspan font-size="15" font-weight="600" fill="#748394">${sub}</tspan>` : ''}</text>`;
+  if (NARROW) return `<text x="4" y="${y - h / 2 - 10}" font-size="17" font-weight="700" fill="#E8EEF6">${main}${sub ? ` <tspan font-size="15" font-weight="600" fill="#9FB0C4">${sub}</tspan>` : ''}</text>`;
   return sub
-    ? `<text x="${AX0 - 24}" y="${y - 2}" text-anchor="end" font-size="18" font-weight="700" fill="#243447">${main}</text><text x="${AX0 - 24}" y="${y + 18}" text-anchor="end" font-size="14" fill="#748394">${sub}</text>`
-    : `<text x="${AX0 - 24}" y="${y + 6}" text-anchor="end" font-size="17" font-weight="700" fill="#243447">${main}</text>`;
+    ? `<text x="${AX0 - 24}" y="${y - 2}" text-anchor="end" font-size="18" font-weight="700" fill="#E8EEF6">${main}</text><text x="${AX0 - 24}" y="${y + 18}" text-anchor="end" font-size="14" fill="#9FB0C4">${sub}</text>`
+    : `<text x="${AX0 - 24}" y="${y + 6}" text-anchor="end" font-size="17" font-weight="700" fill="#E8EEF6">${main}</text>`;
 }
 function axisSvg(y){
-  let h = `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#748394" stroke-width="1.4"/>`;
+  let h = `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#9FB0C4" stroke-width="1.4"/>`;
   for (let k = 0; k <= AMAX * 2; k++){
     const d = k / 2, major = k % 2 === 0;
-    h += `<line x1="${AX(d)}" y1="${y}" x2="${AX(d)}" y2="${y + (major ? 10 : 5)}" stroke="#748394" stroke-width="${major ? 1.4 : 1}"/>`;
-    if (major) h += `<text x="${AX(d)}" y="${y + 32}" text-anchor="middle" font-size="20" font-weight="600" fill="#243447">${d}</text>`;
+    h += `<line x1="${AX(d)}" y1="${y}" x2="${AX(d)}" y2="${y + (major ? 10 : 5)}" stroke="#9FB0C4" stroke-width="${major ? 1.4 : 1}"/>`;
+    if (major) h += `<text x="${AX(d)}" y="${y + 32}" text-anchor="middle" font-size="20" font-weight="600" fill="#E8EEF6">${d}</text>`;
   }
-  h += `<text x="${AX(AMAX) + 6}" y="${y + 6}" font-size="15" font-weight="700" fill="#748394" letter-spacing="1">AU</text>`;
+  h += `<text x="${AX(AMAX) + 6}" y="${y + 6}" font-size="15" font-weight="700" fill="#9FB0C4" letter-spacing="1">AU</text>`;
   return h;
 }
 /* 생명 가능 지대 한 줄(정적 그림) */
 function hzRowSvg({ y, L, h = 40, gray = false, reveal = true, values = true }){
   const a = innerOf(L), b = outerOf(L);
-  if (!reveal) return `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#243447" stroke-opacity=".25" stroke-dasharray="3 6"/>`;
+  if (!reveal) return `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#E8EEF6" stroke-opacity=".25" stroke-dasharray="3 6"/>`;
   let s = '';
   if (!gray){
     s += `<rect x="${AX(0)}" y="${y - h / 2}" width="${AX(a) - AX(0)}" height="${h}" fill="${ZONES.hot.color}" fill-opacity=".12"/>`;
     s += `<rect x="${AX(b)}" y="${y - h / 2}" width="${AX(AMAX) - AX(b)}" height="${h}" fill="${ZONES.cold.color}" fill-opacity=".1"/>`;
   }
-  s += `<rect x="${AX(a)}" y="${y - h / 2}" width="${AX(b) - AX(a)}" height="${h}" rx="4" fill="${gray ? SUN_GRAY : ZONES.ok.color}" fill-opacity="${gray ? .3 : .34}" stroke="${gray ? SUN_GRAY : ZONES.ok.color}" stroke-width="2"/>`;
+  s += `<rect x="${AX(a)}" y="${y - h / 2}" width="${AX(b) - AX(a)}" height="${h}" rx="4" fill="${gray ? SUN_GRAY : ZONES.ok.color}" fill-opacity="${gray ? .3 : .5}" stroke="${gray ? SUN_GRAY : ZONES.ok.color}" stroke-width="2"/>`;
   const gap = Math.max(0, 48 - (AX(b) - AX(a))) / 2;   // 띠가 좁으면 두 값을 살짝 벌림
   if (values) for (const [d, dx] of [[a, -gap], [b, gap]])
-    s += `<text x="${(AX(d) + dx).toFixed(1)}" y="${y + h / 2 + 22}" text-anchor="middle" font-size="17" font-weight="700" fill="${gray ? '#4C5D6E' : '#243447'}">${f2(d)}</text>`;
+    s += `<text x="${(AX(d) + dx).toFixed(1)}" y="${y + h / 2 + 22}" text-anchor="middle" font-size="17" font-weight="700" fill="${gray ? '#C5D0DC' : '#E8EEF6'}">${f2(d)}</text>`;
   return s;
 }
 
@@ -728,59 +735,65 @@ const thumbAt = p => `calc(19px + ${(p / 10).toFixed(2)}% - ${(p / 1000 * 38).to
 let OG = null;
 function obsGeom(){
   if (NARROW && document.documentElement.clientWidth < 600)   // 폰: 그림이 작게 줄어드니 글자를 더 크게
-    return { vb:`0 16 ${VW} 310`, SY:64, SH:22, CY:162, CH:52, sunVal:96, curVal:214, BY:230, AY:284, fs:22, sfs:17, zfs:17, core:14, lfs:22, lsub:18 };
+    return { vb:`0 16 ${VW} 310`, SY:64, SH:22, CY:162, CH:52, sunVal:96, curVal:214, BY:230, AY:284, fs:22, sfs:17, zfs:17, core:14, lfs:22, lsub:18, pfs:16 };
   return NARROW
-    ? { vb:`0 8 ${VW} 282`, SY:56, SH:20, CY:146, CH:48, sunVal:84, curVal:192, BY:206, AY:252, fs:17, sfs:13, zfs:14, core:13, lfs:17, lsub:14 }
-    : { vb:`0 12 ${VW} 262`, SY:50, SH:24, CY:136, CH:56, sunVal:31, curVal:100, BY:180, AY:230, fs:18, sfs:13.5, zfs:15, core:15, lfs:17, lsub:13.5 };
+    ? { vb:`0 8 ${VW} 282`, SY:56, SH:20, CY:146, CH:48, sunVal:84, curVal:192, BY:206, AY:252, fs:17, sfs:13, zfs:14, core:13, lfs:17, lsub:14, pfs:13.5 }
+    : { vb:`0 12 ${VW} 262`, SY:50, SH:24, CY:136, CH:56, sunVal:31, curVal:100, BY:180, AY:230, fs:18, sfs:15, zfs:15.5, core:15, lfs:18, lsub:14.5, pfs:13.5 };
 }
 /* 띠가 좁을 때 두 값이 겹치지 않게 양쪽으로 벌린다(경계선과 값은 짧은 지시선으로 잇는다) */
 const labelGap = (xa, xb, need) => Math.max(0, need - (xb - xa)) / 2;
 VIEWS.observe = function(){
   const G = OG = obsGeom(), sa = innerOf(1), sb = outerOf(1), top = G.CY - G.CH / 2, bot = G.CY + G.CH / 2;
-  const halo = 'stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke"';
+  const halo = 'stroke="#0D1726" stroke-width="4" stroke-linejoin="round" paint-order="stroke"';
   let g = `<defs>
     <radialGradient id="oCore" cx=".5" cy=".5" r=".55" fx=".38" fy=".34"><stop offset="0" stop-color="#FFF9EE"/><stop offset=".5" stop-color="#FFDCA6"/><stop offset="1" stop-color="#E99A52"/></radialGradient>
     <radialGradient id="oHalo"><stop offset="0" stop-color="#F2B26E" stop-opacity=".55"/><stop offset=".45" stop-color="#F5C48F" stop-opacity=".2"/><stop offset="1" stop-color="#F8DCBC" stop-opacity="0"/></radialGradient>
     <radialGradient id="oSpread"><stop offset="0" stop-color="#F2B26E" stop-opacity=".45"/><stop offset=".6" stop-color="#F7D3AE" stop-opacity=".12"/><stop offset="1" stop-color="#FAE6D2" stop-opacity="0"/></radialGradient>
     <linearGradient id="oEnergy" gradientUnits="userSpaceOnUse" x1="${AX0}" y1="0" x2="${AX1}" y2="0">
       <stop id="oE0" offset="0" stop-color="#E99A52" stop-opacity=".42"/><stop id="oE1" stop-color="#F0B47C" stop-opacity=".1"/>
-      <stop id="oE2" stop-color="#35A782" stop-opacity=".3"/><stop id="oE3" stop-color="#35A782" stop-opacity=".3"/>
-      <stop id="oE4" stop-color="#A9C4D8" stop-opacity=".12"/><stop id="oE5" offset="1" stop-color="#6F98B8" stop-opacity=".3"/></linearGradient>
+      <stop id="oE2" stop-color="#35A782" stop-opacity=".38"/><stop id="oE3" stop-color="#35A782" stop-opacity=".38"/>
+      <stop id="oE4" stop-color="#6F98B8" stop-opacity=".14"/><stop id="oE5" offset="1" stop-color="#6F98B8" stop-opacity=".42"/></linearGradient>
     <clipPath id="oRowClip"><rect x="${AX0}" y="${top - 30}" width="${AX1 - AX0 + 40}" height="${G.CH + 60}"/></clipPath>
     <marker id="oArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="${ZONES.ok.ink}"/></marker>
   </defs>`;
   // ── 태양(기준) 줄: 고정 ──
   g += NARROW
-    ? `<text x="4" y="${G.SY - G.SH / 2 - 11}" font-size="${G.lfs}" font-weight="700" fill="#243447" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">태양 <tspan font-size="${G.lsub}" font-weight="600" fill="#748394">기준 · 광도 1배</tspan></text>`
-    : `<text x="${AX0 - 26}" y="${G.SY - 1}" text-anchor="end" font-size="17" font-weight="700" fill="#243447">태양</text><text x="${AX0 - 26}" y="${G.SY + 17}" text-anchor="end" font-size="13.5" fill="#748394">기준 · 광도 1배</text>`;
+    ? `<text x="4" y="${G.SY - G.SH / 2 - 11}" font-size="${G.lfs}" font-weight="700" fill="#E8EEF6" stroke="#0D1726" stroke-width="4" stroke-linejoin="round" paint-order="stroke">태양계 <tspan font-size="${G.lsub}" font-weight="600" fill="#9FB0C4">기준 · ${f2(sa)}–${f2(sb)} AU</tspan></text>`
+    : `<text x="${AX0 - 26}" y="${G.SY - 1}" text-anchor="end" font-size="${G.lfs}" font-weight="700" fill="#E8EEF6">태양계</text><text x="${AX0 - 26}" y="${G.SY + 17}" text-anchor="end" font-size="${G.lsub}" fill="#9FB0C4">기준 · 광도 1배</text>`;
   g += `<line x1="${AX0}" y1="${G.SY}" x2="${AX1}" y2="${G.SY}" stroke="#A7B1BA" stroke-opacity=".45" stroke-dasharray="2 5"/>`;
-  g += `<rect x="${AX(sa)}" y="${G.SY - G.SH / 2}" width="${AX(sb) - AX(sa)}" height="${G.SH}" rx="6" fill="#E2E6E9" fill-opacity=".7" stroke="#A7B1BA" stroke-width="1.5"/>`;
+  g += `<rect x="${AX(sa)}" y="${G.SY - G.SH / 2}" width="${AX(sb) - AX(sa)}" height="${G.SH}" rx="6" fill="#4A5B72" fill-opacity=".75" stroke="#A7B1BA" stroke-width="1.5"/>`;
   g += `<circle cx="${AX0}" cy="${G.SY}" r="${NARROW ? 8 : 9}" fill="url(#oCore)" stroke="#C9A37E" stroke-width="1"/>`;
   for (const d of [sa, sb]){
     g += `<line x1="${AX(d)}" y1="${G.SY + G.SH / 2}" x2="${AX(d)}" y2="${top - 2}" stroke="#A7B1BA" stroke-width="1.2" stroke-dasharray="3 4"/>`;
-    g += `<text class="num" x="${AX(d)}" y="${G.sunVal}" text-anchor="middle" font-size="${G.sfs}" font-weight="700" fill="#748394" ${halo}>${f2(d)}</text>`;
+    if (!NARROW) g += `<text class="num" x="${AX(d)}" y="${G.sunVal}" text-anchor="middle" font-size="${G.sfs}" font-weight="700" fill="#9FB0C4" ${halo}>${f2(d)}</text>`;
+  }
+  // 태양계 행성: 실제 거리(AU)에 점으로. 크기는 보기 쉽게 키운 것(실제 비율 아님)
+  for (const pl of PLANETS.filter(q => q.d <= AMAX)){
+    const x = AX(pl.d).toFixed(1), r = (pl.r * (NARROW ? 0.8 : 0.85)).toFixed(1);
+    g += `<circle cx="${x}" cy="${G.SY}" r="${r}" fill="${pl.c}" stroke="#0D1726" stroke-width="1.5"/>`;
+    g += `<text x="${x}" y="${G.SY + G.SH / 2 + G.pfs + 3}" text-anchor="middle" font-size="${G.pfs}" font-weight="${pl.n === '지구' ? 700 : 500}" fill="${pl.n === '지구' ? '#E8EEF6' : '#9FB0C4'}" ${halo}>${NARROW ? pl.n[0] : pl.n}</text>`;
   }
   // ── 지금 별 줄: 받는 에너지에 따라 색이 바뀌는 띠 + 두 경계선 ──
   g += NARROW
-    ? `<text x="4" y="${top - 13}" font-size="${G.lfs}" font-weight="700" fill="#243447" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">지금 별 <tspan id="oLbl" font-size="${G.lsub}" font-weight="600" fill="#748394"></tspan></text>`
-    : `<text x="${AX0 - 26}" y="${G.CY - 1}" text-anchor="end" font-size="18" font-weight="700" fill="#243447">지금 별</text><text id="oLbl" class="num" x="${AX0 - 26}" y="${G.CY + 18}" text-anchor="end" font-size="13.5" fill="#748394"></text>`;
+    ? `<text x="4" y="${top - 13}" font-size="${G.lfs}" font-weight="700" fill="#E8EEF6" stroke="#0D1726" stroke-width="4" stroke-linejoin="round" paint-order="stroke">지금 별 <tspan id="oLbl" font-size="${G.lsub}" font-weight="600" fill="#9FB0C4"></tspan></text>`
+    : `<text x="${AX0 - 26}" y="${G.CY - 1}" text-anchor="end" font-size="18" font-weight="700" fill="#E8EEF6">지금 별</text><text id="oLbl" class="num" x="${AX0 - 26}" y="${G.CY + 18}" text-anchor="end" font-size="13.5" fill="#9FB0C4"></text>`;
   g += `<g clip-path="url(#oRowClip)"><ellipse id="oSpread" cy="${G.CY}" ry="${G.CH * 0.95}" fill="url(#oSpread)"/></g>`;
   g += `<rect x="${AX0}" y="${top}" width="${AX1 - AX0}" height="${G.CH}" rx="10" fill="url(#oEnergy)"/>`;
   g += `<text id="oHotT" y="${G.CY + 5}" text-anchor="middle" font-size="${G.zfs}" font-weight="700" fill="${ZONES.hot.ink}">받는 에너지 많음</text>`;
   g += `<text id="oColdT" y="${G.CY + 5}" text-anchor="middle" font-size="${G.zfs}" font-weight="700" fill="${ZONES.cold.ink}">받는 에너지 적음</text>`;
-  g += `<text id="oOkT" y="${G.CY + 6}" text-anchor="middle" font-size="${G.zfs + 1.5}" font-weight="700" fill="#1F6B51">생명 가능 지대</text>`;
+  g += `<text id="oOkT" y="${G.CY + 6}" text-anchor="middle" font-size="${G.zfs + 1.5}" font-weight="700" fill="#B4F2D3">생명 가능 지대</text>`;
   // 학생이 저장한 기준(변화 전): 점선 윤곽으로만
   const base = S.obs.base;
   if (base != null){
     const ba = AX(innerOf(base)), bb = AX(outerOf(base));
-    g += `<rect x="${ba.toFixed(1)}" y="${top - 6}" width="${(bb - ba).toFixed(1)}" height="${G.CH + 12}" rx="8" fill="#ffffff" fill-opacity=".28" stroke="#243447" stroke-width="2" stroke-dasharray="7 5"/>`;
-    if (bb - ba > 64) g += `<text x="${((ba + bb) / 2).toFixed(1)}" y="${bot - 7}" text-anchor="middle" font-size="13" font-weight="700" fill="#243447" ${halo}>기준 ${mulName(base)}</text>`;
+    g += `<rect x="${ba.toFixed(1)}" y="${top - 6}" width="${(bb - ba).toFixed(1)}" height="${G.CH + 12}" rx="8" fill="#ffffff" fill-opacity=".06" stroke="#E8EEF6" stroke-width="2" stroke-dasharray="7 5"/>`;
+    if (bb - ba > 64) g += `<text x="${((ba + bb) / 2).toFixed(1)}" y="${bot - 7}" text-anchor="middle" font-size="13" font-weight="700" fill="#E8EEF6" ${halo}>기준 ${mulName(base)}</text>`;
   }
   g += `<line id="oInL" y1="${top - 5}" y2="${bot + 5}" stroke="${ZONES.ok.ink}" stroke-width="2.5" stroke-linecap="round"/>`;
   g += `<line id="oOutL" y1="${top - 5}" y2="${bot + 5}" stroke="${ZONES.ok.ink}" stroke-width="2.5" stroke-linecap="round"/>`;
   g += `<path id="oInLead" fill="none" stroke="${ZONES.ok.ink}" stroke-width="1.2"/><path id="oOutLead" fill="none" stroke="${ZONES.ok.ink}" stroke-width="1.2"/>`;
-  g += `<text id="oInT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="700" fill="#243447" ${halo}></text>`;
-  g += `<text id="oOutT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="700" fill="#243447" ${halo}></text>`;
+  g += `<text id="oInT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="700" fill="#E8EEF6" ${halo}></text>`;
+  g += `<text id="oOutT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="700" fill="#E8EEF6" ${halo}></text>`;
   // 폭: 양방향 화살표
   g += `<line id="oBrA" y1="${G.BY}" y2="${G.BY}" stroke="${ZONES.ok.ink}" stroke-width="2.2" marker-start="url(#oArr)" marker-end="url(#oArr)"/>`;
   g += `<path id="oBrE" fill="none" stroke="${ZONES.ok.ink}" stroke-width="2"/>`;
@@ -1064,16 +1077,16 @@ const p1 = (x, y, z) => [P1.SX + x * P1.K + z * 0.40 * P1.U, P1.SY - y * P1.U + 
 const FK = () => NARROW ? 1.6 : 1;   // 폰에서 원리 ① 그림의 글자 배율
 function pr1Start(){
   let st = `<defs>${GLOW_DEF('pGlowG')}</defs>`;
-  st += `<circle cx="24" cy="${25 * FK()}" r="${5 * FK()}" fill="#E99A52"/><text x="${24 + 14 * FK()}" y="${31 * FK()}" font-size="${16 * FK()}" fill="#4C5D6E">${NARROW ? '별빛 (점이 빽빽할수록 에너지가 많아요)' : '별빛 (한 칸에 점이 빽빽할수록 받는 에너지가 많아요)'}</text>`;
+  st += `<circle cx="24" cy="${25 * FK()}" r="${5 * FK()}" fill="#E99A52"/><text x="${24 + 14 * FK()}" y="${31 * FK()}" font-size="${16 * FK()}" fill="#C5D0DC">${NARROW ? '별빛 (점이 빽빽할수록 에너지가 많아요)' : '별빛 (한 칸에 점이 빽빽할수록 받는 에너지가 많아요)'}</text>`;
   for (const d of [1, 2, 3]){
     const h = d / 2;
-    st += `<polygon points="${pts([p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)])}" fill="none" stroke="#C3CCD3" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
+    st += `<polygon points="${pts([p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)])}" fill="none" stroke="#52678A" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
   }
-  st += `<line x1="${P1.SX}" y1="${P1.AY}" x2="${P1.SX + 3.25 * P1.K}" y2="${P1.AY}" stroke="#748394" stroke-width="2"/>`;
+  st += `<line x1="${P1.SX}" y1="${P1.AY}" x2="${P1.SX + 3.25 * P1.K}" y2="${P1.AY}" stroke="#9FB0C4" stroke-width="2"/>`;
   for (const d of [0, 1, 2, 3]){
     const x = P1.SX + d * P1.K;
-    st += `<line x1="${x}" y1="${P1.AY - 8}" x2="${x}" y2="${P1.AY + 8}" stroke="#748394" stroke-width="2"/>`;
-    st += `<text x="${x}" y="${P1.AY + 18 + 14 * FK()}" text-anchor="middle" font-size="${20 * FK()}" font-weight="700" fill="#243447">${d === 0 ? '별' : d + ' AU'}</text>`;
+    st += `<line x1="${x}" y1="${P1.AY - 8}" x2="${x}" y2="${P1.AY + 8}" stroke="#9FB0C4" stroke-width="2"/>`;
+    st += `<text x="${x}" y="${P1.AY + 18 + 14 * FK()}" text-anchor="middle" font-size="${20 * FK()}" font-weight="700" fill="#E8EEF6">${d === 0 ? '별' : d + ' AU'}</text>`;
   }
   $('prStatic').innerHTML = st;
   const from = { ...S.pr.cur }, tg = prTarget(), to = { sL:Math.sqrt(tg.L), d:tg.d };
@@ -1093,12 +1106,12 @@ function pr1Draw(sLTarget){
   const c = [p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)];
   let s = starSvg(P1.SX, P1.SY, L, 'pGlowG', 16);
   for (let k = 0; k < 4; k++)
-    s += `<polygon points="${P1.SX},${P1.SY} ${pts([c[k], c[(k + 1) % 4]])}" fill="#F3B97A" fill-opacity="${(0.06 + 0.03 * sL).toFixed(3)}" stroke="#E99A52" stroke-opacity=".6"/>`;
-  s += `<polygon points="${pts(c)}" fill="#F7F8F6" fill-opacity=".95" stroke="#243447" stroke-width="2"/>`;
+    s += `<polygon points="${P1.SX},${P1.SY} ${pts([c[k], c[(k + 1) % 4]])}" fill="#F3B97A" fill-opacity="${(0.1 + 0.05 * sL).toFixed(3)}" stroke="#E99A52" stroke-opacity=".6"/>`;
+  s += `<polygon points="${pts(c)}" fill="#16243A" fill-opacity=".95" stroke="#E8EEF6" stroke-width="2"/>`;
   for (let k = 1; k < d - 1e-6; k++){
     const a1 = p1(d, h - k, -h), a2 = p1(d, h - k, h), b1 = p1(d, h, -h + k), b2 = p1(d, -h, -h + k);
-    s += `<line x1="${a1[0]}" y1="${a1[1]}" x2="${a2[0]}" y2="${a2[1]}" stroke="#243447" stroke-opacity=".3"/>`;
-    s += `<line x1="${b1[0]}" y1="${b1[1]}" x2="${b2[0]}" y2="${b2[1]}" stroke="#243447" stroke-opacity=".3"/>`;
+    s += `<line x1="${a1[0]}" y1="${a1[1]}" x2="${a2[0]}" y2="${a2[1]}" stroke="#E8EEF6" stroke-opacity=".3"/>`;
+    s += `<line x1="${b1[0]}" y1="${b1[1]}" x2="${b2[0]}" y2="${b2[1]}" stroke="#E8EEF6" stroke-opacity=".3"/>`;
   }
   // 별빛 점: 광도 1배일 때 1 AU 한 칸에 6×6개 → 점의 수는 광도에 비례
   const n = Math.round(6 * sLTarget), sp = d / n, rr = Math.max(1.3, Math.min(3.6, 0.3 * sp * P1.U));
@@ -1116,12 +1129,12 @@ function pr1Draw(sLTarget){
   s += `<polygon points="${px - 9},${P1.AY - 20} ${px + 9},${P1.AY - 20} ${px},${P1.AY - 6}" fill="${ZONES.ok.color}"/>`;
   // 한 칸이 받는 에너지 막대(0~9)
   const E = L / (d * d), BX0 = NARROW ? 20 : 290, BX1 = 940, BY = NARROW ? 514 : 446, bx = v => BX0 + Math.min(v, 9) / 9 * (BX1 - BX0);
-  s += `<text x="20" y="${NARROW ? BY - 40 : BY + 19}" font-size="${18 * FK()}" font-weight="700" fill="#243447">한 칸이 받는 에너지</text>`;
-  s += `<rect x="${BX0}" y="${BY}" width="${BX1 - BX0}" height="26" rx="6" fill="#243447" fill-opacity=".07" stroke="#E3E8EB"/>`;
+  s += `<text x="20" y="${NARROW ? BY - 40 : BY + 19}" font-size="${18 * FK()}" font-weight="700" fill="#E8EEF6">한 칸이 받는 에너지</text>`;
+  s += `<rect x="${BX0}" y="${BY}" width="${BX1 - BX0}" height="26" rx="6" fill="#E8EEF6" fill-opacity=".07" stroke="#2A3B53"/>`;
   s += `<rect x="${BX0}" y="${BY}" width="${(bx(E) - BX0).toFixed(1)}" height="26" rx="6" fill="#E99A52"/>`;
-  for (const v of [1, 4, 9]) s += `<line x1="${bx(v)}" y1="${BY - 4}" x2="${bx(v)}" y2="${BY + 30}" stroke="#4C5D6E" stroke-opacity=".7"/><text x="${bx(v)}" y="${BY - 9}" text-anchor="middle" font-size="${15 * FK()}" fill="#4C5D6E">${v}</text>`;
+  for (const v of [1, 4, 9]) s += `<line x1="${bx(v)}" y1="${BY - 4}" x2="${bx(v)}" y2="${BY + 30}" stroke="#C5D0DC" stroke-opacity=".7"/><text x="${bx(v)}" y="${BY - 9}" text-anchor="middle" font-size="${15 * FK()}" fill="#C5D0DC">${v}</text>`;
   const tx = Math.min(bx(E) + 10, BX1 - 56 * FK());
-  s += `<text x="${tx.toFixed(1)}" y="${BY + 13 + 7 * FK()}" font-size="${20 * FK()}" font-weight="700" fill="#243447">${E.toFixed(2)}</text>`;
+  s += `<text x="${tx.toFixed(1)}" y="${BY + 13 + 7 * FK()}" font-size="${20 * FK()}" font-weight="700" fill="#E8EEF6">${E.toFixed(2)}</text>`;
   g.innerHTML = s;
 }
 
@@ -1132,7 +1145,7 @@ function pr2Start(){
   let st = `<defs>${GLOW_DEF('p2Glow')}</defs>`;
   st += rowLab(P2.Y_SUN, 34, '태양');
   st += `<circle cx="${AX0}" cy="${P2.Y_SUN}" r="9" fill="${SUN_GRAY}"/>`;
-  st += `<line x1="${AX0}" y1="${P2.Y_SUN}" x2="${AX1}" y2="${P2.Y_SUN}" stroke="#243447" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
+  st += `<line x1="${AX0}" y1="${P2.Y_SUN}" x2="${AX1}" y2="${P2.Y_SUN}" stroke="#E8EEF6" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
   st += hzRowSvg({ y:P2.Y_SUN, L:1, h:34, gray:true, values:false });
   st += axisSvg(P2.Y_AX);
   $('prStatic').innerHTML = st;
@@ -1151,27 +1164,27 @@ function pr2Draw(sc){
   const g = $('prDyn'); if (!g) return;
   const sa = sa1(), sb = sb1(), L = S.pr.cmpL, m0 = Math.sqrt(L), t = S.pr.cur.move, m = lerp(1, m0, t);
   let s = '';
-  for (const d of [sa, sb]) s += `<text x="${AX(d)}" y="${P2.Y_SUN - 26}" text-anchor="middle" font-size="17" font-weight="700" fill="#4C5D6E">${f2(d)}</text>`;
+  for (const d of [sa, sb]) s += `<text x="${AX(d)}" y="${P2.Y_SUN - 26}" text-anchor="middle" font-size="17" font-weight="700" fill="#C5D0DC">${f2(d)}</text>`;
   if (sc.cmp !== 'move'){
-    s += `<text x="${AX(sb) + 12}" y="${P2.Y_SUN + 6}" font-size="17" font-weight="700" fill="#4C5D6E">폭 ${f2(widthOf(1))} AU</text>`;
+    s += `<text x="${AX(sb) + 12}" y="${P2.Y_SUN + 6}" font-size="17" font-weight="700" fill="#C5D0DC">폭 ${f2(widthOf(1))} AU</text>`;
   }
   if (sc.cmp){
     const a = sa * m, b = sb * m;
-    s += NARROW ? rowLab(P2.Y_CMP, 48, `광도 ${mulName(L)}`) : rowLab(P2.Y_CMP, 48, '광도', mulName(L)).replace('font-size="14" fill="#748394"', 'font-size="17" font-weight="700" fill="#243447"');
+    s += NARROW ? rowLab(P2.Y_CMP, 48, `광도 ${mulName(L)}`) : rowLab(P2.Y_CMP, 48, '광도', mulName(L)).replace('font-size="14" fill="#9FB0C4"', 'font-size="17" font-weight="700" fill="#E8EEF6"');
     s += starSvg(AX0, P2.Y_CMP, L, 'p2Glow', 13);
-    s += `<rect x="${AX(a)}" y="${P2.Y_CMP - 24}" width="${AX(b) - AX(a)}" height="48" rx="5" fill="${ZONES.ok.color}" fill-opacity=".34" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
+    s += `<rect x="${AX(a)}" y="${P2.Y_CMP - 24}" width="${AX(b) - AX(a)}" height="48" rx="5" fill="${ZONES.ok.color}" fill-opacity=".5" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
     // 태양의 경계 → 이 별의 경계로 이어지는 대각선 화살표
     for (const [d0, d1, side] of [[sa, a, -1], [sb, b, 1]]){
       const x0 = AX(d0), y0 = P2.Y_SUN + 19, x1 = AX(d1), y1 = P2.Y_CMP - 28;
       const ang = Math.atan2(y1 - y0, x1 - x0), ah = 9;
       const hx = x1 - ah * Math.cos(ang), hy = y1 - ah * Math.sin(ang);
-      s += `<line x1="${x0}" y1="${y0}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#243447" stroke-width="1.4"/>`;
-      s += `<polygon points="${x1.toFixed(1)},${y1} ${(hx - 4 * Math.sin(ang)).toFixed(1)},${(hy + 4 * Math.cos(ang)).toFixed(1)} ${(hx + 4 * Math.sin(ang)).toFixed(1)},${(hy - 4 * Math.cos(ang)).toFixed(1)}" fill="#243447"/>`;
+      s += `<line x1="${x0}" y1="${y0}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#E8EEF6" stroke-width="1.4"/>`;
+      s += `<polygon points="${x1.toFixed(1)},${y1} ${(hx - 4 * Math.sin(ang)).toFixed(1)},${(hy + 4 * Math.cos(ang)).toFixed(1)} ${(hx + 4 * Math.sin(ang)).toFixed(1)},${(hy - 4 * Math.cos(ang)).toFixed(1)}" fill="#E8EEF6"/>`;
       if (t > .6){
         const mx = (x0 + x1) / 2 + side * 26, my = (y0 + y1) / 2 + 6;
-        s += `<text x="${mx.toFixed(1)}" y="${my.toFixed(1)}" text-anchor="middle" font-size="17" font-weight="700" fill="#4F7895">×${trimNum(m0)}</text>`;
+        s += `<text x="${mx.toFixed(1)}" y="${my.toFixed(1)}" text-anchor="middle" font-size="17" font-weight="700" fill="#8EB9DB">×${trimNum(m0)}</text>`;
       }
-      s += `<text x="${AX(d1)}" y="${P2.Y_CMP + 46}" text-anchor="middle" font-size="18" font-weight="700" fill="#243447">${f2(d1)}</text>`;
+      s += `<text x="${AX(d1)}" y="${P2.Y_CMP + 46}" text-anchor="middle" font-size="18" font-weight="700" fill="#E8EEF6">${f2(d1)}</text>`;
     }
     if (sc.cmp === 'width'){
       const by = P2.Y_CMP + 64, cx = Math.min(AX1 - 110, Math.max(AX0 + 110, (AX(a) + AX(b)) / 2));
@@ -1255,17 +1268,17 @@ function apVisSvg(v, reveal){
   const rowLabel = (y, L, h) => rowLab(y, h, NARROW ? `광도 ${mulName(L)}` : mulName(L)) + starSvg(AX0, y, L, 'aGlow', 11);
   if (v.type === 'compare'){
     const ys = NARROW ? [80, 180, 280] : [70, 155, 240]; H = NARROW ? 375 : 335;
-    if (!NARROW) s += `<text x="20" y="28" font-size="16" fill="#748394">별의 광도 (태양 = 1)</text>`;
+    if (!NARROW) s += `<text x="20" y="28" font-size="16" fill="#9FB0C4">별의 광도 (태양 = 1)</text>`;
     v.Ls.forEach((L, i) => { s += hzRowSvg({ y:ys[i], L, h:38, reveal }) + rowLabel(ys[i], L, 38); });
     s += axisSvg(H - 50);
   } else if (v.type === 'judge'){
     const y = 125; H = 250;
-    s += NARROW ? `<text x="4" y="26" font-size="18" font-weight="700" fill="#243447">광도 ${mulName(v.L)} 별 · 행성 ${trimNum(v.d)} AU</text>`
-                : `<text x="20" y="28" font-size="16" fill="#748394">광도 ${mulName(v.L)} 별과 ${trimNum(v.d)} AU의 행성</text>`;
+    s += NARROW ? `<text x="4" y="26" font-size="18" font-weight="700" fill="#E8EEF6">광도 ${mulName(v.L)} 별 · 행성 ${trimNum(v.d)} AU</text>`
+                : `<text x="20" y="28" font-size="16" fill="#9FB0C4">광도 ${mulName(v.L)} 별과 ${trimNum(v.d)} AU의 행성</text>`;
     s += hzRowSvg({ y, L:v.L, h:50, reveal }) + (NARROW ? starSvg(AX0, y, v.L, 'aGlow', 11) : rowLabel(y, v.L, 50));
     const x = AX(v.d);
-    s += `<circle cx="${x}" cy="${y}" r="13" fill="#ffffff" stroke="#243447" stroke-width="2"/>`;
-    s += `<text x="${Math.max(x, NARROW ? 60 : 0)}" y="${y - 38}" text-anchor="middle" font-size="18" font-weight="700" fill="#243447">${NARROW ? '행성' : `행성 ${trimNum(v.d)} AU`}</text>`;
+    s += `<circle cx="${x}" cy="${y}" r="13" fill="#ffffff" stroke="#E8EEF6" stroke-width="2"/>`;
+    s += `<text x="${Math.max(x, NARROW ? 60 : 0)}" y="${y - 38}" text-anchor="middle" font-size="18" font-weight="700" fill="#E8EEF6">${NARROW ? '행성' : `행성 ${trimNum(v.d)} AU`}</text>`;
     if (reveal){ const z = zoneOf(fluxAt(v.L, v.d)); s += `<text x="${Math.max(x, NARROW ? 70 : 0)}" y="${y - 62}" text-anchor="middle" font-size="17" font-weight="700" fill="${ZONES[z].ink}">${ZONES[z].label}</text>`; }
     s += axisSvg(195);
   } else {
@@ -1273,7 +1286,7 @@ function apVisSvg(v, reveal){
     s += rowLab(yS, 30, '태양') + `<circle cx="${AX0}" cy="${yS}" r="8" fill="${SUN_GRAY}"/>`;
     s += hzRowSvg({ y:yS, L:1, h:30, gray:true });
     s += hzRowSvg({ y:yT, L:v.L, h:48, reveal }) + rowLabel(yT, v.L, 48);
-    if (!reveal) s += `<text x="${(AX0 + AX1) / 2}" y="${yT + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="#748394">?</text>`;
+    if (!reveal) s += `<text x="${(AX0 + AX1) / 2}" y="${yT + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="#9FB0C4">?</text>`;
     else for (const d of [innerOf(1), outerOf(1)]) s += `<line x1="${AX(d)}" y1="${yS + 15}" x2="${AX(d)}" y2="${yT - 24}" stroke="${SUN_GRAY}" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
     s += axisSvg(245);
   }
@@ -1296,10 +1309,10 @@ VIEWS.deep = function(){
 
 /* ── 도전! 생명 가능 지대 찾기 (질량이 다른 별에서 행성을 끌어 경계 기록) ── */
 const STARS = [
-  { m:0.5, short:'0.5배', color:'#E0705C', ink:'#B5503F', ruler:1,   minor:0.05, label:0.1, r:12 },
-  { m:1,   short:'1배',   color:'#F2C14E', ink:'#93661A', ruler:2.5, minor:0.1,  label:0.5, r:16 },
-  { m:1.5, short:'1.5배', color:'#f4f6fb', ink:'#4C5D6E', ruler:5,   minor:0.25, label:1,   r:20 },
-  { m:2,   short:'2배',   color:'#9CC3E6', ink:'#3F6F91', ruler:8,   minor:0.5,  label:1,   r:24 },
+  { m:0.5, short:'0.5배', color:'#E0705C', ink:'#F39A86', ruler:1,   minor:0.05, label:0.1, r:12 },
+  { m:1,   short:'1배',   color:'#F2C14E', ink:'#F2C66B', ruler:2.5, minor:0.1,  label:0.5, r:16 },
+  { m:1.5, short:'1.5배', color:'#f4f6fb', ink:'#C5D0DC', ruler:5,   minor:0.25, label:1,   r:20 },
+  { m:2,   short:'2배',   color:'#9CC3E6', ink:'#93BEE0', ruler:8,   minor:0.5,  label:1,   r:24 },
 ];
 S.ch = { star:1, pos:STARS.map(s => +(s.ruler * 0.1).toFixed(2)), rec:STARS.map(() => ({ inner:null, outer:null })), bands:false, msg:null };
 const RX0 = 130, RX1 = 940, RY = 150;
@@ -1320,9 +1333,9 @@ DEEP.challenge = function(){
   const X = d => RX0 + d / max * (RX1 - RX0);
   let h = `<defs>${STARS.map((s, k) => `<radialGradient id="sg${k}"><stop offset="0" stop-color="${s.color}" stop-opacity=".85"/><stop offset="1" stop-color="${s.color}" stop-opacity="0"/></radialGradient>`).join('')}
     <clipPath id="rulerClip"><rect x="${RX0}" y="0" width="${RX1 - RX0}" height="580"/></clipPath></defs>`;
-  h += `<text x="30" y="44" font-size="26" font-weight="700" fill="#243447">자 범위 <tspan fill="${st.ink}">0 ~ ${max} AU</tspan></text>`;
+  h += `<text x="30" y="44" font-size="26" font-weight="700" fill="#E8EEF6">자 범위 <tspan fill="${st.ink}">0 ~ ${max} AU</tspan></text>`;
   h += `<text x="${RX1}" y="44" text-anchor="end" font-size="19" font-weight="700" fill="${st.ink}">질량 ${st.short} 별 · 광도 ${fmtL(L)} (태양 = 1)</text>`;
-  h += `<text x="30" y="70" font-size="15" fill="#748394">별마다 자의 축척이 달라요. 행성을 끌어 옮겨 보세요.</text>`;
+  h += `<text x="30" y="70" font-size="15" fill="#9FB0C4">별마다 자의 축척이 달라요. 행성을 끌어 옮겨 보세요.</text>`;
   const band = chBand(i);
   if (band){
     h += `<g clip-path="url(#rulerClip)">`;
@@ -1333,31 +1346,31 @@ DEEP.challenge = function(){
       if (xb - xa > 70) h += `<text x="${(xa + xb) / 2}" y="${RY - 6}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES[z].ink}">${ZONES[z].energy}</text>`;
     }
     h += `</g>`;
-    if (band.model) h += `<text x="${RX1}" y="70" text-anchor="end" font-size="15" font-weight="700" fill="#4F7895">정답 띠(모형) 표시 중</text>`;
+    if (band.model) h += `<text x="${RX1}" y="70" text-anchor="end" font-size="15" font-weight="700" fill="#8EB9DB">정답 띠(모형) 표시 중</text>`;
   }
-  h += `<line x1="${RX0}" y1="${RY}" x2="${RX1}" y2="${RY}" stroke="#4C5D6E" stroke-width="3"/>`;
+  h += `<line x1="${RX0}" y1="${RY}" x2="${RX1}" y2="${RY}" stroke="#C5D0DC" stroke-width="3"/>`;
   const nMinor = Math.round(max / st.minor);
   for (let k = 0; k <= nMinor; k++){
     const d = k * st.minor, x = X(d), isLab = Math.abs(d / st.label - Math.round(d / st.label)) < 1e-6;
-    h += `<line x1="${x}" y1="${RY}" x2="${x}" y2="${RY + (isLab ? 18 : 9)}" stroke="#4C5D6E" stroke-width="${isLab ? 2.5 : 1.5}"/>`;
-    if (isLab) h += `<text x="${x}" y="${RY + 44}" text-anchor="middle" font-size="22" font-weight="700" fill="#243447">${trimNum(d)}</text>`;
+    h += `<line x1="${x}" y1="${RY}" x2="${x}" y2="${RY + (isLab ? 18 : 9)}" stroke="#C5D0DC" stroke-width="${isLab ? 2.5 : 1.5}"/>`;
+    if (isLab) h += `<text x="${x}" y="${RY + 44}" text-anchor="middle" font-size="22" font-weight="700" fill="#E8EEF6">${trimNum(d)}</text>`;
   }
-  h += `<text x="${RX1 + 8}" y="${RY + 6}" font-size="15" font-weight="700" fill="#748394" letter-spacing="1">AU</text>`;
+  h += `<text x="${RX1 + 8}" y="${RY + 6}" font-size="15" font-weight="700" fill="#9FB0C4" letter-spacing="1">AU</text>`;
   const rec = S.ch.rec[i];
   for (const [k, lab] of [['inner', '안쪽'], ['outer', '바깥쪽']]){
     if (rec[k] == null) continue;
     const x = X(rec[k]);
-    h += `<line x1="${x}" y1="${RY - 30}" x2="${x}" y2="${RY + 22}" stroke="#243447" stroke-width="2.5" stroke-dasharray="5 4"/>`;
-    h += `<text x="${x}" y="${RY + 72}" text-anchor="middle" font-size="15" font-weight="700" fill="#243447">${lab} ${f2(rec[k])}</text>`;
+    h += `<line x1="${x}" y1="${RY - 30}" x2="${x}" y2="${RY + 22}" stroke="#E8EEF6" stroke-width="2.5" stroke-dasharray="5 4"/>`;
+    h += `<text x="${x}" y="${RY + 72}" text-anchor="middle" font-size="15" font-weight="700" fill="#E8EEF6">${lab} ${f2(rec[k])}</text>`;
   }
-  h += `<circle cx="${RX0}" cy="${RY}" r="${st.r * 2.6}" fill="url(#sg${i})"/><circle cx="${RX0}" cy="${RY}" r="${st.r}" fill="${st.color}" stroke="#243447" stroke-opacity=".35" stroke-width="1.5"/>`;
+  h += `<circle cx="${RX0}" cy="${RY}" r="${st.r * 2.6}" fill="url(#sg${i})"/><circle cx="${RX0}" cy="${RY}" r="${st.r}" fill="${st.color}" stroke="#E8EEF6" stroke-opacity=".35" stroke-width="1.5"/>`;
   h += `<rect class="drag-zone" x="${RX0 - 6}" y="${RY - 52}" width="${RX1 - RX0 + 12}" height="104" fill="transparent"/>`;
-  h += `<text id="pLabel" y="${RY - 34}" text-anchor="middle" font-size="22" font-weight="700" fill="#243447"></text>`;
+  h += `<text id="pLabel" y="${RY - 34}" text-anchor="middle" font-size="22" font-weight="700" fill="#E8EEF6"></text>`;
   h += `<g id="planet" class="drag-zone" tabindex="0" role="slider" aria-label="행성 위치(AU)" aria-valuemin="0.01" aria-valuemax="${max}">
           <circle r="34" fill="transparent"/><circle class="focus-ring" r="27" fill="none" stroke="transparent"/>
           <circle id="pRing" r="18" fill="none" stroke-width="5"/>
-          <circle r="12" fill="#ffffff"/><circle r="12" fill="none" stroke="#243447" stroke-width="1.5"/></g>`;
-  h += `<text x="${GX0 + 16}" y="${GY - 20}" font-size="18" font-weight="700" fill="#243447">받는 에너지 <tspan font-size="15" font-weight="600" fill="#748394">(지구 = 1)</tspan></text>`;
+          <circle r="12" fill="#ffffff"/><circle r="12" fill="none" stroke="#E8EEF6" stroke-width="1.5"/></g>`;
+  h += `<text x="${GX0 + 16}" y="${GY - 20}" font-size="18" font-weight="700" fill="#E8EEF6">받는 에너지 <tspan font-size="15" font-weight="600" fill="#9FB0C4">(지구 = 1)</tspan></text>`;
   h += `<text id="gVal" x="${GX1}" y="${GY - 18}" text-anchor="end" font-size="24" font-weight="700"></text>`;
   for (const [z, a, b] of [['hot', G_MAX, HZ_INNER_S], ['ok', HZ_INNER_S, HZ_OUTER_S], ['cold', HZ_OUTER_S, 0]]){
     const xa = gX(a), xb = gX(b);
@@ -1366,24 +1379,24 @@ DEEP.challenge = function(){
   }
   for (const [v, lab, anc] of [[G_MAX, `많음 (${G_MAX} 이상)`, 'start'], [HZ_INNER_S, String(HZ_INNER_S), 'middle'], [HZ_OUTER_S, String(HZ_OUTER_S), 'middle'], [0, '적음 0', 'end']]){
     const x = gX(v);
-    h += `<line x1="${x}" y1="${GY + 30}" x2="${x}" y2="${GY + 38}" stroke="#4C5D6E"/><text x="${x}" y="${GY + 56}" text-anchor="${anc}" font-size="15" font-weight="600" fill="#4C5D6E">${lab}</text>`;
+    h += `<line x1="${x}" y1="${GY + 30}" x2="${x}" y2="${GY + 38}" stroke="#C5D0DC"/><text x="${x}" y="${GY + 56}" text-anchor="${anc}" font-size="15" font-weight="600" fill="#C5D0DC">${lab}</text>`;
   }
-  h += `<g id="gMark"><polygon points="-9,-14 9,-14 0,-1" fill="#243447"/><line x1="0" y1="0" x2="0" y2="30" stroke="#243447" stroke-width="3"/></g>`;
-  h += `<line x1="20" y1="350" x2="980" y2="350" stroke="#E3E8EB"/>`;
-  h += `<text x="20" y="380" font-size="17" font-weight="700" fill="#243447">모든 별을 같은 축척으로 비교 <tspan font-size="15" font-weight="600" fill="#748394">(0 ~ ${C_MAX} AU · 위로 갈수록 질량이 큰 별)</tspan></text>`;
+  h += `<g id="gMark"><polygon points="-9,-14 9,-14 0,-1" fill="#E8EEF6"/><line x1="0" y1="0" x2="0" y2="30" stroke="#E8EEF6" stroke-width="3"/></g>`;
+  h += `<line x1="20" y1="350" x2="980" y2="350" stroke="#2A3B53"/>`;
+  h += `<text x="20" y="380" font-size="17" font-weight="700" fill="#E8EEF6">모든 별을 같은 축척으로 비교 <tspan font-size="15" font-weight="600" fill="#9FB0C4">(0 ~ ${C_MAX} AU · 위로 갈수록 질량이 큰 별)</tspan></text>`;
   C_ROWS.forEach((si, r) => {
     const y = C_ROW_Y[r], s = STARS[si], cur = si === i, b = chBand(si), rr = S.ch.rec[si];
-    if (cur) h += `<rect x="20" y="${y - 17}" width="960" height="34" rx="8" fill="#4F7895" fill-opacity=".1"/>`;
-    h += `<text x="${CX0 - 26}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="${cur ? 800 : 600}" fill="${cur ? '#243447' : '#4C5D6E'}">${s.short}</text>`;
-    h += `<line x1="${CX0}" y1="${y}" x2="${CX1}" y2="${y}" stroke="#D5DCE1" stroke-dasharray="2 4"/>`;
+    if (cur) h += `<rect x="20" y="${y - 17}" width="960" height="34" rx="8" fill="#8EB9DB" fill-opacity=".1"/>`;
+    h += `<text x="${CX0 - 26}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="${cur ? 800 : 600}" fill="${cur ? '#E8EEF6' : '#C5D0DC'}">${s.short}</text>`;
+    h += `<line x1="${CX0}" y1="${y}" x2="${CX1}" y2="${y}" stroke="#33465F" stroke-dasharray="2 4"/>`;
     if (b) h += `<rect x="${cX(b.inner)}" y="${y - 9}" width="${Math.max(2, cX(b.outer) - cX(b.inner))}" height="18" rx="3" fill="${ZONES.ok.color}" fill-opacity="${b.model ? .5 : .75}"/>`;
-    for (const k of ['inner', 'outer']) if (rr[k] != null) h += `<line x1="${cX(rr[k])}" y1="${y - 13}" x2="${cX(rr[k])}" y2="${y + 13}" stroke="#243447" stroke-width="1.4"/>`;
-    h += `<circle cx="${CX0}" cy="${y}" r="${4 + s.r / 4}" fill="${s.color}" stroke="#243447" stroke-opacity=".35"/>`;
+    for (const k of ['inner', 'outer']) if (rr[k] != null) h += `<line x1="${cX(rr[k])}" y1="${y - 13}" x2="${cX(rr[k])}" y2="${y + 13}" stroke="#E8EEF6" stroke-width="1.4"/>`;
+    h += `<circle cx="${CX0}" cy="${y}" r="${4 + s.r / 4}" fill="${s.color}" stroke="#E8EEF6" stroke-opacity=".35"/>`;
   });
-  h += `<circle id="cMark" r="6" fill="#ffffff" stroke="#243447" stroke-width="1.5"/>`;
-  h += `<line x1="${CX0}" y1="${C_AXIS_Y}" x2="${CX1}" y2="${C_AXIS_Y}" stroke="#748394"/>`;
-  for (let d = 0; d <= C_MAX; d++) h += `<line x1="${cX(d)}" y1="${C_AXIS_Y}" x2="${cX(d)}" y2="${C_AXIS_Y + 6}" stroke="#748394"/><text x="${cX(d)}" y="${C_AXIS_Y + 24}" text-anchor="middle" font-size="15" fill="#4C5D6E">${d}</text>`;
-  h += `<text x="${CX1 + 8}" y="${C_AXIS_Y + 24}" font-size="15" fill="#4C5D6E">AU</text>`;
+  h += `<circle id="cMark" r="6" fill="#ffffff" stroke="#E8EEF6" stroke-width="1.5"/>`;
+  h += `<line x1="${CX0}" y1="${C_AXIS_Y}" x2="${CX1}" y2="${C_AXIS_Y}" stroke="#9FB0C4"/>`;
+  for (let d = 0; d <= C_MAX; d++) h += `<line x1="${cX(d)}" y1="${C_AXIS_Y}" x2="${cX(d)}" y2="${C_AXIS_Y + 6}" stroke="#9FB0C4"/><text x="${cX(d)}" y="${C_AXIS_Y + 24}" text-anchor="middle" font-size="15" fill="#C5D0DC">${d}</text>`;
+  h += `<text x="${CX1 + 8}" y="${C_AXIS_Y + 24}" font-size="15" fill="#C5D0DC">AU</text>`;
 
   const n = chDone(), msg = S.ch.msg;
   $('deepBody').innerHTML = `
@@ -1486,7 +1499,7 @@ function chBind(){
 }
 
 /* ── 에너지–거리 그래프 (광도별 곡선) ── */
-const GR_LS = [ { L:0.25, color:'#9B7BB5' }, { L:1, color:'#D98A3E' }, { L:4, color:'#4F7895' }, { L:9, color:'#243447' } ];
+const GR_LS = [ { L:0.25, color:'#C6A8E6' }, { L:1, color:'#F2A65E' }, { L:4, color:'#8EB9DB' }, { L:9, color:'#E8EEF6' } ];
 DEEP.graph = function(){
   const PX0 = 110, PX1 = 950, PY0 = 50, PY1 = 440, XMAX = 6, YMAX = 2;
   const X = d => PX0 + d / XMAX * (PX1 - PX0), Y = s => PY1 - s / YMAX * (PY1 - PY0);
@@ -1496,17 +1509,17 @@ DEEP.graph = function(){
   for (const [z, a, b] of [['hot', YMAX, HZ_INNER_S], ['ok', HZ_INNER_S, HZ_OUTER_S], ['cold', HZ_OUTER_S, 0]]){
     h += `<rect x="${PX0}" y="${Y(a)}" width="${PX1 - PX0}" height="${Y(b) - Y(a)}" fill="${ZONES[z].color}" fill-opacity="${z === 'ok' ? .22 : .07}"/>`;
     const zl = z === 'cold';   // 받는 에너지 적음: 곡선이 지나가지 않는 왼쪽 아래에
-    top += `<text x="${zl ? PX0 + 12 : PX1 - 10}" y="${(Y(a) + Y(b)) / 2 + 6}" text-anchor="${zl ? 'start' : 'end'}" font-size="16" font-weight="700" fill="${ZONES[z].ink}" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">받는 에너지 ${ZONES[z].energy}</text>`;
+    top += `<text x="${zl ? PX0 + 12 : PX1 - 10}" y="${(Y(a) + Y(b)) / 2 + 6}" text-anchor="${zl ? 'start' : 'end'}" font-size="16" font-weight="700" fill="${ZONES[z].ink}" stroke="#0D1726" stroke-width="5" stroke-linejoin="round" paint-order="stroke">받는 에너지 ${ZONES[z].energy}</text>`;
   }
-  for (let s = 0; s <= YMAX + 1e-9; s += 0.5) h += `<line x1="${PX0}" y1="${Y(s)}" x2="${PX1}" y2="${Y(s)}" stroke="#243447" stroke-opacity=".06"/><text x="${PX0 - 10}" y="${Y(s) + 6}" text-anchor="end" font-size="16" fill="#4C5D6E">${trimNum(s)}</text>`;
-  for (let d = 0; d <= XMAX; d++) h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${PY1 + 7}" stroke="#748394"/><text x="${X(d)}" y="${PY1 + 26}" text-anchor="middle" font-size="16" fill="#4C5D6E">${d}</text>`;
-  h += `<line x1="${PX0}" y1="${PY0}" x2="${PX0}" y2="${PY1}" stroke="#748394" stroke-width="2"/><line x1="${PX0}" y1="${PY1}" x2="${PX1}" y2="${PY1}" stroke="#748394" stroke-width="2"/>`;
-  h += `<text transform="translate(28 ${(PY0 + PY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#243447">받는 에너지 (지구 = 1)</text>`;
-  h += `<text x="${(PX0 + PX1) / 2}" y="${PY1 + 52}" text-anchor="middle" font-size="16" font-weight="700" fill="#243447">별까지의 거리 (AU)</text>`;
+  for (let s = 0; s <= YMAX + 1e-9; s += 0.5) h += `<line x1="${PX0}" y1="${Y(s)}" x2="${PX1}" y2="${Y(s)}" stroke="#E8EEF6" stroke-opacity=".06"/><text x="${PX0 - 10}" y="${Y(s) + 6}" text-anchor="end" font-size="16" fill="#C5D0DC">${trimNum(s)}</text>`;
+  for (let d = 0; d <= XMAX; d++) h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${PY1 + 7}" stroke="#9FB0C4"/><text x="${X(d)}" y="${PY1 + 26}" text-anchor="middle" font-size="16" fill="#C5D0DC">${d}</text>`;
+  h += `<line x1="${PX0}" y1="${PY0}" x2="${PX0}" y2="${PY1}" stroke="#9FB0C4" stroke-width="2"/><line x1="${PX0}" y1="${PY1}" x2="${PX1}" y2="${PY1}" stroke="#9FB0C4" stroke-width="2"/>`;
+  h += `<text transform="translate(28 ${(PY0 + PY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#E8EEF6">받는 에너지 (지구 = 1)</text>`;
+  h += `<text x="${(PX0 + PX1) / 2}" y="${PY1 + 52}" text-anchor="middle" font-size="16" font-weight="700" fill="#E8EEF6">별까지의 거리 (AU)</text>`;
   for (const [v, lab] of [[HZ_INNER_S, '안쪽 경계 기준'], [HZ_OUTER_S, '바깥쪽 경계 기준']]){
-    h += `<line x1="${PX0}" y1="${Y(v)}" x2="${PX1}" y2="${Y(v)}" stroke="#243447" stroke-width="2" stroke-dasharray="8 6" stroke-opacity=".85"/>`;
+    h += `<line x1="${PX0}" y1="${Y(v)}" x2="${PX1}" y2="${Y(v)}" stroke="#E8EEF6" stroke-width="2" stroke-dasharray="8 6" stroke-opacity=".85"/>`;
     const right = v === HZ_INNER_S;   // 안쪽 경계 기준은 곡선과 만나는 점을 피해 오른쪽 끝에
-    top += `<text x="${right ? PX1 - 10 : PX0 + 10}" y="${Y(v) - 8}" text-anchor="${right ? 'end' : 'start'}" font-size="14" font-weight="700" fill="#243447" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">${v} · ${lab}</text>`;
+    top += `<text x="${right ? PX1 - 10 : PX0 + 10}" y="${Y(v) - 8}" text-anchor="${right ? 'end' : 'start'}" font-size="14" font-weight="700" fill="#E8EEF6" stroke="#0D1726" stroke-width="5" stroke-linejoin="round" paint-order="stroke">${v} · ${lab}</text>`;
   }
   h += `<g clip-path="url(#plot3)">`;
   for (const k of vis){
@@ -1521,7 +1534,7 @@ DEEP.graph = function(){
     h += `<text x="${PX0 - 10}" y="${ly}" text-anchor="end" font-size="15" font-weight="700" fill="${color}">${mulName(L)}</text>`;
     for (const [d, s0] of [[innerOf(L), HZ_INNER_S], [outerOf(L), HZ_OUTER_S]]){
       h += `<line x1="${X(d)}" y1="${Y(s0)}" x2="${X(d)}" y2="${ly - 14}" stroke="${color}" stroke-width="1.5" stroke-dasharray="3 4" stroke-opacity=".7"/>`;
-      h += `<circle cx="${X(d)}" cy="${Y(s0)}" r="6" fill="${color}" stroke="#243447" stroke-width="2"/>`;
+      h += `<circle cx="${X(d)}" cy="${Y(s0)}" r="6" fill="${color}" stroke="#E8EEF6" stroke-width="2"/>`;
       h += `<text x="${X(d)}" y="${ly}" text-anchor="middle" font-size="15" font-weight="700" fill="${color}">${f2(d)}</text>`;
     }
   });
@@ -1590,32 +1603,32 @@ function mfSvg(){
   const inE = edge(innerAU), outE = edge(outerAU);
   h += `<g clip-path="url(#plot4)">`;
   h += `<polygon points="${X(D_MIN)},${yTop} ${pts(inE)} ${X(D_MIN)},${yBot}" fill="${ZONES.hot.color}" fill-opacity=".12"/>`;
-  h += `<polygon points="${pts(inE)} ${pts(outE.slice().reverse())}" fill="${ZONES.ok.color}" fill-opacity=".34" stroke="${ZONES.ok.color}" stroke-width="1.5"/>`;
+  h += `<polygon points="${pts(inE)} ${pts(outE.slice().reverse())}" fill="${ZONES.ok.color}" fill-opacity=".45" stroke="${ZONES.ok.color}" stroke-width="1.5"/>`;
   h += `<polygon points="${pts(outE)} ${X(D_MAX)},${yBot} ${X(D_MAX)},${yTop}" fill="${ZONES.cold.color}" fill-opacity=".1"/></g>`;
   h += `<text x="${QX0 + 8}" y="${QY0 - 28}" font-size="15" font-weight="700" fill="${ZONES.hot.ink}">왼쪽: 너무 뜨거움</text>`;
   h += `<text x="${(QX0 + QX1) / 2}" y="${QY0 - 28}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES.ok.ink}">초록 띠: 생명 가능 지대</text>`;
   h += `<text x="${QX1}" y="${QY0 - 28}" text-anchor="end" font-size="15" font-weight="700" fill="${ZONES.cold.ink}">오른쪽: 너무 차가움</text>`;
   STARS.forEach(s => {
     const y = Y(s.m);
-    h += `<line x1="${QX0}" y1="${y}" x2="${QX1}" y2="${y}" stroke="#243447" stroke-opacity=".25" stroke-dasharray="2 5"/>`;
-    h += `<circle cx="${QX0 - 22}" cy="${y}" r="${4 + s.r / 3}" fill="${s.color}" stroke="#243447" stroke-opacity=".35"/><text x="${QX0 - 40}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="700" fill="#243447">${trimNum(s.m)}</text>`;
+    h += `<line x1="${QX0}" y1="${y}" x2="${QX1}" y2="${y}" stroke="#E8EEF6" stroke-opacity=".25" stroke-dasharray="2 5"/>`;
+    h += `<circle cx="${QX0 - 22}" cy="${y}" r="${4 + s.r / 3}" fill="${s.color}" stroke="#E8EEF6" stroke-opacity=".35"/><text x="${QX0 - 40}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="700" fill="#E8EEF6">${trimNum(s.m)}</text>`;
   });
-  h += `<text transform="translate(26 ${(QY0 + QY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#243447">별의 질량 (태양 = 1)</text>`;
-  h += `<line x1="${QX0}" y1="${QY1 + 20}" x2="${QX1}" y2="${QY1 + 20}" stroke="#748394" stroke-width="2"/>`;
-  for (const d of [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,2,3,4,5,6,7,8,9,20,30]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 27}" stroke="#748394" opacity="${t.toFixed(2)}"/>`;
-  for (const d of [0.1, 1, 10, 40]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 32}" stroke="#4C5D6E" stroke-width="2" opacity="${t.toFixed(2)}"/><text x="${X(d)}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#243447" opacity="${t.toFixed(2)}">${d}</text>`;
+  h += `<text transform="translate(26 ${(QY0 + QY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#E8EEF6">별의 질량 (태양 = 1)</text>`;
+  h += `<line x1="${QX0}" y1="${QY1 + 20}" x2="${QX1}" y2="${QY1 + 20}" stroke="#9FB0C4" stroke-width="2"/>`;
+  for (const d of [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,2,3,4,5,6,7,8,9,20,30]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 27}" stroke="#9FB0C4" opacity="${t.toFixed(2)}"/>`;
+  for (const d of [0.1, 1, 10, 40]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 32}" stroke="#C5D0DC" stroke-width="2" opacity="${t.toFixed(2)}"/><text x="${X(d)}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#E8EEF6" opacity="${t.toFixed(2)}">${d}</text>`;
   for (const d of [0, 10, 20, 30, 40]){
     const x = lin(d) * (1 - t) + lg(Math.max(d, D_MIN)) * t;
-    h += `<line x1="${x}" y1="${QY1 + 20}" x2="${x}" y2="${QY1 + 32}" stroke="#4C5D6E" stroke-width="2" opacity="${(1 - t).toFixed(2)}"/><text x="${x}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#243447" opacity="${(1 - t).toFixed(2)}">${d}</text>`;
+    h += `<line x1="${x}" y1="${QY1 + 20}" x2="${x}" y2="${QY1 + 32}" stroke="#C5D0DC" stroke-width="2" opacity="${(1 - t).toFixed(2)}"/><text x="${x}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#E8EEF6" opacity="${(1 - t).toFixed(2)}">${d}</text>`;
   }
-  h += `<text x="${QX1}" y="${QY1 + 82}" text-anchor="end" font-size="16" font-weight="700" fill="#243447">별까지의 거리 (AU, ${S.mf.log ? '로그 눈금' : '선형 눈금'})</text>`;
+  h += `<text x="${QX1}" y="${QY1 + 82}" text-anchor="end" font-size="16" font-weight="700" fill="#E8EEF6">별까지의 거리 (AU, ${S.mf.log ? '로그 눈금' : '선형 눈금'})</text>`;
   const y1 = Y(1), innerOp = Math.max(0, Math.min(1, (t - 0.35) / 0.4));
-  if (innerOp < 1) h += `<g opacity="${(1 - innerOp).toFixed(2)}"><line x1="${X(0.39)}" y1="${y1 + 16}" x2="${X(1.52)}" y2="${y1 + 16}" stroke="#243447" stroke-opacity=".5"/><text x="${X(1.52) + 8}" y="${y1 + 36}" font-size="14" font-weight="600" fill="#243447">수성·금성·지구·화성</text></g>`;
+  if (innerOp < 1) h += `<g opacity="${(1 - innerOp).toFixed(2)}"><line x1="${X(0.39)}" y1="${y1 + 16}" x2="${X(1.52)}" y2="${y1 + 16}" stroke="#E8EEF6" stroke-opacity=".5"/><text x="${X(1.52) + 8}" y="${y1 + 36}" font-size="14" font-weight="600" fill="#E8EEF6">수성·금성·지구·화성</text></g>`;
   PLANETS.forEach((p, k) => {
     const x = X(p.d), oy = PL_OFF[k], op = k < 4 ? innerOp : 1;
-    h += `<circle cx="${x.toFixed(1)}" cy="${y1}" r="${p.r}" fill="${p.c}" stroke="#243447" stroke-width="1.5"/>`;
+    h += `<circle cx="${x.toFixed(1)}" cy="${y1}" r="${p.r}" fill="${p.c}" stroke="#E8EEF6" stroke-width="1.5"/>`;
     if (op <= 0) return;
-    h += `<g opacity="${op.toFixed(2)}"><line x1="${x.toFixed(1)}" y1="${y1 + Math.sign(oy) * (p.r + 1)}" x2="${x.toFixed(1)}" y2="${y1 + oy - Math.sign(oy) * 13}" stroke="#243447" stroke-opacity=".35"/><text x="${x.toFixed(1)}" y="${y1 + oy + (oy > 0 ? 4 : 0)}" text-anchor="middle" font-size="14" font-weight="${p.n === '지구' ? 800 : 600}" fill="#243447">${p.n}</text></g>`;
+    h += `<g opacity="${op.toFixed(2)}"><line x1="${x.toFixed(1)}" y1="${y1 + Math.sign(oy) * (p.r + 1)}" x2="${x.toFixed(1)}" y2="${y1 + oy - Math.sign(oy) * 13}" stroke="#E8EEF6" stroke-opacity=".35"/><text x="${x.toFixed(1)}" y="${y1 + oy + (oy > 0 ? 4 : 0)}" text-anchor="middle" font-size="14" font-weight="${p.n === '지구' ? 800 : 600}" fill="#E8EEF6">${p.n}</text></g>`;
   });
   sv.innerHTML = h;
 }
