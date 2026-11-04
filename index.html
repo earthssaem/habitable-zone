@@ -5,359 +5,376 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>생명 가능 지대 탐구실</title>
 <meta name="description" content="별의 광도를 직접 조절하며 생명 가능 지대가 멀어지고 넓어지는 모습과 그 이유를 탐구하는 고등학교 지구과학 시뮬레이션">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2246%22 fill=%22%230a1230%22/><circle cx=%2250%22 cy=%2250%22 r=%2232%22 fill=%22none%22 stroke=%22%233ad07e%22 stroke-width=%2210%22/><circle cx=%2250%22 cy=%2250%22 r=%2213%22 fill=%22%23fff6d8%22/></svg>">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='%23F6F7F4'/%3E%3Ccircle cx='16' cy='16' r='9.5' fill='none' stroke='%2335A782' stroke-width='3.4'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E99A52'/%3E%3C/svg%3E">
 <style>
+  /* ==========================================================
+     디자인 시스템: Astronomy Atlas
+     밝고 차분한 바탕 위에 '도판(그림)'을 놓고, 카드·굵은 테두리 대신
+     여백·글자 위계·가는 구분선으로 정보를 나눈다.
+     색은 셋만 의미 있게 쓴다: 별빛(따뜻한 주황) · 생명 가능 지대(초록) · 받는 에너지 적음(차분한 파랑)
+     ========================================================== */
   :root{
-    --bg:#f3f7fc;
-    --bg-2:#f6f9fd;
-    --panel:#ffffff;
-    --panel-2:#ffffff;
-    --line:#dbe5f4;
-    --line-2:#c9d7ec;
-    --ink:#1b2a41;
-    --ink-2:#3b4b64;
-    --muted:#65758e;
-    --accent:#2563eb;
-    --accent-strong:#1d4ed8;
-    --accent-soft:#e8f0fe;
-    --accent-ink:#ffffff;
-    --hz:#16834a;
-    --hz-soft:#ecf8f1;
-    --hot:#c25a14;
-    --cold:#2266b8;
-    --radius:16px;
-    --shadow:0 1px 2px rgba(20,45,90,.05), 0 6px 18px -8px rgba(20,45,90,.12);
+    --bg:#F6F7F4;          /* 전체 바탕 */
+    --surface:#FFFFFF;     /* 도판(그림)·표 바탕 */
+    --tint:#FAFBF9;        /* 도판 아래 조작 줄 */
+    --ink:#243447;         /* 기본 글자 */
+    --ink-2:#4C5D6E;       /* 본문 보조 */
+    --muted:#748394;       /* 라벨·캡션 */
+    --line:#E3E8EB;        /* 가는 구분선 */
+    --line-2:#CFD7DC;      /* 조작 요소 테두리 */
+    --accent:#4F7895;      /* 기본 인터랙션 */
+    --accent-ink:#2F5872;
+    --accent-soft:#EAF0F4;
+    --star:#E99A52;        /* 별빛 */
+    --star-ink:#A9622A;
+    --star-soft:#FBEFE2;
+    --hz:#1F7A5C;          /* 생명 가능 지대(글자) */
+    --hz-line:#35A782;
+    --hz-soft:#E7F4EE;
+    --cold:#3F6F91;
+    --bad:#B5503F;
+    --bad-soft:#F9ECE9;
+    --radius:14px;
+    --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+    --serif:"Times New Roman","Noto Serif KR","Nanum Myeongjo",serif;
   }
+  #app[data-view="observe"]  {--step:"01  OBSERVE"}
+  #app[data-view="principle"]{--step:"02  PRINCIPLE"}
+  #app[data-view="apply"]    {--step:"03  APPLY"}
+  #app[data-view="deep"]     {--step:"+  EXTEND"}
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%; background:var(--bg)}
   body{
-    margin:0; min-height:100vh; display:flex; flex-direction:column;
-    background:radial-gradient(80% 50% at 50% -10%, #e4edfb 0%, transparent 70%), var(--bg);
-    color:var(--ink);
-    font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
-    font-size:17px; line-height:1.55; -webkit-font-smoothing:antialiased;
-    word-break:keep-all; overflow-wrap:anywhere;
+    margin:0; min-height:100vh; display:flex; flex-direction:column; background:var(--bg); color:var(--ink);
+    font-family:var(--sans); font-size:16.5px; line-height:1.55; -webkit-font-smoothing:antialiased;
+    word-break:keep-all; overflow-wrap:anywhere; font-feature-settings:"tnum";
   }
   button{font:inherit}
   h2,h3,p{margin:0}
   b,strong{color:var(--ink)}
-  ::selection{background:#cfe0ff}
+  ::selection{background:var(--star-soft)}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 
-  /* ── 상단: 제목 + 단계 탭 (헤더만 은은한 우주 느낌의 파란 그라데이션) ── */
+  /* ── 머리말: 낮고 가볍게 ───────────────── */
   .top{
-    display:flex; align-items:center; gap:10px 20px; flex-wrap:wrap;
-    padding:10px max(16px, calc((100% - 1720px) / 2 + 16px));
-    color:#fff;
-    background:
-      radial-gradient(1px 1px at 22% 30%, rgba(255,255,255,.55) 50%, transparent 51%),
-      radial-gradient(1px 1px at 47% 72%, rgba(255,255,255,.4) 50%, transparent 51%),
-      radial-gradient(1.2px 1.2px at 63% 22%, rgba(255,255,255,.45) 50%, transparent 51%),
-      radial-gradient(1px 1px at 81% 64%, rgba(255,255,255,.35) 50%, transparent 51%),
-      linear-gradient(100deg,#163066 0%,#1d4596 55%,#2a5fc4 100%);
-    box-shadow:0 2px 10px -4px rgba(20,45,90,.35);
-    position:relative; z-index:1;
+    display:flex; align-items:stretch; gap:8px 24px; flex-wrap:wrap; min-height:58px;
+    padding:0 max(20px, calc((100% - 1680px) / 2 + 20px)); border-bottom:1px solid var(--line);
   }
   .brand{display:flex; align-items:center; gap:12px; min-width:0}
-  .brand .logo{width:40px; height:40px; flex:none}
-  .brand h1{margin:0; font-size:20px; line-height:1.2; letter-spacing:-.4px; white-space:nowrap; font-weight:800; color:#fff}
-  .brand p{margin:0; font-size:13px; color:#c9d8f5}
-  /* 제목 부분(로고·제목·부제)을 누르면 처음 화면으로 */
-  a.brand{color:inherit;text-decoration:none;border-radius:14px;margin:-4px -8px;padding:4px 8px;-webkit-tap-highlight-color:transparent}
-  a.brand .logo{transition:transform .2s}
-  @media (hover:hover){ a.brand:hover h1{text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:2px} a.brand:hover .logo{transform:rotate(-10deg)} }
-  a.brand:focus-visible{outline:3px solid #fff;outline-offset:2px}
+  .brand .logo{width:30px; height:30px; flex:none}
+  .brand .bt{display:flex; flex-direction:column; line-height:1.15; min-width:0}
+  .brand .kick{font-size:10.5px; font-weight:700; letter-spacing:.16em; color:var(--muted)}
+  .brand h1{margin:0; font-size:18px; font-weight:700; letter-spacing:-.02em; white-space:nowrap}
+  .brand p{margin:0 0 0 4px; padding-left:14px; border-left:1px solid var(--line-2); font-size:13px; color:var(--muted); align-self:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  /* 제목 부분을 누르면 처음 화면으로 */
+  a.brand{color:inherit; text-decoration:none; border-radius:10px; padding:6px 8px; margin:0 -8px; -webkit-tap-highlight-color:transparent}
+  @media (hover:hover){ a.brand:hover h1{color:var(--accent-ink)} }
 
-  .tabs{display:flex; gap:10px; margin-left:auto; align-items:center; flex-wrap:wrap}
-  .tabs .seg{display:flex; gap:2px; padding:3px; border-radius:12px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.18)}
+  /* ── 탐구 단계: 숫자 + 글자, 지금 단계는 가는 밑줄 ── */
+  .tabs{display:flex; align-items:stretch; gap:4px; margin-left:auto}
+  .tabs .seg{display:flex; align-items:stretch; gap:4px}
   .tabs button{
-    appearance:none; border:0; background:transparent; color:#dbe6fb;
-    min-height:44px; padding:6px 16px 6px 8px; border-radius:9px; cursor:pointer;
-    font-weight:700; font-size:16px; display:flex; align-items:center; gap:8px;
-    transition:background .15s, color .15s;
+    appearance:none; border:0; background:transparent; cursor:pointer; position:relative;
+    padding:0 12px; color:var(--muted); font-size:15px; font-weight:600; display:flex; align-items:center; gap:8px;
+    transition:color .15s;
   }
-  .tabs button b{width:26px; height:26px; border-radius:50%; background:rgba(255,255,255,.16); color:#fff; display:grid; place-items:center; font-size:14px; flex:none}
-  .tabs button[aria-current]{background:#fff; color:var(--accent-strong); box-shadow:0 1px 3px rgba(10,30,70,.25)}
-  .tabs button[aria-current] b{background:var(--accent); color:#fff}
-  .tabs button.deep{border:1px solid rgba(255,255,255,.4); padding:6px 16px; min-height:46px; border-radius:12px; color:#eef3ff}
-  .tabs button.deep[aria-current]{border-color:#fff; color:var(--accent-strong)}
+  .tabs button b{font-size:12px; font-weight:700; letter-spacing:.06em; color:#A3AFB9; transition:color .15s}
+  .tabs button::after{content:""; position:absolute; left:12px; right:12px; bottom:-1px; height:2px; background:var(--accent); transform:scaleX(0); transition:transform .2s}
+  .tabs button[aria-current]{color:var(--ink)}
+  .tabs button[aria-current] b{color:var(--accent)}
+  .tabs button[aria-current]::after{transform:scaleX(1)}
+  .tabs button.deep{margin-left:10px; padding-left:22px; font-weight:500}
+  .tabs button.deep::before{content:""; position:absolute; left:0; top:50%; height:20px; margin-top:-10px; border-left:1px solid var(--line-2)}
+  .tabs button.deep::after{left:22px}
   .tabs .short{display:none}
-  @media (hover:hover){ .tabs button:not([aria-current]):hover{background:rgba(255,255,255,.14); color:#fff} }
-  .tabs button:focus-visible{outline:3px solid #fff; outline-offset:2px}
+  @media (hover:hover){ .tabs button:not([aria-current]):hover{color:var(--ink)} }
+  .tabs button:focus-visible{outline-offset:-4px; border-radius:8px}
 
   /* ── 본문 ─────────────────────────────── */
-  .wrap{flex:1; width:100%; max-width:1720px; margin:0 auto; padding:16px 16px 18px; display:flex; flex-direction:column; gap:14px}
-  .lead{display:flex; align-items:center; gap:4px 14px; flex-wrap:wrap}
-  .lead h2{font-size:24px; letter-spacing:-.5px; font-weight:800; display:flex; align-items:center; gap:10px; color:var(--ink)}
-  .lead h2::before{
-    content:var(--step); font-size:12.5px; font-weight:800; letter-spacing:.6px; color:var(--accent-strong);
-    background:var(--accent-soft); border:1px solid #c7d8fb; border-radius:8px; padding:2px 9px; line-height:1.4;
-  }
-  #app[data-view="observe"]  {--step:"STEP 1"}
-  #app[data-view="principle"]{--step:"STEP 2"}
-  #app[data-view="apply"]    {--step:"STEP 3"}
-  #app[data-view="deep"]     {--step:"심화"}
-  .lead p{color:var(--ink-2)}
-  .card{background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow)}
-  .sim{background:#fff; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; min-width:0; box-shadow:var(--shadow)}
+  .wrap{flex:1; width:100%; max-width:1680px; margin:0 auto; padding:16px 20px 14px; display:flex; flex-direction:column; gap:14px; min-width:0}
+  .lead{display:flex; align-items:baseline; gap:4px 16px; flex-wrap:wrap}
+  .lead h2{font-size:22px; font-weight:700; letter-spacing:-.025em; display:flex; align-items:baseline; gap:12px}
+  .lead h2::before{content:var(--step); white-space:pre; font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--accent)}
+  .lead p{color:var(--muted); font-size:15.5px}
+
+  /* 도판: 흰 바탕 + 가는 테두리. 그림 위에 작은 캡션 */
+  .sim{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); overflow:hidden; min-width:0}
   .sim svg{display:block; width:100%; height:auto; fill:var(--ink-2); font-family:inherit; user-select:none; -webkit-user-select:none}
-  .sim .ctl{padding:10px 14px; border-top:1px solid var(--line); background:var(--bg-2); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
+  .sim svg text{font-feature-settings:"tnum"}
+  .figcap{margin:0; padding:10px 16px 0; font-size:12.5px; color:var(--muted); display:flex; gap:10px; align-items:baseline; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .figcap b{font-size:10.5px; font-weight:700; letter-spacing:.14em; color:var(--ink-2); flex:none}
+  .sim .ctl{padding:9px 14px; border-top:1px solid var(--line); background:var(--tint); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
   .sim svg .drag-zone{touch-action:none; cursor:grab}
   .sim svg.dragging .drag-zone{cursor:grabbing}
   .sim svg [tabindex]:focus{outline:none}
-  .sim svg [tabindex]:focus-visible .focus-ring{stroke:var(--accent); stroke-width:3}
+  .sim svg [tabindex]:focus-visible .focus-ring{stroke:var(--accent); stroke-width:2.5}
 
-  .split{display:grid; grid-template-columns:minmax(0,1.9fr) minmax(0,1fr); gap:14px; align-items:start}
-  .split.solo{grid-template-columns:minmax(0,1fr); max-width:860px; width:100%}
+  .split{display:grid; grid-template-columns:minmax(0,1.85fr) minmax(0,1fr); gap:24px; align-items:start}
+  .split.solo{grid-template-columns:minmax(0,1fr); max-width:820px; width:100%}
   @media (max-width: 1000px), (orientation: portrait){ .split{grid-template-columns:minmax(0,1fr)} }
   .side{display:flex; flex-direction:column; gap:12px; min-width:0}
+  /* 설명 단: 카드 없이 왼쪽 가는 선으로 구분되는 글 단 */
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px}
+  .split > .side.card{background:transparent; border:0; border-left:1px solid var(--line); border-radius:0; padding:4px 0 4px 24px}
 
+  /* ── 버튼: 얇은 테두리, 그림자 없음 ── */
   .btn{
-    appearance:none; min-height:48px; min-width:48px; padding:8px 16px;
-    border:1px solid var(--line-2); border-radius:10px; background:#fff; color:var(--ink);
-    font-weight:700; font-size:16px; cursor:pointer; line-height:1.25;
+    appearance:none; min-height:44px; min-width:44px; padding:6px 14px;
+    border:1px solid var(--line-2); border-radius:9px; background:var(--surface); color:var(--ink);
+    font-weight:600; font-size:15px; cursor:pointer; line-height:1.25;
     display:inline-flex; align-items:center; justify-content:center; gap:7px;
-    box-shadow:0 1px 1px rgba(20,45,90,.04);
     transition:background .15s, border-color .15s, color .15s;
   }
-  @media (hover:hover){ .btn:hover:not(:disabled){border-color:#9db6e3; background:#f5f8fe} }
-  .btn:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
-  .btn[aria-pressed="true"]{background:var(--accent-soft); color:var(--accent-strong); border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
-  .btn:disabled{opacity:.45; cursor:not-allowed}
-  .btn.go{background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 2px 6px -2px rgba(37,99,235,.5)}
-  @media (hover:hover){ .btn.go:hover:not(:disabled){background:var(--accent-strong); border-color:var(--accent-strong)} }
-  .btn.ghost{background:transparent; box-shadow:none}
-  .btn .chip{width:14px; height:14px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 1.5px rgba(27,42,65,.35)}
-  .lbl{color:var(--muted); font-size:15px; font-weight:700; margin-right:2px}
-  .sep{width:1px; align-self:stretch; background:var(--line); margin:0 4px}
-  .note{font-size:14.5px; color:var(--muted)}
-  .box{background:var(--bg-2); border:1px solid var(--line); border-radius:12px; padding:12px 14px}
-  .summary{border-left:4px solid var(--accent); background:var(--accent-soft); border-radius:0 12px 12px 0; padding:10px 14px; font-weight:650}
+  @media (hover:hover){ .btn:hover:not(:disabled){border-color:#A9B6C0; background:#FBFCFB} }
+  .btn:active:not(:disabled){transform:translateY(.5px)}
+  .btn[aria-pressed="true"]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent-ink)}
+  .btn:disabled{opacity:.38; cursor:default}
+  .btn.go{background:var(--accent); border-color:var(--accent); color:#fff}
+  @media (hover:hover){ .btn.go:hover:not(:disabled){background:var(--accent-ink); border-color:var(--accent-ink)} }
+  .btn.ghost{background:transparent}
+  .btn .chip{width:12px; height:12px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 1px rgba(36,52,71,.3)}
+  .lbl{color:var(--muted); font-size:12px; font-weight:700; letter-spacing:.06em; margin-right:2px}
+  .sep{width:1px; align-self:stretch; background:var(--line); margin:0 6px}
+  .note{font-size:13.5px; color:var(--muted)}
+  .box{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:11px 14px}
+  .summary{border-left:2px solid var(--accent); padding:4px 0 4px 14px; color:var(--ink); font-weight:600}
   .hz{color:var(--hz)}
-  .tag{align-self:flex-start; font-size:13px; font-weight:800; color:var(--accent-strong); background:var(--accent-soft); border-radius:6px; padding:2px 10px}
+  .tag{align-self:flex-start; font-size:11.5px; font-weight:700; letter-spacing:.1em; color:var(--accent)}
 
-  /* ── 1단계: 광도 슬라이더 ─────────────── */
-  .lum{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:10px 26px; align-items:center; padding:14px 20px 16px; border-top:1px solid var(--line); background:var(--bg-2)}
-  .lum .read{display:flex; flex-direction:column; line-height:1.2; min-width:170px}
-  .lum .read label{font-size:14.5px; color:var(--muted); font-weight:700}
-  .lum .read output{font-size:34px; font-weight:800; font-variant-numeric:tabular-nums; letter-spacing:-.8px; white-space:nowrap; color:var(--ink)}
-  .lum .read output small{font-size:15px; font-weight:700; color:var(--muted); letter-spacing:0}
-  .slider{position:relative; padding-bottom:24px}
+  /* 밑줄형 보조 탭(② 장면 묶음·심화 메뉴) */
+  .parts, .subtabs{display:flex; gap:2px 22px; flex-wrap:wrap; border-bottom:1px solid var(--line)}
+  .parts .btn, .subtabs .btn{min-height:40px; border:0; border-radius:0; background:transparent; padding:4px 0; color:var(--muted); font-size:15px; position:relative}
+  .parts .btn::after, .subtabs .btn::after{content:""; position:absolute; left:0; right:0; bottom:-1px; height:2px; background:var(--accent); transform:scaleX(0); transition:transform .2s}
+  .parts .btn[aria-pressed="true"], .subtabs .btn[aria-pressed="true"]{background:transparent; color:var(--ink)}
+  .parts .btn[aria-pressed="true"]::after, .subtabs .btn[aria-pressed="true"]::after{transform:scaleX(1)}
+  @media (hover:hover){ .parts .btn:hover:not(:disabled), .subtabs .btn:hover:not(:disabled){background:transparent; color:var(--ink)} }
+
+  /* ── 1단계: 광도 조절 줄 (도판 맨 위) ── */
+  .lum{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:8px 28px; align-items:center; padding:12px 18px 12px}
+  .sim > .lum.top{border-bottom:1px solid var(--line)}
+  .lum .read{display:flex; flex-direction:column; line-height:1.1; min-width:178px}
+  .lum .read label{font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--star-ink)}
+  .lum .read output{font-size:42px; font-weight:300; letter-spacing:-.03em; white-space:nowrap; color:var(--ink); font-feature-settings:"tnum"}
+  .lum .read output small{font-size:14px; font-weight:500; color:var(--muted); letter-spacing:0; margin-left:4px}
+  .slider{position:relative; padding-bottom:22px}
   .slider input{
     --p:50%;
-    -webkit-appearance:none; appearance:none; display:block; width:100%; height:48px; margin:0;
+    -webkit-appearance:none; appearance:none; display:block; width:100%; height:44px; margin:0;
     background:transparent; cursor:pointer; touch-action:pan-y;
   }
   .slider input:focus{outline:none}
-  .slider input:focus-visible{outline:3px solid var(--accent); outline-offset:4px; border-radius:10px}
-  .slider input::-webkit-slider-runnable-track{
-    height:8px; border-radius:999px;
-    background:linear-gradient(90deg,var(--accent) 0%,var(--accent) var(--p),#dbe4f2 var(--p),#dbe4f2 100%);
-  }
-  .slider input::-webkit-slider-thumb{
-    -webkit-appearance:none; width:34px; height:34px; margin-top:-13px; border-radius:50%;
-    background:#fff; border:3px solid var(--accent); box-shadow:0 2px 6px rgba(20,45,90,.25);
-  }
-  .slider input::-moz-range-track{height:8px; border-radius:999px; background:#dbe4f2}
-  .slider input::-moz-range-progress{height:8px; border-radius:999px; background:var(--accent)}
-  .slider input::-moz-range-thumb{width:28px; height:28px; border-radius:50%; background:#fff; border:3px solid var(--accent); box-shadow:0 2px 6px rgba(20,45,90,.25)}
-  .slider .ticks{position:absolute; left:0; right:0; bottom:0; height:22px; pointer-events:none}
-  .slider .ticks span{position:absolute; transform:translateX(-50%); font-size:14px; font-weight:700; color:var(--muted); white-space:nowrap}
-  .quick{display:flex; gap:6px; flex-wrap:wrap}
-  .quick .btn{min-width:66px; padding:8px 10px}
+  .slider input:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  .slider input::-webkit-slider-runnable-track{height:4px; border-radius:999px; background:linear-gradient(90deg,var(--star) 0%,var(--star) var(--p),#DCE2E5 var(--p),#DCE2E5 100%)}
+  .slider input::-webkit-slider-thumb{-webkit-appearance:none; width:28px; height:28px; margin-top:-12px; border-radius:50%; background:#fff; border:2px solid var(--star); box-shadow:0 1px 3px rgba(36,52,71,.22)}
+  .slider input::-moz-range-track{height:4px; border-radius:999px; background:#DCE2E5}
+  .slider input::-moz-range-progress{height:4px; border-radius:999px; background:var(--star)}
+  .slider input::-moz-range-thumb{width:24px; height:24px; border-radius:50%; background:#fff; border:2px solid var(--star); box-shadow:0 1px 3px rgba(36,52,71,.22)}
+  .slider .ticks{position:absolute; left:0; right:0; bottom:0; height:20px; pointer-events:none}
+  .slider .ticks span{position:absolute; transform:translateX(-50%); font-size:12.5px; font-weight:600; color:var(--muted); white-space:nowrap}
+  /* 빠른 선택: 차분한 분할 버튼 */
+  .quick{display:flex; gap:2px; padding:3px; border-radius:11px; background:#EFF2F0}
+  .quick .btn{min-width:62px; min-height:40px; padding:4px 10px; border-color:transparent; background:transparent; color:var(--ink-2); font-weight:600}
+  .quick .btn[aria-pressed="true"]{background:#fff; border-color:var(--line-2); color:var(--ink); box-shadow:0 1px 2px rgba(36,52,71,.08)}
+  @media (hover:hover){ .quick .btn:hover:not(:disabled){background:rgba(255,255,255,.6); border-color:transparent} .quick .btn[aria-pressed="true"]:hover{background:#fff; border-color:var(--line-2)} }
   @media (max-width: 1000px){
     .lum{grid-template-columns:minmax(0,1fr) auto}
     .lum .slider{grid-column:1 / -1; grid-row:2}
     .lum .quick{grid-row:1; grid-column:2; justify-content:flex-end}
   }
   @media (max-width: 600px){
-    .lum{grid-template-columns:minmax(0,1fr); padding:12px 14px 14px}
+    .lum{grid-template-columns:minmax(0,1fr); padding:12px 14px}
     .lum .quick{grid-column:1; grid-row:3}
     .lum .quick .btn{flex:1; min-width:0}
   }
 
-  /* 1단계: 슬라이더(위) → 그림 → 범례·비교(아래)가 한 실험 도구로 이어진다 */
-  .sim > .lum.top{border-top:0; border-bottom:1px solid var(--line)}
-  .sim svg text.num{font-variant-numeric:tabular-nums}
-  .obsbar{justify-content:space-between; gap:8px 18px; padding:8px 14px}
-  .legend{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:14px; font-weight:600; color:var(--ink-2)}
+  /* 범례 + 변화 전과 비교 (도판 아래 줄) */
+  .obsbar{justify-content:space-between; gap:8px 18px}
+  .legend{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:4px 16px; font-size:12.5px; color:var(--ink-2)}
   .legend li{display:flex; align-items:center; gap:6px; white-space:nowrap}
-  .sw{width:22px; height:12px; border-radius:4px; flex:none; display:inline-block}
-  .sw.hot{background:linear-gradient(90deg,#f6c39a,#fbe1cb)}
-  .sw.ok{background:#bfe6cf; box-shadow:inset 2px 0 0 #16834a, inset -2px 0 0 #16834a}
-  .sw.cold{background:linear-gradient(90deg,#dbe8f8,#b9d2f1)}
-  .sw.sun{background:#dde3eb; box-shadow:inset 0 0 0 1.5px #94a3b8}
-  .sw.base{background:transparent; border:2px dashed #334155}
+  .sw{width:18px; height:10px; border-radius:3px; flex:none; display:inline-block}
+  .sw.hot{background:linear-gradient(90deg,#F2BE8C,#FBE6D2)}
+  .sw.ok{background:#CBE9DC; box-shadow:inset 1.5px 0 0 var(--hz), inset -1.5px 0 0 var(--hz)}
+  .sw.cold{background:linear-gradient(90deg,#E2ECF3,#C3D6E4)}
+  .sw.sun{background:#E2E6E9; box-shadow:inset 0 0 0 1px #A7B1BA}
+  .sw.base{background:transparent; border:1.5px dashed var(--ink)}
   .cmp{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-left:auto}
-  .cmp .btn{min-height:44px; padding:6px 14px; font-size:15px}
+  .cmp .btn{min-height:38px; padding:4px 12px; font-size:14px}
 
-  /* 수치 카드: 지금 값이 주인공, 비교 문구는 오른쪽 위에 작게 */
-  .cards{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px}
+  /* 수치: 카드 없이 같은 정렬의 세 칸 (가는 세로선으로 구분) */
+  .cards{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; padding:2px 0}
   .val{
-    background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:9px 16px 10px; min-width:0; box-shadow:var(--shadow);
-    display:grid; grid-template-columns:auto minmax(0,1fr); grid-template-areas:"k s" "v v"; align-items:baseline; column-gap:10px;
+    padding:2px 22px; min-width:0; border-left:1px solid var(--line);
+    display:grid; grid-template-columns:auto minmax(0,1fr); grid-template-areas:"k s" "v v"; align-items:baseline; column-gap:12px;
   }
-  .val .k{grid-area:k; font-size:15px; font-weight:700; color:var(--ink-2); white-space:nowrap}
-  .val .s{grid-area:s; font-size:13px; color:var(--muted); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-variant-numeric:tabular-nums}
-  .val .v{grid-area:v; font-size:34px; font-weight:800; letter-spacing:-1px; font-variant-numeric:tabular-nums; line-height:1.15; white-space:nowrap; color:var(--ink)}
-  .val .v small{font-size:17px; font-weight:700; color:var(--muted); letter-spacing:0; margin-left:5px}
-  .val.w{border-color:#b9e2cb; background:var(--hz-soft); box-shadow:inset 4px 0 0 #2fb36b, var(--shadow)}
-  .val.w .k, .val.w .v{color:var(--hz)}
+  .val:first-child{border-left:0; padding-left:4px}
+  .val .k{grid-area:k; font-size:13px; font-weight:700; color:var(--ink-2); white-space:nowrap; display:flex; align-items:center; gap:7px}
+  .val .s{grid-area:s; font-size:12.5px; color:var(--muted); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .val .v{grid-area:v; font-size:40px; font-weight:300; letter-spacing:-.03em; line-height:1.12; white-space:nowrap; color:var(--ink); font-feature-settings:"tnum"}
+  .val .v small{font-size:15px; font-weight:500; color:var(--muted); letter-spacing:0; margin-left:5px}
+  .val.w .k{color:var(--hz)}
+  .val.w .k::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--hz-line)}
+  .val.w .v{color:var(--hz); font-weight:400}
   @media (max-width: 1000px){
     .val{grid-template-areas:"k" "v" "s"; grid-template-columns:minmax(0,1fr)}
     .val .s{text-align:left; min-height:1.4em}
   }
   @media (max-width: 600px){
     .obsbar{padding:8px 10px}
-    .legend{font-size:12.5px; gap:4px 10px}
+    .legend{font-size:12px; gap:4px 10px}
     .cmp{margin-left:0; width:100%}
     .cmp .lbl{width:100%}
     .cmp .btn{flex:1}
-    .val{padding:8px 10px}
-    .val .v{font-size:24px; letter-spacing:-.5px}
-    .val .v small{font-size:13px; margin-left:2px}
-    .val .k{font-size:13px}
+    .val{padding:2px 8px}
+    .val:first-child{padding-left:2px}
+    .val .v{font-size:25px; letter-spacing:-.02em}
+    .val .v small{font-size:12px; margin-left:2px}
+    .val .k{font-size:12.5px}
     .val .s{font-size:11px; white-space:normal; min-height:2.6em}
   }
-  .bottom{display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap}
+  .bottom{display:flex; justify-content:space-between; align-items:center; gap:10px 24px; flex-wrap:wrap}
+  .bottom .note{max-width:72ch}
 
   /* ── 2단계: 장면 ─────────────────────── */
-  .parts{display:flex; gap:8px; flex-wrap:wrap}
-  .scene-no{font-size:13.5px; font-weight:800; color:var(--accent-strong)}
-  .side h3{font-size:22px; line-height:1.35; letter-spacing:-.4px; font-weight:800; color:var(--ink)}
-  .side .txt{font-size:17px; color:var(--ink-2)}
-  .readline{font-size:17px; font-weight:600; font-variant-numeric:tabular-nums}
+  .scene-no{font-size:11.5px; font-weight:700; letter-spacing:.12em; color:var(--muted)}
+  .side h3{font-size:22px; line-height:1.32; letter-spacing:-.025em; font-weight:700; color:var(--ink)}
+  .side .txt{font-size:16px; line-height:1.65; color:var(--ink-2)}
+  .readline{font-size:15.5px; line-height:1.6}
   .snav{display:flex; gap:8px}
   .snav .btn{flex:1}
-  .dots{display:flex; gap:6px; align-items:center}
-  .dots i{width:8px; height:8px; border-radius:999px; background:#d3ddec; transition:width .25s}
-  .dots i.on{width:22px; background:var(--accent)}
+  .dots{display:flex; gap:4px; align-items:center}
+  .dots i{width:18px; height:3px; border-radius:2px; background:var(--line-2); transition:background .2s}
+  .dots i.on{background:var(--accent)}
   .formula{display:flex; flex-direction:column; gap:10px}
-  .formula .eq{font-family:"Times New Roman",serif; font-style:italic; font-size:24px; text-align:center; color:var(--ink)}
-  .formula p{font-size:15.5px; color:var(--ink-2)}
+  .formula .eq{font-family:var(--serif); font-style:italic; font-size:24px; text-align:center; color:var(--ink)}
+  .formula p{font-size:15px; color:var(--ink-2)}
+  .box.formula{background:var(--tint)}
 
   /* 수식 표기: 외부 라이브러리 없이 HTML·CSS로 분수·제곱근을 그린다 */
-  .math{font-family:"Times New Roman","Noto Serif KR","Nanum Myeongjo",serif; font-size:21px; line-height:1.5; color:var(--ink); white-space:nowrap}
+  .math{font-family:var(--serif); font-size:21px; line-height:1.5; color:var(--ink); white-space:nowrap}
   .math .mv{font-style:italic}
-  .math .kl{font-family:"Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif; font-size:.72em; font-weight:700; color:var(--ink-2)}
+  .math .kl{font-family:var(--sans); font-size:.68em; font-weight:700; color:var(--ink-2)}
   .mfrac{display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 .12em; font-size:.9em; line-height:1.2}
   .mfrac > span{padding:0 .2em}
-  .mfrac > span:first-child{border-bottom:1.4px solid currentColor; padding-bottom:.1em}
+  .mfrac > span:first-child{border-bottom:1.3px solid currentColor; padding-bottom:.1em}
   .mfrac > span:last-child{padding-top:.1em}
   .msqrt{display:inline-flex; align-items:stretch; vertical-align:middle; margin-left:.04em}
-  .msqrt::before{content:""; width:.6em; flex:none; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 30' preserveAspectRatio='none'%3E%3Cpath d='M.6 18.5 3 16.8 6 29 9.7.7' fill='none' stroke='%231b2a41' stroke-width='1.4' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%}
-  .msqrt > span{border-top:1.4px solid #1b2a41; padding:.08em .12em 0 .06em; display:inline-flex; align-items:center}
+  .msqrt::before{content:""; width:.6em; flex:none; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 30' preserveAspectRatio='none'%3E%3Cpath d='M.6 18.5 3 16.8 6 29 9.7.7' fill='none' stroke='%23243447' stroke-width='1.3' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") no-repeat 0 0 / 100% 100%}
+  .msqrt > span{border-top:1.3px solid var(--ink); padding:.08em .12em 0 .06em; display:inline-flex; align-items:center}
   .eqs{display:grid; grid-template-columns:auto auto; justify-content:start; column-gap:.35em; row-gap:.5em; align-items:center}
   .eqs > :nth-child(odd){text-align:right}
   .mbox{overflow-x:auto; overflow-y:hidden; padding:2px 2px 4px; -webkit-overflow-scrolling:touch}
-  .fineprint{font-size:13px; line-height:1.5; color:var(--muted)}
+  .fineprint{font-size:12.5px; line-height:1.55; color:var(--muted)}
 
-  /* ② 폭이 넓어지는 이유: 단계 목록 · 흐름 · 핵심 관계 · 계산 과정 */
-  ol.steps{margin:0; padding:0; list-style:none; counter-reset:st; display:flex; flex-direction:column; gap:9px}
-  ol.steps li{counter-increment:st; position:relative; padding-left:34px; font-size:16.5px; line-height:1.5; color:var(--ink-2)}
-  ol.steps li::before{content:counter(st); position:absolute; left:0; top:1px; width:24px; height:24px; border-radius:50%; background:var(--accent-soft); color:var(--accent-strong); font-weight:800; font-size:13.5px; display:grid; place-items:center}
+  /* ② 폭이 넓어지는 이유 */
+  ol.steps{margin:0; padding:0; list-style:none; counter-reset:st; display:flex; flex-direction:column; gap:10px}
+  ol.steps li{counter-increment:st; position:relative; padding-left:34px; font-size:15.5px; line-height:1.6; color:var(--ink-2)}
+  ol.steps li::before{content:counter(st, decimal-leading-zero); position:absolute; left:0; top:2px; font-size:11.5px; font-weight:700; letter-spacing:.06em; color:var(--accent)}
   ol.steps li.later{color:var(--muted)}
-  ol.steps li.later::before{background:#eef1f6; color:var(--muted)}
-  .flow{display:flex; align-items:center; flex-wrap:wrap; gap:6px 8px}
-  .flow .fl{padding:6px 12px; border-radius:10px; font-weight:800; font-size:17px; border:1px solid var(--line); white-space:nowrap}
-  .flow .fl.l{background:#fff6dd; border-color:#f3d48b; color:#835600}
-  .flow .fl.d{background:var(--accent-soft); border-color:#c7d8fb; color:var(--accent-strong)}
-  .flow .fl.w{background:var(--hz-soft); border-color:#b9e2cb; color:var(--hz)}
-  .flow .ar{color:var(--muted); font-weight:800}
-  .keyrel{border:1px solid #c7d8fb; background:linear-gradient(180deg,#f4f8ff 0%,#ffffff 100%); border-radius:14px; padding:14px 16px; display:flex; flex-direction:column; gap:10px}
-  .keyrel .kh{font-size:13px; font-weight:800; color:var(--accent-strong); letter-spacing:.3px}
-  .keyrel .kr{display:grid; grid-template-columns:104px minmax(0,1fr); align-items:center; gap:4px 12px}
-  .keyrel .kr .math{font-size:27px}
-  .keyrel .kr b{font-size:18px; line-height:1.35; color:var(--ink)}
-  .keyrel .cond{font-size:13.5px; line-height:1.5; color:var(--muted)}
-  .keyrel > .btn{align-self:flex-start; min-height:42px; font-size:15px}
+  ol.steps li.later::before{color:var(--line-2)}
+  .flow{display:flex; align-items:center; flex-wrap:wrap; gap:6px 10px}
+  .flow .fl{padding:4px 12px; border-radius:999px; font-weight:700; font-size:16px; border:1px solid; white-space:nowrap}
+  .flow .fl.l{color:var(--star-ink); border-color:#F0C9A2; background:var(--star-soft)}
+  .flow .fl.d{color:var(--accent-ink); border-color:#C9D7E1; background:var(--accent-soft)}
+  .flow .fl.w{color:var(--hz); border-color:#B9DFCD; background:var(--hz-soft)}
+  .flow .ar{color:var(--muted)}
+  .keyrel{border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:12px 0; display:flex; flex-direction:column; gap:9px}
+  .keyrel .kh{font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--hz)}
+  .keyrel .kr{display:grid; grid-template-columns:100px minmax(0,1fr); align-items:center; gap:4px 14px}
+  .keyrel .kr .math{font-size:26px}
+  .keyrel .kr b{font-size:17px; line-height:1.4; font-weight:700; color:var(--ink)}
+  .keyrel .cond{font-size:12.5px; line-height:1.55; color:var(--muted)}
+  .keyrel > .btn{align-self:flex-start; min-height:38px; font-size:14px}
   .calc{display:flex; flex-direction:column; gap:14px; padding-top:12px; border-top:1px dashed var(--line-2)}
-  .cstep{display:flex; flex-direction:column; gap:4px}
-  .cstep .ct{font-size:13.5px; font-weight:800; color:var(--accent-strong)}
-  .cstep .cn{font-size:14.5px; line-height:1.5; color:var(--ink-2)}
+  .cstep{display:flex; flex-direction:column; gap:3px}
+  .cstep .ct{font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--accent-ink)}
+  .cstep .cn{font-size:14px; line-height:1.55; color:var(--ink-2)}
   .nw{white-space:nowrap}
   .numcmp{border-top:1px solid var(--line); padding:10px 18px 12px; display:flex; flex-direction:column; gap:6px}
-  table.data.cmp2{font-size:15.5px; width:auto; min-width:min(100%, 480px)}
-  table.cmp2 caption{caption-side:top; text-align:left; font-size:13.5px; font-weight:700; color:var(--muted); padding-bottom:2px}
-  table.cmp2 th, table.cmp2 td{padding:4px 6px}
-  table.cmp2 tbody th{text-align:left; font-weight:700; color:var(--ink-2); font-size:14.5px; white-space:nowrap}
-  table.cmp2 td:last-child{font-weight:800; color:var(--hz)}
+  table.data.cmp2{font-size:15px; width:auto; min-width:min(100%, 480px)}
+  table.cmp2 caption{caption-side:top; text-align:left; font-size:11px; font-weight:700; letter-spacing:.14em; color:var(--muted); padding-bottom:4px}
+  table.cmp2 th, table.cmp2 td{padding:4px 10px}
+  table.cmp2 tbody th{text-align:left; font-weight:600; color:var(--ink-2); font-size:14px; white-space:nowrap}
+  table.cmp2 td:last-child{font-weight:700; color:var(--hz)}
   @media (max-width: 600px){ .numcmp{padding:8px 10px 10px} table.data.cmp2{font-size:14px; width:100%} }
   @media (max-width: 600px){
-    .keyrel{padding:12px}
     .keyrel .kr{grid-template-columns:minmax(0,1fr)}
-    .keyrel .kr .math{font-size:25px}
-    .keyrel .kr b{font-size:16.5px}
+    .keyrel .kr .math{font-size:24px}
+    .keyrel .kr b{font-size:16px}
     .math{font-size:19px}
-    .flow .fl{font-size:15.5px; padding:5px 10px}
+    .flow .fl{font-size:14.5px; padding:3px 10px}
   }
 
   /* ── 3단계: 적용 문제 ─────────────────── */
-  .qchips{display:flex; gap:10px 18px; flex-wrap:wrap; align-items:center; padding:10px 14px}
-  .qgroup{display:flex; gap:6px; align-items:center; flex-wrap:wrap}
-  .qgroup > span{font-size:14px; font-weight:800; color:var(--muted); margin-right:2px}
-  .qgroup + .qgroup{padding-left:16px; border-left:1px solid var(--line)}
-  .qchips .btn{min-width:48px; padding:6px 8px}
-  .qchips .btn.done:not([aria-pressed="true"]){border-color:#9fd3b6; background:var(--hz-soft); color:var(--hz)}
-  .score{display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-weight:700; margin-left:auto}
-  .qcard .q{font-size:21px; font-weight:750; line-height:1.45; letter-spacing:-.4px; color:var(--ink)}
+  .qchips{display:flex; gap:8px 20px; flex-wrap:wrap; align-items:center; padding:8px 14px}
+  .qgroup{display:flex; gap:4px; align-items:center; flex-wrap:wrap}
+  .qgroup > span{font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--muted); margin-right:4px}
+  .qgroup + .qgroup{padding-left:18px; border-left:1px solid var(--line)}
+  .qchips .btn{min-width:42px; min-height:40px; padding:4px 8px; font-size:15px}
+  .qchips .btn.done:not([aria-pressed="true"]){color:var(--hz); border-color:#B9DFCD; background:var(--hz-soft)}
+  .score{display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:14px; font-weight:600; color:var(--ink-2); margin-left:auto}
+  .qcard .q{font-size:20px; font-weight:700; line-height:1.45; letter-spacing:-.02em; color:var(--ink)}
   .opts{display:flex; flex-direction:column; gap:8px}
-  .opts .btn{justify-content:flex-start; text-align:left; min-height:54px; font-size:17px; padding:10px 16px}
-  .opts .btn.right{border-color:var(--accent); background:var(--accent-soft); color:var(--accent-strong); box-shadow:inset 0 0 0 1px var(--accent)}
-  .opts .btn.wrong{border-style:dashed; color:var(--muted); background:#fafbfd}
+  .opts .btn{justify-content:flex-start; text-align:left; min-height:50px; font-size:16px; font-weight:500; padding:8px 16px; border-radius:10px}
+  .opts .btn.right{border-color:var(--hz-line); background:var(--hz-soft); color:var(--hz); font-weight:700}
+  .opts .btn.wrong{border-color:#E7C2BA; background:var(--bad-soft); color:var(--bad)}
   .opts .btn:disabled{opacity:1; cursor:default}
+  .qcard p.box{border-left:2px solid var(--accent); border-radius:0 10px 10px 0}
 
   /* ── 심화 ─────────────────────────────── */
-  .subtabs{display:flex; gap:8px; flex-wrap:wrap}
-  table.data{width:100%; border-collapse:collapse; font-size:15px; font-variant-numeric:tabular-nums}
+  table.data{width:100%; border-collapse:collapse; font-size:15px}
   table.data th, table.data td{padding:7px 4px; text-align:center; border-bottom:1px solid var(--line)}
-  table.data th{font-size:13px; color:var(--muted); font-weight:700; line-height:1.25}
+  table.data th{font-size:12px; color:var(--muted); font-weight:700; line-height:1.3}
   table.data td:first-child{font-weight:700; white-space:nowrap}
   table.data tr.cur td{background:var(--accent-soft)}
-  table.data .empty{color:#a3afc2}
-  details{background:var(--bg-2); border:1px solid var(--line); border-radius:12px}
-  details summary{cursor:pointer; padding:10px 12px; min-height:48px; font-weight:700; color:var(--ink)}
+  table.data .empty{color:#B7C0C7}
+  details{background:var(--surface); border:1px solid var(--line); border-radius:10px}
+  details summary{cursor:pointer; padding:10px 14px; min-height:44px; font-weight:600; font-size:15px; color:var(--ink)}
   details[open] summary{border-bottom:1px solid var(--line)}
-  details .in{padding:10px 12px; display:flex; flex-direction:column; gap:8px; font-size:15.5px; color:var(--ink-2)}
+  details .in{padding:10px 14px; display:flex; flex-direction:column; gap:8px; font-size:15px; color:var(--ink-2)}
   ul.limits{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:10px; color:var(--ink-2)}
-  .feedback{min-height:52px; font-weight:650}
-  .teacher{border:1px dashed var(--line-2); border-radius:12px; padding:6px 8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  .feedback{min-height:52px}
+  .teacher{border:1px dashed var(--line-2); border-radius:10px; padding:6px 8px; display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 
-  footer{padding:2px 20px 10px;font-size:12.5px;color:var(--muted);text-align:center}
-  footer .hub{color:inherit;font-weight:500;white-space:nowrap;text-decoration:underline;text-decoration-color:color-mix(in srgb,currentColor 35%,transparent);text-underline-offset:3px}
-  footer .hub:hover{color:var(--ink);text-decoration-color:currentColor}
+  footer{padding:4px 20px 10px; font-size:12.5px; color:var(--muted); text-align:center}
+  footer .hub{color:inherit; font-weight:500; white-space:nowrap; text-decoration:underline; text-decoration-color:color-mix(in srgb,currentColor 35%,transparent); text-underline-offset:3px}
+  footer .hub:hover{color:var(--ink); text-decoration-color:currentColor}
 
+  /* ── 좁은 화면 ── */
+  @media (max-width: 1100px){ .brand p{display:none} }
   @media (max-width: 900px){
-    .tabs{margin-left:0; width:100%; display:grid; grid-template-columns:3fr 1fr; gap:8px}
-    .tabs .seg{display:grid; grid-template-columns:repeat(3,minmax(0,1fr))}
-    .tabs button{justify-content:center; padding:6px; font-size:15px}
-    .tabs button.deep{padding:6px; height:100%}
+    .top{padding:0 16px; gap:0}
+    .brand{padding-top:8px; padding-bottom:4px}
+    .tabs{margin-left:0; width:100%; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0}
+    .tabs button{justify-content:center; min-height:44px; padding:0 4px; font-size:14.5px; gap:6px}
+    .tabs button::after{left:8px; right:8px}
+    .tabs button.deep{margin-left:0; padding-left:4px}
+    .tabs button.deep::after{left:8px}
     .tabs .long{display:none}
     .tabs .short{display:inline}
   }
   @media (max-width: 600px){
     body{font-size:16px}
-    .brand p{display:none}
-    .wrap{padding:12px 10px}
-    .lead h2{font-size:20px}
-    .lead p{font-size:15px}
-    .cards{gap:8px}
-    .side h3{font-size:20px}
-    .side .txt{font-size:16px}
-    .qcard .q{font-size:19px}
+    .brand .kick{display:none}
+    .wrap{padding:12px 12px 14px}
+    .lead h2{font-size:19px}
+    .lead p{font-size:14.5px}
+    .side h3{font-size:19px}
+    .side .txt{font-size:15.5px}
+    .qcard .q{font-size:18px}
     .qgroup + .qgroup{padding-left:0; border-left:0}
-    .tabs button b{width:22px; height:22px; font-size:12.5px}
-    .tabs button{gap:5px; font-size:14px; min-height:42px}
+    .split > .side.card{border-left:0; border-top:1px solid var(--line); padding:14px 0 0}
+    .figcap{padding:8px 12px 0; font-size:11.5px}
   }
   @media (prefers-reduced-motion: reduce){ *{transition:none !important} }
 
   /* ── 한 화면 맞춤: 태블릿·전자칠판·PC에서는 페이지 스크롤 없이 한 화면에 ──
      본문이 남은 높이를 채우고, 그림(.svgbox)은 비율을 지키며 그 안에서 가운데에 놓인다.
-     긴 설명 패널은 패널 안에서만 스크롤 */
+     긴 설명 단은 그 안에서만 스크롤 */
   .svgbox{position:relative; min-width:0}
   .svgbox > svg{display:block; width:100%; height:auto}
   @media (min-width: 700px) and (min-height: 540px){
     body{height:100vh; height:100dvh; overflow:hidden}
-    .wrap{flex:1 1 auto; min-height:0; overflow:hidden; padding-bottom:8px}
+    .wrap{flex:1 1 auto; min-height:0; overflow:hidden}
     .wrap > *{flex:none}
     .wrap > .sim, .wrap > .split, .wrap > #deepBody{flex:1 1 auto; min-height:0}
     .sim{display:flex; flex-direction:column}
@@ -370,7 +387,7 @@
     .split{grid-template-rows:minmax(0,1fr); align-items:stretch}
     .split > *{min-height:0; max-height:100%}
     .split > .side{overflow:auto}
-    .split > .side > .snav{margin-top:auto}
+    .split > .side > .snav{margin-top:auto; position:sticky; bottom:-4px; z-index:1; background:var(--bg); padding:10px 0 4px; margin-bottom:-4px}   /* 설명이 길어도 이전·다음은 늘 보이게 */
     footer{padding-bottom:6px}
   }
   @media (min-width: 700px) and (min-height: 540px) and (max-width: 1000px){
@@ -379,81 +396,92 @@
     .split > .sim{flex-grow:1}
   }
   @media (min-width: 700px) and (min-height: 540px) and (orientation: portrait){
-    .split{display:flex; flex-direction:column; align-items:stretch}
+    .split{display:flex; flex-direction:column; align-items:stretch; gap:16px}
     .split > *{flex:0 1 auto}
     .split > .sim{flex:1 4 auto}
     .split > .side{flex:0 .05 auto; min-height:220px}
+    .split > .side.card{border-left:0; border-top:1px solid var(--line); padding:14px 0 0}
     #app[data-view="principle"] .split > .side{max-height:58%}   /* 펼친 계산 과정이 길어도 그림·버튼을 덮지 않게 */
-    #app[data-view="principle"] .split > .sim > .svgbox{min-height:min(240px, 22vh)}   /* 세로 화면: 그림이 먼저 줄어 설명·버튼이 보이게, 그래도 넘치면 설명 패널 안에서 스크롤 */
+    #app[data-view="principle"] .split > .sim > .svgbox{min-height:min(240px, 22vh)}
   }
   @media (min-width: 700px) and (min-height: 540px) and (max-height: 860px){
-    .top{padding-top:6px; padding-bottom:6px}
-    .wrap{padding-top:10px; gap:10px}
+    .wrap{padding-top:12px; gap:11px}
     .lead h2{font-size:20px}
-    .lead p{font-size:16px}
-    .lum{padding-top:10px; padding-bottom:10px}
-    .val{padding:7px 16px 8px}
-    .val .v{font-size:30px}
-    .card{padding:14px}
+    .lead p{font-size:15px}
+    .lum{padding-top:8px; padding-bottom:8px}
+    .lum .read output{font-size:36px}
+    .val .v{font-size:34px}
+    .figcap{padding-top:8px}
+    .card{padding:14px 16px}
     .side{gap:10px}
     .side h3{font-size:20px}
-    .side .txt{font-size:16px}
-    .qcard .q{font-size:19px}
-    .opts .btn{min-height:48px; padding:8px 14px}
+    .side .txt{font-size:15.5px}
+    .qcard .q{font-size:18.5px}
+    .opts{gap:6px}
+    .opts .btn{min-height:44px; padding:6px 14px}
+    .flow .fl{font-size:15px; padding:3px 10px}
+    .keyrel{gap:6px; padding:9px 0}
+    .keyrel .kr .math{font-size:23px}
+    .keyrel .kr b{font-size:15.5px}
+    ol.steps li{font-size:15px}
   }
   /* 전자칠판·큰 화면: 글자와 버튼을 키워 멀리서도 읽히게 */
   @media (min-width: 1600px) and (min-height: 950px){
     body{font-size:19px}
-    .top{padding-top:12px; padding-bottom:12px}
-    .brand .logo{width:50px; height:50px}
-    .brand h1{font-size:25px}
-    .brand p{font-size:14.5px}
-    .tabs button{font-size:18.5px; min-height:52px; padding-right:22px}
-    .tabs button b{width:34px; height:34px; font-size:16px}
-    .wrap{gap:16px; padding-top:20px}
+    .top{min-height:70px}
+    .brand .logo{width:38px; height:38px}
+    .brand .kick{font-size:12px}
+    .brand h1{font-size:22px}
+    .brand p{font-size:15px}
+    .tabs button{font-size:18px; padding:0 16px}
+    .tabs button b{font-size:14px}
+    .wrap{gap:18px; padding-top:22px}
     .lead h2{font-size:28px}
-    .lead h2::before{font-size:14px}
+    .lead h2::before{font-size:13px}
     .lead p{font-size:19px}
-    .btn{font-size:18px; min-height:54px; padding:8px 20px}
-    .lbl{font-size:17px}
+    .btn{font-size:18px; min-height:52px; padding:8px 20px}
+    .lbl{font-size:14px}
     .note{font-size:16px}
-    .lum .read label{font-size:16px}
-    .lum .read output{font-size:42px}
-    .lum .read output small{font-size:18px}
-    .slider .ticks span{font-size:16px}
-    .quick .btn{min-width:80px}
-    .val{padding:12px 22px}
-    .val .k{font-size:18px}
-    .val .v{font-size:44px}
-    .val .v small{font-size:22px}
-    .val .s{font-size:16px}
-    .legend{font-size:16.5px}
-    .sw{width:28px; height:14px}
-    .cmp .btn{font-size:17px; min-height:50px}
-    .card{padding:22px}
-    .side{gap:14px}
-    .side h3{font-size:27px}
+    .figcap{font-size:15px; padding:12px 20px 0}
+    .figcap b{font-size:12.5px}
+    .lum .read label{font-size:13px}
+    .lum .read output{font-size:54px}
+    .lum .read output small{font-size:17px}
+    .slider .ticks span{font-size:15px}
+    .quick .btn{min-width:80px; min-height:46px}
+    .val .k{font-size:16px}
+    .val .v{font-size:52px}
+    .val .v small{font-size:20px}
+    .val .s{font-size:15px}
+    .legend{font-size:15.5px}
+    .sw{width:24px; height:12px}
+    .cmp .btn{font-size:16.5px; min-height:46px}
+    .card{padding:20px 22px}
+    .side{gap:16px}
+    .side h3{font-size:28px}
     .side .txt, .readline{font-size:20px}
-    .scene-no, .tag{font-size:15px}
-    .qgroup > span{font-size:16px}
-    .qchips .btn{min-width:56px}
-    .score{font-size:19px}
+    .scene-no, .tag{font-size:14px}
+    .parts .btn, .subtabs .btn{font-size:18px}
+    .qgroup > span{font-size:14.5px}
+    .qchips .btn{min-width:52px; min-height:48px}
+    .score{font-size:17px}
     .qcard .q{font-size:25px}
     .opts .btn{font-size:20px; min-height:62px}
     .formula .eq{font-size:28px}
     .formula p, details .in{font-size:18px}
+    details summary{font-size:18px}
     .math{font-size:25px}
-    .keyrel .kr{grid-template-columns:128px minmax(0,1fr)}
-    .keyrel .kr .math{font-size:33px}
-    .keyrel .kr b{font-size:22px}
-    .keyrel .cond, .fineprint, .keyrel .kh, .cstep .ct{font-size:15.5px}
+    .keyrel .kr{grid-template-columns:126px minmax(0,1fr)}
+    .keyrel .kr .math{font-size:32px}
+    .keyrel .kr b{font-size:21px}
+    .keyrel .cond, .fineprint, .keyrel .kh, .cstep .ct{font-size:15px}
     .cstep .cn{font-size:17px}
-    ol.steps li{font-size:19.5px; padding-left:40px}
-    ol.steps li::before{width:28px; height:28px; font-size:15px}
-    .flow .fl{font-size:21px; padding:8px 16px}
-    table.data.cmp2{font-size:17.5px}
+    ol.steps li{font-size:19.5px; padding-left:42px}
+    ol.steps li::before{font-size:14px}
+    .flow .fl{font-size:20px; padding:6px 16px}
     table.data{font-size:17.5px}
-    table.data th{font-size:15px}
+    table.data th{font-size:14.5px}
+    table.data.cmp2{font-size:17.5px}
     footer{font-size:14px}
   }
 </style>
@@ -461,24 +489,20 @@
 <body>
 <header class="top">
   <a class="brand" id="homeLink" href="#" title="처음 화면으로" aria-label="생명 가능 지대 탐구실 — 처음 화면으로">
-    <svg class="logo" viewBox="0 0 40 40" aria-hidden="true">
-      <circle cx="20" cy="20" r="19" fill="#0f2350" stroke="rgba(255,255,255,.35)"/>
-      <circle cx="20" cy="20" r="13" fill="none" stroke="#4ade80" stroke-width="5" opacity=".9"/>
-      <circle cx="20" cy="20" r="5.5" fill="#ffd45c"/>
-      <circle cx="31.5" cy="14" r="2.6" fill="#ffffff"/>
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="14.5" fill="none" stroke="#CFD7DC" stroke-width="1"/>
+      <circle cx="16" cy="16" r="9.5" fill="none" stroke="#35A782" stroke-width="3.2" opacity=".85"/>
+      <circle cx="16" cy="16" r="4.6" fill="#E99A52"/>
+      <circle cx="29.2" cy="10" r="1.7" fill="#243447"/>
     </svg>
-    <div>
-      <h1>생명 가능 지대 탐구실</h1>
-      <p>별의 광도가 크면 생명 가능 지대는 왜 멀고 넓을까?</p>
-    </div>
+    <span class="bt"><span class="kick">HABITABLE ZONE LAB</span><h1>생명 가능 지대 탐구실</h1></span>
+    <p>별의 광도가 크면 생명 가능 지대는 왜 멀고 넓을까?</p>
   </a>
   <nav class="tabs" aria-label="탐구 단계">
-    <div class="seg">
-    <button type="button" data-act="view" data-v="observe"><b>1</b><span class="long">변화 관찰하기</span><span class="short">관찰</span></button>
-    <button type="button" data-act="view" data-v="principle"><b>2</b><span class="long">원리 알아보기</span><span class="short">원리</span></button>
-    <button type="button" data-act="view" data-v="apply"><b>3</b><span class="long">적용하기</span><span class="short">적용</span></button>
-    </div>
-    <button type="button" class="deep" data-act="view" data-v="deep"><span class="long">＋ 심화 탐구</span><span class="short">＋ 심화</span></button>
+    <button type="button" data-act="view" data-v="observe"><b>01</b><span class="long">변화 관찰하기</span><span class="short">관찰</span></button>
+    <button type="button" data-act="view" data-v="principle"><b>02</b><span class="long">원리 알아보기</span><span class="short">원리</span></button>
+    <button type="button" data-act="view" data-v="apply"><b>03</b><span class="long">적용하기</span><span class="short">적용</span></button>
+    <button type="button" class="deep" data-act="view" data-v="deep"><span class="long">심화 탐구</span><span class="short">심화</span></button>
   </nav>
 </header>
 
@@ -512,11 +536,11 @@ const innerAU = m => innerOf(luminosity(m));
 const outerAU = m => outerOf(luminosity(m));
 
 const ZONES = {
-  hot:  { label:'너무 뜨거움',   energy:'너무 많음', color:'#f08a3e', ink:'#c25a14' },
-  ok:   { label:'생명 가능 지대', energy:'적당함',    color:'#2fb36b', ink:'#16834a' },
-  cold: { label:'너무 차가움',   energy:'너무 적음', color:'#4b95e6', ink:'#2266b8' },
+  hot:  { label:'너무 뜨거움',   energy:'너무 많음', color:'#E99A52', ink:'#A9622A' },
+  ok:   { label:'생명 가능 지대', energy:'적당함',    color:'#35A782', ink:'#1F7A5C' },
+  cold: { label:'너무 차가움',   energy:'너무 적음', color:'#7FA6C4', ink:'#3F6F91' },
 };
-const SUN_GRAY = '#94a3b8', STAR_CORE = '#ffc93d', STAR_EDGE = '#e0a226';
+const SUN_GRAY = '#A7B1BA', STAR_CORE = '#F2C14E', STAR_EDGE = '#D9893F';
 
 const f2 = x => x.toFixed(2);
 const fmtL = L => L < 0.1 ? L.toFixed(3) : L.toFixed(2);
@@ -627,8 +651,8 @@ document.addEventListener('toggle', e => {
 const glowK = L => Math.max(0, Math.min(1, Math.log(L / L_MIN) / Math.log(L_MAX / L_MIN)));
 const glowR = L => 26 + 74 * glowK(L);
 const glowO = L => 0.3 + 0.7 * glowK(L);
-const GLOW_DEF = id => `<radialGradient id="${id}"><stop offset="0" stop-color="#ffcf5a" stop-opacity=".6"/><stop offset=".45" stop-color="#ffd877" stop-opacity=".22"/><stop offset="1" stop-color="#ffe3a0" stop-opacity="0"/></radialGradient>`
-  + `<radialGradient id="${id}C" cx=".5" cy=".5" r=".55" fx=".38" fy=".34"><stop offset="0" stop-color="#fffdf3"/><stop offset=".5" stop-color="#ffe187"/><stop offset="1" stop-color="#f4a62a"/></radialGradient>`;
+const GLOW_DEF = id => `<radialGradient id="${id}"><stop offset="0" stop-color="#F2B26E" stop-opacity=".6"/><stop offset=".45" stop-color="#F5C48F" stop-opacity=".22"/><stop offset="1" stop-color="#F8DCBC" stop-opacity="0"/></radialGradient>`
+  + `<radialGradient id="${id}C" cx=".5" cy=".5" r=".55" fx=".38" fy=".34"><stop offset="0" stop-color="#FFF9EE"/><stop offset=".5" stop-color="#FFDCA6"/><stop offset="1" stop-color="#E99A52"/></radialGradient>`;
 const starSvg = (x, y, L, gid, core = 13) =>
   `<circle cx="${x}" cy="${y}" r="${glowR(L).toFixed(1)}" fill="url(#${gid})" opacity="${glowO(L).toFixed(2)}"/><circle cx="${x}" cy="${y}" r="${core}" fill="url(#${gid}C)" stroke="${STAR_EDGE}" stroke-width="1"/>`;
 
@@ -648,25 +672,25 @@ function setGeom(){
 const AX = d => AX0 + d / AMAX * (AX1 - AX0);
 /* 줄 이름표: 넓은 화면은 왼쪽, 좁은 화면은 줄 위 왼쪽 */
 function rowLab(y, h, main, sub){
-  if (NARROW) return `<text x="4" y="${y - h / 2 - 10}" font-size="17" font-weight="800" fill="#1b2a41">${main}${sub ? ` <tspan font-size="15" font-weight="600" fill="#6b7b94">${sub}</tspan>` : ''}</text>`;
+  if (NARROW) return `<text x="4" y="${y - h / 2 - 10}" font-size="17" font-weight="700" fill="#243447">${main}${sub ? ` <tspan font-size="15" font-weight="600" fill="#748394">${sub}</tspan>` : ''}</text>`;
   return sub
-    ? `<text x="${AX0 - 24}" y="${y - 2}" text-anchor="end" font-size="18" font-weight="800" fill="#1b2a41">${main}</text><text x="${AX0 - 24}" y="${y + 18}" text-anchor="end" font-size="14" fill="#6b7b94">${sub}</text>`
-    : `<text x="${AX0 - 24}" y="${y + 6}" text-anchor="end" font-size="17" font-weight="800" fill="#1b2a41">${main}</text>`;
+    ? `<text x="${AX0 - 24}" y="${y - 2}" text-anchor="end" font-size="18" font-weight="700" fill="#243447">${main}</text><text x="${AX0 - 24}" y="${y + 18}" text-anchor="end" font-size="14" fill="#748394">${sub}</text>`
+    : `<text x="${AX0 - 24}" y="${y + 6}" text-anchor="end" font-size="17" font-weight="700" fill="#243447">${main}</text>`;
 }
 function axisSvg(y){
-  let h = `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#6b7b94" stroke-width="2"/>`;
+  let h = `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#748394" stroke-width="1.4"/>`;
   for (let k = 0; k <= AMAX * 2; k++){
     const d = k / 2, major = k % 2 === 0;
-    h += `<line x1="${AX(d)}" y1="${y}" x2="${AX(d)}" y2="${y + (major ? 12 : 6)}" stroke="#6b7b94" stroke-width="${major ? 2 : 1}"/>`;
-    if (major) h += `<text x="${AX(d)}" y="${y + 34}" text-anchor="middle" font-size="22" font-weight="700" fill="#1b2a41">${d}</text>`;
+    h += `<line x1="${AX(d)}" y1="${y}" x2="${AX(d)}" y2="${y + (major ? 10 : 5)}" stroke="#748394" stroke-width="${major ? 1.4 : 1}"/>`;
+    if (major) h += `<text x="${AX(d)}" y="${y + 32}" text-anchor="middle" font-size="20" font-weight="600" fill="#243447">${d}</text>`;
   }
-  h += `<text x="${AX(AMAX) + 6}" y="${y + 6}" font-size="18" font-weight="700" fill="#4a5a75">AU</text>`;
+  h += `<text x="${AX(AMAX) + 6}" y="${y + 6}" font-size="15" font-weight="700" fill="#748394" letter-spacing="1">AU</text>`;
   return h;
 }
 /* 생명 가능 지대 한 줄(정적 그림) */
 function hzRowSvg({ y, L, h = 40, gray = false, reveal = true, values = true }){
   const a = innerOf(L), b = outerOf(L);
-  if (!reveal) return `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#1b2a41" stroke-opacity=".25" stroke-dasharray="3 6"/>`;
+  if (!reveal) return `<line x1="${AX(0)}" y1="${y}" x2="${AX(AMAX)}" y2="${y}" stroke="#243447" stroke-opacity=".25" stroke-dasharray="3 6"/>`;
   let s = '';
   if (!gray){
     s += `<rect x="${AX(0)}" y="${y - h / 2}" width="${AX(a) - AX(0)}" height="${h}" fill="${ZONES.hot.color}" fill-opacity=".12"/>`;
@@ -675,7 +699,7 @@ function hzRowSvg({ y, L, h = 40, gray = false, reveal = true, values = true }){
   s += `<rect x="${AX(a)}" y="${y - h / 2}" width="${AX(b) - AX(a)}" height="${h}" rx="4" fill="${gray ? SUN_GRAY : ZONES.ok.color}" fill-opacity="${gray ? .3 : .34}" stroke="${gray ? SUN_GRAY : ZONES.ok.color}" stroke-width="2"/>`;
   const gap = Math.max(0, 48 - (AX(b) - AX(a))) / 2;   // 띠가 좁으면 두 값을 살짝 벌림
   if (values) for (const [d, dx] of [[a, -gap], [b, gap]])
-    s += `<text x="${(AX(d) + dx).toFixed(1)}" y="${y + h / 2 + 22}" text-anchor="middle" font-size="17" font-weight="700" fill="${gray ? '#4a5a75' : '#1b2a41'}">${f2(d)}</text>`;
+    s += `<text x="${(AX(d) + dx).toFixed(1)}" y="${y + h / 2 + 22}" text-anchor="middle" font-size="17" font-weight="700" fill="${gray ? '#4C5D6E' : '#243447'}">${f2(d)}</text>`;
   return s;
 }
 
@@ -705,54 +729,54 @@ VIEWS.observe = function(){
   const G = OG = obsGeom(), sa = innerOf(1), sb = outerOf(1), top = G.CY - G.CH / 2, bot = G.CY + G.CH / 2;
   const halo = 'stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke"';
   let g = `<defs>
-    <radialGradient id="oCore" cx=".5" cy=".5" r=".55" fx=".38" fy=".34"><stop offset="0" stop-color="#fffdf3"/><stop offset=".5" stop-color="#ffe187"/><stop offset="1" stop-color="#f4a62a"/></radialGradient>
-    <radialGradient id="oHalo"><stop offset="0" stop-color="#ffcf5a" stop-opacity=".55"/><stop offset=".45" stop-color="#ffd877" stop-opacity=".2"/><stop offset="1" stop-color="#ffe3a0" stop-opacity="0"/></radialGradient>
-    <radialGradient id="oSpread"><stop offset="0" stop-color="#ffd26a" stop-opacity=".45"/><stop offset=".6" stop-color="#ffe2a0" stop-opacity=".12"/><stop offset="1" stop-color="#ffe9b8" stop-opacity="0"/></radialGradient>
+    <radialGradient id="oCore" cx=".5" cy=".5" r=".55" fx=".38" fy=".34"><stop offset="0" stop-color="#FFF9EE"/><stop offset=".5" stop-color="#FFDCA6"/><stop offset="1" stop-color="#E99A52"/></radialGradient>
+    <radialGradient id="oHalo"><stop offset="0" stop-color="#F2B26E" stop-opacity=".55"/><stop offset=".45" stop-color="#F5C48F" stop-opacity=".2"/><stop offset="1" stop-color="#F8DCBC" stop-opacity="0"/></radialGradient>
+    <radialGradient id="oSpread"><stop offset="0" stop-color="#F2B26E" stop-opacity=".45"/><stop offset=".6" stop-color="#F7D3AE" stop-opacity=".12"/><stop offset="1" stop-color="#FAE6D2" stop-opacity="0"/></radialGradient>
     <linearGradient id="oEnergy" gradientUnits="userSpaceOnUse" x1="${AX0}" y1="0" x2="${AX1}" y2="0">
-      <stop id="oE0" offset="0" stop-color="#f08a3e" stop-opacity=".42"/><stop id="oE1" stop-color="#f6a965" stop-opacity=".14"/>
-      <stop id="oE2" stop-color="#2fb36b" stop-opacity=".36"/><stop id="oE3" stop-color="#2fb36b" stop-opacity=".36"/>
-      <stop id="oE4" stop-color="#7fb0ec" stop-opacity=".13"/><stop id="oE5" offset="1" stop-color="#3b82d6" stop-opacity=".32"/></linearGradient>
+      <stop id="oE0" offset="0" stop-color="#E99A52" stop-opacity=".42"/><stop id="oE1" stop-color="#F0B47C" stop-opacity=".1"/>
+      <stop id="oE2" stop-color="#35A782" stop-opacity=".3"/><stop id="oE3" stop-color="#35A782" stop-opacity=".3"/>
+      <stop id="oE4" stop-color="#A9C4D8" stop-opacity=".12"/><stop id="oE5" offset="1" stop-color="#6F98B8" stop-opacity=".3"/></linearGradient>
     <clipPath id="oRowClip"><rect x="${AX0}" y="${top - 30}" width="${AX1 - AX0 + 40}" height="${G.CH + 60}"/></clipPath>
     <marker id="oArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="${ZONES.ok.ink}"/></marker>
   </defs>`;
   // ── 태양(기준) 줄: 고정 ──
   g += NARROW
-    ? `<text x="4" y="${G.SY - G.SH / 2 - 11}" font-size="${G.lfs}" font-weight="800" fill="#1b2a41" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">태양 <tspan font-size="${G.lsub}" font-weight="600" fill="#6b7b94">기준 · 광도 1배</tspan></text>`
-    : `<text x="${AX0 - 26}" y="${G.SY - 1}" text-anchor="end" font-size="17" font-weight="800" fill="#1b2a41">태양</text><text x="${AX0 - 26}" y="${G.SY + 17}" text-anchor="end" font-size="13.5" fill="#6b7b94">기준 · 광도 1배</text>`;
-  g += `<line x1="${AX0}" y1="${G.SY}" x2="${AX1}" y2="${G.SY}" stroke="#94a3b8" stroke-opacity=".45" stroke-dasharray="2 5"/>`;
-  g += `<rect x="${AX(sa)}" y="${G.SY - G.SH / 2}" width="${AX(sb) - AX(sa)}" height="${G.SH}" rx="6" fill="#cbd5e1" fill-opacity=".7" stroke="#94a3b8" stroke-width="1.5"/>`;
-  g += `<circle cx="${AX0}" cy="${G.SY}" r="${NARROW ? 8 : 9}" fill="url(#oCore)" stroke="#b8a46a" stroke-width="1"/>`;
+    ? `<text x="4" y="${G.SY - G.SH / 2 - 11}" font-size="${G.lfs}" font-weight="700" fill="#243447" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">태양 <tspan font-size="${G.lsub}" font-weight="600" fill="#748394">기준 · 광도 1배</tspan></text>`
+    : `<text x="${AX0 - 26}" y="${G.SY - 1}" text-anchor="end" font-size="17" font-weight="700" fill="#243447">태양</text><text x="${AX0 - 26}" y="${G.SY + 17}" text-anchor="end" font-size="13.5" fill="#748394">기준 · 광도 1배</text>`;
+  g += `<line x1="${AX0}" y1="${G.SY}" x2="${AX1}" y2="${G.SY}" stroke="#A7B1BA" stroke-opacity=".45" stroke-dasharray="2 5"/>`;
+  g += `<rect x="${AX(sa)}" y="${G.SY - G.SH / 2}" width="${AX(sb) - AX(sa)}" height="${G.SH}" rx="6" fill="#E2E6E9" fill-opacity=".7" stroke="#A7B1BA" stroke-width="1.5"/>`;
+  g += `<circle cx="${AX0}" cy="${G.SY}" r="${NARROW ? 8 : 9}" fill="url(#oCore)" stroke="#C9A37E" stroke-width="1"/>`;
   for (const d of [sa, sb]){
-    g += `<line x1="${AX(d)}" y1="${G.SY + G.SH / 2}" x2="${AX(d)}" y2="${top - 2}" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="3 4"/>`;
-    g += `<text class="num" x="${AX(d)}" y="${G.sunVal}" text-anchor="middle" font-size="${G.sfs}" font-weight="700" fill="#6b7b94" ${halo}>${f2(d)}</text>`;
+    g += `<line x1="${AX(d)}" y1="${G.SY + G.SH / 2}" x2="${AX(d)}" y2="${top - 2}" stroke="#A7B1BA" stroke-width="1.2" stroke-dasharray="3 4"/>`;
+    g += `<text class="num" x="${AX(d)}" y="${G.sunVal}" text-anchor="middle" font-size="${G.sfs}" font-weight="700" fill="#748394" ${halo}>${f2(d)}</text>`;
   }
   // ── 지금 별 줄: 받는 에너지에 따라 색이 바뀌는 띠 + 두 경계선 ──
   g += NARROW
-    ? `<text x="4" y="${top - 13}" font-size="${G.lfs}" font-weight="800" fill="#1b2a41" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">지금 별 <tspan id="oLbl" font-size="${G.lsub}" font-weight="600" fill="#6b7b94"></tspan></text>`
-    : `<text x="${AX0 - 26}" y="${G.CY - 1}" text-anchor="end" font-size="18" font-weight="800" fill="#1b2a41">지금 별</text><text id="oLbl" class="num" x="${AX0 - 26}" y="${G.CY + 18}" text-anchor="end" font-size="13.5" fill="#6b7b94"></text>`;
+    ? `<text x="4" y="${top - 13}" font-size="${G.lfs}" font-weight="700" fill="#243447" stroke="#ffffff" stroke-width="4" stroke-linejoin="round" paint-order="stroke">지금 별 <tspan id="oLbl" font-size="${G.lsub}" font-weight="600" fill="#748394"></tspan></text>`
+    : `<text x="${AX0 - 26}" y="${G.CY - 1}" text-anchor="end" font-size="18" font-weight="700" fill="#243447">지금 별</text><text id="oLbl" class="num" x="${AX0 - 26}" y="${G.CY + 18}" text-anchor="end" font-size="13.5" fill="#748394"></text>`;
   g += `<g clip-path="url(#oRowClip)"><ellipse id="oSpread" cy="${G.CY}" ry="${G.CH * 0.95}" fill="url(#oSpread)"/></g>`;
   g += `<rect x="${AX0}" y="${top}" width="${AX1 - AX0}" height="${G.CH}" rx="10" fill="url(#oEnergy)"/>`;
   g += `<text id="oHotT" y="${G.CY + 5}" text-anchor="middle" font-size="${G.zfs}" font-weight="700" fill="${ZONES.hot.ink}">받는 에너지 많음</text>`;
   g += `<text id="oColdT" y="${G.CY + 5}" text-anchor="middle" font-size="${G.zfs}" font-weight="700" fill="${ZONES.cold.ink}">받는 에너지 적음</text>`;
-  g += `<text id="oOkT" y="${G.CY + 6}" text-anchor="middle" font-size="${G.zfs + 1.5}" font-weight="800" fill="#0d5a32">생명 가능 지대</text>`;
+  g += `<text id="oOkT" y="${G.CY + 6}" text-anchor="middle" font-size="${G.zfs + 1.5}" font-weight="700" fill="#1F6B51">생명 가능 지대</text>`;
   // 학생이 저장한 기준(변화 전): 점선 윤곽으로만
   const base = S.obs.base;
   if (base != null){
     const ba = AX(innerOf(base)), bb = AX(outerOf(base));
-    g += `<rect x="${ba.toFixed(1)}" y="${top - 6}" width="${(bb - ba).toFixed(1)}" height="${G.CH + 12}" rx="8" fill="#ffffff" fill-opacity=".28" stroke="#334155" stroke-width="2" stroke-dasharray="7 5"/>`;
-    if (bb - ba > 64) g += `<text x="${((ba + bb) / 2).toFixed(1)}" y="${bot - 7}" text-anchor="middle" font-size="13" font-weight="700" fill="#334155" ${halo}>기준 ${mulName(base)}</text>`;
+    g += `<rect x="${ba.toFixed(1)}" y="${top - 6}" width="${(bb - ba).toFixed(1)}" height="${G.CH + 12}" rx="8" fill="#ffffff" fill-opacity=".28" stroke="#243447" stroke-width="2" stroke-dasharray="7 5"/>`;
+    if (bb - ba > 64) g += `<text x="${((ba + bb) / 2).toFixed(1)}" y="${bot - 7}" text-anchor="middle" font-size="13" font-weight="700" fill="#243447" ${halo}>기준 ${mulName(base)}</text>`;
   }
-  g += `<line id="oInL" y1="${top - 5}" y2="${bot + 5}" stroke="${ZONES.ok.ink}" stroke-width="3" stroke-linecap="round"/>`;
-  g += `<line id="oOutL" y1="${top - 5}" y2="${bot + 5}" stroke="${ZONES.ok.ink}" stroke-width="3" stroke-linecap="round"/>`;
+  g += `<line id="oInL" y1="${top - 5}" y2="${bot + 5}" stroke="${ZONES.ok.ink}" stroke-width="2.5" stroke-linecap="round"/>`;
+  g += `<line id="oOutL" y1="${top - 5}" y2="${bot + 5}" stroke="${ZONES.ok.ink}" stroke-width="2.5" stroke-linecap="round"/>`;
   g += `<path id="oInLead" fill="none" stroke="${ZONES.ok.ink}" stroke-width="1.2"/><path id="oOutLead" fill="none" stroke="${ZONES.ok.ink}" stroke-width="1.2"/>`;
-  g += `<text id="oInT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="800" fill="#1b2a41" ${halo}></text>`;
-  g += `<text id="oOutT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="800" fill="#1b2a41" ${halo}></text>`;
+  g += `<text id="oInT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="700" fill="#243447" ${halo}></text>`;
+  g += `<text id="oOutT" class="num" y="${G.curVal}" text-anchor="middle" font-size="${G.fs}" font-weight="700" fill="#243447" ${halo}></text>`;
   // 폭: 양방향 화살표
   g += `<line id="oBrA" y1="${G.BY}" y2="${G.BY}" stroke="${ZONES.ok.ink}" stroke-width="2.2" marker-start="url(#oArr)" marker-end="url(#oArr)"/>`;
   g += `<path id="oBrE" fill="none" stroke="${ZONES.ok.ink}" stroke-width="2"/>`;
-  g += `<text id="oBrT" class="num" y="${G.BY + 23}" text-anchor="middle" font-size="${G.fs - 1}" font-weight="800" fill="${ZONES.ok.ink}" ${halo}></text>`;
+  g += `<text id="oBrT" class="num" y="${G.BY + 23}" text-anchor="middle" font-size="${G.fs - 1}" font-weight="700" fill="${ZONES.ok.ink}" ${halo}></text>`;
   // 별: 크기·색은 그대로, 빛 번짐만 광도에 따라
-  g += `<circle id="oGlow" cx="${AX0}" cy="${G.CY}" fill="url(#oHalo)"/><circle cx="${AX0}" cy="${G.CY}" r="${G.core}" fill="url(#oCore)" stroke="#e0a226" stroke-width="1"/>`;
+  g += `<circle id="oGlow" cx="${AX0}" cy="${G.CY}" fill="url(#oHalo)"/><circle cx="${AX0}" cy="${G.CY}" r="${G.core}" fill="url(#oCore)" stroke="#D9893F" stroke-width="1"/>`;
   // 거리축 + 지금 경계 표시(축 위 작은 삼각형)
   g += axisSvg(G.AY);
   g += `<polygon id="oInM" fill="${ZONES.ok.ink}"/><polygon id="oOutM" fill="${ZONES.ok.ink}"/>`;
@@ -769,6 +793,7 @@ VIEWS.observe = function(){
         <div class="quick" role="group" aria-label="광도 빠른 선택">${L_QUICK.map(n =>
           `<button type="button" class="btn" data-act="lumq" data-v="${n}">${mulName(n)}</button>`).join('')}</div>
       </div>
+      <p class="figcap"><b>FIG. 1</b>같은 축척(0–6 AU)에서 본 태양과 지금 별의 생명 가능 지대</p>
       <svg id="obsSv" viewBox="${G.vb}" role="img" aria-labelledby="obsTitle"><title id="obsTitle">태양과 지금 별의 생명 가능 지대를 0~6 AU 같은 거리축에서 비교한 그림</title>${g}</svg>
       <div class="ctl obsbar">
         <ul class="legend" aria-label="그림 읽는 법">
@@ -999,7 +1024,8 @@ VIEWS.principle = function(){
     </div>
     <div class="split">
       <section class="sim" aria-label="원리 그림">
-        <svg id="prSv" viewBox="${part === 1 ? (NARROW ? '0 0 1000 530' : '0 0 1000 490') : `0 0 ${VW} 400`}" role="img" aria-label="${esc(title)}"><g id="prStatic"></g><g id="prDyn"></g></svg>
+        <p class="figcap"><b>FIG. 2</b>${part === 1 ? '별빛이 퍼지는 넓이와 한 칸이 받는 에너지' : '같은 축척(0–6 AU)에서 본 두 경계의 이동'}</p>
+        <svg id="prSv" viewBox="${part === 1 ? (NARROW ? '0 0 1000 552' : '0 0 1000 490') : `0 0 ${VW} 400`}" role="img" aria-label="${esc(title)}"><g id="prStatic"></g><g id="prDyn"></g></svg>
         ${sc.cmp === 'width' && !free ? prNumTable(S.pr.cmpL) : ''}
         ${ctl ? `<div class="ctl">${ctl}</div>` : ''}
       </section>
@@ -1028,16 +1054,16 @@ const p1 = (x, y, z) => [P1.SX + x * P1.K + z * 0.40 * P1.U, P1.SY - y * P1.U + 
 const FK = () => NARROW ? 1.6 : 1;   // 폰에서 원리 ① 그림의 글자 배율
 function pr1Start(){
   let st = `<defs>${GLOW_DEF('pGlowG')}</defs>`;
-  st += `<circle cx="24" cy="${25 * FK()}" r="${5 * FK()}" fill="#f2a900"/><text x="${24 + 14 * FK()}" y="${31 * FK()}" font-size="${16 * FK()}" fill="#4a5a75">${NARROW ? '별빛 (점이 빽빽할수록 에너지가 많아요)' : '별빛 (한 칸에 점이 빽빽할수록 받는 에너지가 많아요)'}</text>`;
+  st += `<circle cx="24" cy="${25 * FK()}" r="${5 * FK()}" fill="#E99A52"/><text x="${24 + 14 * FK()}" y="${31 * FK()}" font-size="${16 * FK()}" fill="#4C5D6E">${NARROW ? '별빛 (점이 빽빽할수록 에너지가 많아요)' : '별빛 (한 칸에 점이 빽빽할수록 받는 에너지가 많아요)'}</text>`;
   for (const d of [1, 2, 3]){
     const h = d / 2;
-    st += `<polygon points="${pts([p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)])}" fill="none" stroke="#a3b1c8" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
+    st += `<polygon points="${pts([p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)])}" fill="none" stroke="#C3CCD3" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
   }
-  st += `<line x1="${P1.SX}" y1="${P1.AY}" x2="${P1.SX + 3.25 * P1.K}" y2="${P1.AY}" stroke="#6b7b94" stroke-width="2"/>`;
+  st += `<line x1="${P1.SX}" y1="${P1.AY}" x2="${P1.SX + 3.25 * P1.K}" y2="${P1.AY}" stroke="#748394" stroke-width="2"/>`;
   for (const d of [0, 1, 2, 3]){
     const x = P1.SX + d * P1.K;
-    st += `<line x1="${x}" y1="${P1.AY - 8}" x2="${x}" y2="${P1.AY + 8}" stroke="#6b7b94" stroke-width="2"/>`;
-    st += `<text x="${x}" y="${P1.AY + 18 + 14 * FK()}" text-anchor="middle" font-size="${20 * FK()}" font-weight="700" fill="#1b2a41">${d === 0 ? '별' : d + ' AU'}</text>`;
+    st += `<line x1="${x}" y1="${P1.AY - 8}" x2="${x}" y2="${P1.AY + 8}" stroke="#748394" stroke-width="2"/>`;
+    st += `<text x="${x}" y="${P1.AY + 18 + 14 * FK()}" text-anchor="middle" font-size="${20 * FK()}" font-weight="700" fill="#243447">${d === 0 ? '별' : d + ' AU'}</text>`;
   }
   $('prStatic').innerHTML = st;
   const from = { ...S.pr.cur }, tg = prTarget(), to = { sL:Math.sqrt(tg.L), d:tg.d };
@@ -1057,12 +1083,12 @@ function pr1Draw(sLTarget){
   const c = [p1(d, h, -h), p1(d, h, h), p1(d, -h, h), p1(d, -h, -h)];
   let s = starSvg(P1.SX, P1.SY, L, 'pGlowG', 16);
   for (let k = 0; k < 4; k++)
-    s += `<polygon points="${P1.SX},${P1.SY} ${pts([c[k], c[(k + 1) % 4]])}" fill="#ffcf4d" fill-opacity="${(0.06 + 0.03 * sL).toFixed(3)}" stroke="#e5a300" stroke-opacity=".6"/>`;
-  s += `<polygon points="${pts(c)}" fill="#f1f5fc" fill-opacity=".95" stroke="#1b2a41" stroke-width="2"/>`;
+    s += `<polygon points="${P1.SX},${P1.SY} ${pts([c[k], c[(k + 1) % 4]])}" fill="#F3B97A" fill-opacity="${(0.06 + 0.03 * sL).toFixed(3)}" stroke="#E99A52" stroke-opacity=".6"/>`;
+  s += `<polygon points="${pts(c)}" fill="#F7F8F6" fill-opacity=".95" stroke="#243447" stroke-width="2"/>`;
   for (let k = 1; k < d - 1e-6; k++){
     const a1 = p1(d, h - k, -h), a2 = p1(d, h - k, h), b1 = p1(d, h, -h + k), b2 = p1(d, -h, -h + k);
-    s += `<line x1="${a1[0]}" y1="${a1[1]}" x2="${a2[0]}" y2="${a2[1]}" stroke="#1b2a41" stroke-opacity=".3"/>`;
-    s += `<line x1="${b1[0]}" y1="${b1[1]}" x2="${b2[0]}" y2="${b2[1]}" stroke="#1b2a41" stroke-opacity=".3"/>`;
+    s += `<line x1="${a1[0]}" y1="${a1[1]}" x2="${a2[0]}" y2="${a2[1]}" stroke="#243447" stroke-opacity=".3"/>`;
+    s += `<line x1="${b1[0]}" y1="${b1[1]}" x2="${b2[0]}" y2="${b2[1]}" stroke="#243447" stroke-opacity=".3"/>`;
   }
   // 별빛 점: 광도 1배일 때 1 AU 한 칸에 6×6개 → 점의 수는 광도에 비례
   const n = Math.round(6 * sLTarget), sp = d / n, rr = Math.max(1.3, Math.min(3.6, 0.3 * sp * P1.U));
@@ -1071,21 +1097,21 @@ function pr1Draw(sLTarget){
     const q = p1(d, h - (i + .5) * sp, -h + (j + .5) * sp);
     dots += `<circle cx="${q[0].toFixed(1)}" cy="${q[1].toFixed(1)}" r="${rr.toFixed(2)}"/>`;
   }
-  s += `<g fill="#f2a900" opacity="${fade.toFixed(2)}">${dots}</g>`;
+  s += `<g fill="#E99A52" opacity="${fade.toFixed(2)}">${dots}</g>`;
   // 행성이 받는 한 칸
   const cell = [p1(d, h, -h), p1(d, h, -h + 1), p1(d, h - 1, -h + 1), p1(d, h - 1, -h)];
   s += `<polygon points="${pts(cell)}" fill="none" stroke="${ZONES.ok.color}" stroke-width="4"/>`;
-  s += `<text x="${Math.max(130 * FK(), cell[0][0] - 6).toFixed(1)}" y="${(cell[0][1] - 12).toFixed(1)}" text-anchor="middle" font-size="${16 * FK()}" font-weight="800" fill="${ZONES.ok.ink}">행성이 받는 한 칸</text>`;
+  s += `<text x="${Math.max(130 * FK(), cell[0][0] - 6).toFixed(1)}" y="${(cell[0][1] - 12).toFixed(1)}" text-anchor="middle" font-size="${16 * FK()}" font-weight="700" fill="${ZONES.ok.ink}">행성이 받는 한 칸</text>`;
   const px = P1.SX + d * P1.K;
   s += `<polygon points="${px - 9},${P1.AY - 20} ${px + 9},${P1.AY - 20} ${px},${P1.AY - 6}" fill="${ZONES.ok.color}"/>`;
   // 한 칸이 받는 에너지 막대(0~9)
-  const E = L / (d * d), BX0 = NARROW ? 20 : 290, BX1 = 940, BY = NARROW ? 492 : 446, bx = v => BX0 + Math.min(v, 9) / 9 * (BX1 - BX0);
-  s += `<text x="20" y="${NARROW ? BY - 40 : BY + 19}" font-size="${18 * FK()}" font-weight="800" fill="#1b2a41">한 칸이 받는 에너지</text>`;
-  s += `<rect x="${BX0}" y="${BY}" width="${BX1 - BX0}" height="26" rx="6" fill="#1b2a41" fill-opacity=".07" stroke="#c9d6ea"/>`;
-  s += `<rect x="${BX0}" y="${BY}" width="${(bx(E) - BX0).toFixed(1)}" height="26" rx="6" fill="#f2a900"/>`;
-  for (const v of [1, 4, 9]) s += `<line x1="${bx(v)}" y1="${BY - 4}" x2="${bx(v)}" y2="${BY + 30}" stroke="#4a5a75" stroke-opacity=".7"/><text x="${bx(v)}" y="${BY - 9}" text-anchor="middle" font-size="${15 * FK()}" fill="#4a5a75">${v}</text>`;
+  const E = L / (d * d), BX0 = NARROW ? 20 : 290, BX1 = 940, BY = NARROW ? 514 : 446, bx = v => BX0 + Math.min(v, 9) / 9 * (BX1 - BX0);
+  s += `<text x="20" y="${NARROW ? BY - 40 : BY + 19}" font-size="${18 * FK()}" font-weight="700" fill="#243447">한 칸이 받는 에너지</text>`;
+  s += `<rect x="${BX0}" y="${BY}" width="${BX1 - BX0}" height="26" rx="6" fill="#243447" fill-opacity=".07" stroke="#E3E8EB"/>`;
+  s += `<rect x="${BX0}" y="${BY}" width="${(bx(E) - BX0).toFixed(1)}" height="26" rx="6" fill="#E99A52"/>`;
+  for (const v of [1, 4, 9]) s += `<line x1="${bx(v)}" y1="${BY - 4}" x2="${bx(v)}" y2="${BY + 30}" stroke="#4C5D6E" stroke-opacity=".7"/><text x="${bx(v)}" y="${BY - 9}" text-anchor="middle" font-size="${15 * FK()}" fill="#4C5D6E">${v}</text>`;
   const tx = Math.min(bx(E) + 10, BX1 - 56 * FK());
-  s += `<text x="${tx.toFixed(1)}" y="${BY + 13 + 7 * FK()}" font-size="${20 * FK()}" font-weight="800" fill="#1b2a41">${E.toFixed(2)}</text>`;
+  s += `<text x="${tx.toFixed(1)}" y="${BY + 13 + 7 * FK()}" font-size="${20 * FK()}" font-weight="700" fill="#243447">${E.toFixed(2)}</text>`;
   g.innerHTML = s;
 }
 
@@ -1096,7 +1122,7 @@ function pr2Start(){
   let st = `<defs>${GLOW_DEF('p2Glow')}</defs>`;
   st += rowLab(P2.Y_SUN, 34, '태양');
   st += `<circle cx="${AX0}" cy="${P2.Y_SUN}" r="9" fill="${SUN_GRAY}"/>`;
-  st += `<line x1="${AX0}" y1="${P2.Y_SUN}" x2="${AX1}" y2="${P2.Y_SUN}" stroke="#1b2a41" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
+  st += `<line x1="${AX0}" y1="${P2.Y_SUN}" x2="${AX1}" y2="${P2.Y_SUN}" stroke="#243447" stroke-opacity=".15" stroke-dasharray="3 6"/>`;
   st += hzRowSvg({ y:P2.Y_SUN, L:1, h:34, gray:true, values:false });
   st += axisSvg(P2.Y_AX);
   $('prStatic').innerHTML = st;
@@ -1115,32 +1141,32 @@ function pr2Draw(sc){
   const g = $('prDyn'); if (!g) return;
   const sa = sa1(), sb = sb1(), L = S.pr.cmpL, m0 = Math.sqrt(L), t = S.pr.cur.move, m = lerp(1, m0, t);
   let s = '';
-  for (const d of [sa, sb]) s += `<text x="${AX(d)}" y="${P2.Y_SUN - 26}" text-anchor="middle" font-size="17" font-weight="700" fill="#4a5a75">${f2(d)}</text>`;
+  for (const d of [sa, sb]) s += `<text x="${AX(d)}" y="${P2.Y_SUN - 26}" text-anchor="middle" font-size="17" font-weight="700" fill="#4C5D6E">${f2(d)}</text>`;
   if (sc.cmp !== 'move'){
-    s += `<text x="${AX(sb) + 12}" y="${P2.Y_SUN + 6}" font-size="17" font-weight="800" fill="#4a5a75">폭 ${f2(widthOf(1))} AU</text>`;
+    s += `<text x="${AX(sb) + 12}" y="${P2.Y_SUN + 6}" font-size="17" font-weight="700" fill="#4C5D6E">폭 ${f2(widthOf(1))} AU</text>`;
   }
   if (sc.cmp){
     const a = sa * m, b = sb * m;
-    s += NARROW ? rowLab(P2.Y_CMP, 48, `광도 ${mulName(L)}`) : rowLab(P2.Y_CMP, 48, '광도', mulName(L)).replace('font-size="14" fill="#6b7b94"', 'font-size="17" font-weight="800" fill="#1b2a41"');
+    s += NARROW ? rowLab(P2.Y_CMP, 48, `광도 ${mulName(L)}`) : rowLab(P2.Y_CMP, 48, '광도', mulName(L)).replace('font-size="14" fill="#748394"', 'font-size="17" font-weight="700" fill="#243447"');
     s += starSvg(AX0, P2.Y_CMP, L, 'p2Glow', 13);
     s += `<rect x="${AX(a)}" y="${P2.Y_CMP - 24}" width="${AX(b) - AX(a)}" height="48" rx="5" fill="${ZONES.ok.color}" fill-opacity=".34" stroke="${ZONES.ok.color}" stroke-width="2.5"/>`;
     // 태양의 경계 → 이 별의 경계로 이어지는 대각선 화살표
     for (const [d0, d1, side] of [[sa, a, -1], [sb, b, 1]]){
       const x0 = AX(d0), y0 = P2.Y_SUN + 19, x1 = AX(d1), y1 = P2.Y_CMP - 28;
-      const ang = Math.atan2(y1 - y0, x1 - x0), ah = 12;
+      const ang = Math.atan2(y1 - y0, x1 - x0), ah = 9;
       const hx = x1 - ah * Math.cos(ang), hy = y1 - ah * Math.sin(ang);
-      s += `<line x1="${x0}" y1="${y0}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#1b2a41" stroke-width="2.5"/>`;
-      s += `<polygon points="${x1.toFixed(1)},${y1} ${(hx - 6 * Math.sin(ang)).toFixed(1)},${(hy + 6 * Math.cos(ang)).toFixed(1)} ${(hx + 6 * Math.sin(ang)).toFixed(1)},${(hy - 6 * Math.cos(ang)).toFixed(1)}" fill="#1b2a41"/>`;
+      s += `<line x1="${x0}" y1="${y0}" x2="${hx.toFixed(1)}" y2="${hy.toFixed(1)}" stroke="#243447" stroke-width="1.4"/>`;
+      s += `<polygon points="${x1.toFixed(1)},${y1} ${(hx - 4 * Math.sin(ang)).toFixed(1)},${(hy + 4 * Math.cos(ang)).toFixed(1)} ${(hx + 4 * Math.sin(ang)).toFixed(1)},${(hy - 4 * Math.cos(ang)).toFixed(1)}" fill="#243447"/>`;
       if (t > .6){
         const mx = (x0 + x1) / 2 + side * 26, my = (y0 + y1) / 2 + 6;
-        s += `<text x="${mx.toFixed(1)}" y="${my.toFixed(1)}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41">×${trimNum(m0)}</text>`;
+        s += `<text x="${mx.toFixed(1)}" y="${my.toFixed(1)}" text-anchor="middle" font-size="17" font-weight="700" fill="#4F7895">×${trimNum(m0)}</text>`;
       }
-      s += `<text x="${AX(d1)}" y="${P2.Y_CMP + 46}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41">${f2(d1)}</text>`;
+      s += `<text x="${AX(d1)}" y="${P2.Y_CMP + 46}" text-anchor="middle" font-size="18" font-weight="700" fill="#243447">${f2(d1)}</text>`;
     }
     if (sc.cmp === 'width'){
       const by = P2.Y_CMP + 64, cx = Math.min(AX1 - 110, Math.max(AX0 + 110, (AX(a) + AX(b)) / 2));
       s += `<path d="M${AX(a)},${by - 8}V${by}H${AX(b)}V${by - 8}" fill="none" stroke="${ZONES.ok.color}" stroke-width="3"/>`;
-      s += `<text x="${cx}" y="${by + 26}" text-anchor="middle" font-size="19" font-weight="800" fill="${ZONES.ok.ink}">폭 ${f2(widthOf(L))} AU (태양의 ${trimNum(m0)}배)</text>`;
+      s += `<text x="${cx}" y="${by + 26}" text-anchor="middle" font-size="19" font-weight="700" fill="${ZONES.ok.ink}">폭 ${f2(widthOf(L))} AU (태양의 ${trimNum(m0)}배)</text>`;
     }
   }
   g.innerHTML = s;
@@ -1194,7 +1220,7 @@ VIEWS.apply = function(){
     <nav class="qchips card" aria-label="문제 선택">${chips}
       <span class="score">맞힌 문제 ${score} / ${AP.length}${answered ? ` <button type="button" class="btn ghost" data-act="ap-reset">다시 풀기</button>` : ''}</span></nav>
     <div class="split ${vis ? '' : 'solo'}">
-      ${vis ? `<section class="sim" aria-label="문제 그림">${vis}</section>` : ''}
+      ${vis ? `<section class="sim" aria-label="문제 그림"><p class="figcap"><b>FIG. 3</b>문제 그림 · 같은 축척(0–6 AU)</p>${vis}</section>` : ''}
       <section class="side card qcard" aria-live="polite">
         <span class="tag">${it.cat === '퀴즈' ? '핵심 퀴즈' : it.cat + '하기'} · ${qi + 1}번</span>
         <p class="q">${esc(it.q)}</p>
@@ -1219,25 +1245,25 @@ function apVisSvg(v, reveal){
   const rowLabel = (y, L, h) => rowLab(y, h, NARROW ? `광도 ${mulName(L)}` : mulName(L)) + starSvg(AX0, y, L, 'aGlow', 11);
   if (v.type === 'compare'){
     const ys = NARROW ? [80, 180, 280] : [70, 155, 240]; H = NARROW ? 375 : 335;
-    if (!NARROW) s += `<text x="20" y="28" font-size="16" fill="#6b7b94">별의 광도 (태양 = 1)</text>`;
+    if (!NARROW) s += `<text x="20" y="28" font-size="16" fill="#748394">별의 광도 (태양 = 1)</text>`;
     v.Ls.forEach((L, i) => { s += hzRowSvg({ y:ys[i], L, h:38, reveal }) + rowLabel(ys[i], L, 38); });
     s += axisSvg(H - 50);
   } else if (v.type === 'judge'){
     const y = 125; H = 250;
-    s += NARROW ? `<text x="4" y="26" font-size="18" font-weight="800" fill="#1b2a41">광도 ${mulName(v.L)} 별 · 행성 ${trimNum(v.d)} AU</text>`
-                : `<text x="20" y="28" font-size="16" fill="#6b7b94">광도 ${mulName(v.L)} 별과 ${trimNum(v.d)} AU의 행성</text>`;
+    s += NARROW ? `<text x="4" y="26" font-size="18" font-weight="700" fill="#243447">광도 ${mulName(v.L)} 별 · 행성 ${trimNum(v.d)} AU</text>`
+                : `<text x="20" y="28" font-size="16" fill="#748394">광도 ${mulName(v.L)} 별과 ${trimNum(v.d)} AU의 행성</text>`;
     s += hzRowSvg({ y, L:v.L, h:50, reveal }) + (NARROW ? starSvg(AX0, y, v.L, 'aGlow', 11) : rowLabel(y, v.L, 50));
     const x = AX(v.d);
-    s += `<circle cx="${x}" cy="${y}" r="13" fill="#ffffff" stroke="#1b2a41" stroke-width="2"/>`;
-    s += `<text x="${Math.max(x, NARROW ? 60 : 0)}" y="${y - 38}" text-anchor="middle" font-size="18" font-weight="800" fill="#1b2a41">${NARROW ? '행성' : `행성 ${trimNum(v.d)} AU`}</text>`;
-    if (reveal){ const z = zoneOf(fluxAt(v.L, v.d)); s += `<text x="${Math.max(x, NARROW ? 70 : 0)}" y="${y - 62}" text-anchor="middle" font-size="17" font-weight="800" fill="${ZONES[z].ink}">${ZONES[z].label}</text>`; }
+    s += `<circle cx="${x}" cy="${y}" r="13" fill="#ffffff" stroke="#243447" stroke-width="2"/>`;
+    s += `<text x="${Math.max(x, NARROW ? 60 : 0)}" y="${y - 38}" text-anchor="middle" font-size="18" font-weight="700" fill="#243447">${NARROW ? '행성' : `행성 ${trimNum(v.d)} AU`}</text>`;
+    if (reveal){ const z = zoneOf(fluxAt(v.L, v.d)); s += `<text x="${Math.max(x, NARROW ? 70 : 0)}" y="${y - 62}" text-anchor="middle" font-size="17" font-weight="700" fill="${ZONES[z].ink}">${ZONES[z].label}</text>`; }
     s += axisSvg(195);
   } else {
     const yS = 70, yT = 175; H = 300;
     s += rowLab(yS, 30, '태양') + `<circle cx="${AX0}" cy="${yS}" r="8" fill="${SUN_GRAY}"/>`;
     s += hzRowSvg({ y:yS, L:1, h:30, gray:true });
     s += hzRowSvg({ y:yT, L:v.L, h:48, reveal }) + rowLabel(yT, v.L, 48);
-    if (!reveal) s += `<text x="${(AX0 + AX1) / 2}" y="${yT + 9}" text-anchor="middle" font-size="26" font-weight="800" fill="#6b7b94">?</text>`;
+    if (!reveal) s += `<text x="${(AX0 + AX1) / 2}" y="${yT + 9}" text-anchor="middle" font-size="26" font-weight="700" fill="#748394">?</text>`;
     else for (const d of [innerOf(1), outerOf(1)]) s += `<line x1="${AX(d)}" y1="${yS + 15}" x2="${AX(d)}" y2="${yT - 24}" stroke="${SUN_GRAY}" stroke-opacity=".5" stroke-dasharray="4 5"/>`;
     s += axisSvg(245);
   }
@@ -1260,10 +1286,10 @@ VIEWS.deep = function(){
 
 /* ── 도전! 생명 가능 지대 찾기 (질량이 다른 별에서 행성을 끌어 경계 기록) ── */
 const STARS = [
-  { m:0.5, short:'0.5배', color:'#ef5a4c', ink:'#c3372b', ruler:1,   minor:0.05, label:0.1, r:12 },
-  { m:1,   short:'1배',   color:'#ffc93d', ink:'#a86f00', ruler:2.5, minor:0.1,  label:0.5, r:16 },
-  { m:1.5, short:'1.5배', color:'#f4f6fb', ink:'#4a5a75', ruler:5,   minor:0.25, label:1,   r:20 },
-  { m:2,   short:'2배',   color:'#8cc4ff', ink:'#2266b8', ruler:8,   minor:0.5,  label:1,   r:24 },
+  { m:0.5, short:'0.5배', color:'#E0705C', ink:'#B5503F', ruler:1,   minor:0.05, label:0.1, r:12 },
+  { m:1,   short:'1배',   color:'#F2C14E', ink:'#93661A', ruler:2.5, minor:0.1,  label:0.5, r:16 },
+  { m:1.5, short:'1.5배', color:'#f4f6fb', ink:'#4C5D6E', ruler:5,   minor:0.25, label:1,   r:20 },
+  { m:2,   short:'2배',   color:'#9CC3E6', ink:'#3F6F91', ruler:8,   minor:0.5,  label:1,   r:24 },
 ];
 S.ch = { star:1, pos:STARS.map(s => +(s.ruler * 0.1).toFixed(2)), rec:STARS.map(() => ({ inner:null, outer:null })), bands:false, msg:null };
 const RX0 = 130, RX1 = 940, RY = 150;
@@ -1284,9 +1310,9 @@ DEEP.challenge = function(){
   const X = d => RX0 + d / max * (RX1 - RX0);
   let h = `<defs>${STARS.map((s, k) => `<radialGradient id="sg${k}"><stop offset="0" stop-color="${s.color}" stop-opacity=".85"/><stop offset="1" stop-color="${s.color}" stop-opacity="0"/></radialGradient>`).join('')}
     <clipPath id="rulerClip"><rect x="${RX0}" y="0" width="${RX1 - RX0}" height="580"/></clipPath></defs>`;
-  h += `<text x="30" y="44" font-size="26" font-weight="800" fill="#1b2a41">자 범위 <tspan fill="${st.ink}">0 ~ ${max} AU</tspan></text>`;
+  h += `<text x="30" y="44" font-size="26" font-weight="700" fill="#243447">자 범위 <tspan fill="${st.ink}">0 ~ ${max} AU</tspan></text>`;
   h += `<text x="${RX1}" y="44" text-anchor="end" font-size="19" font-weight="700" fill="${st.ink}">질량 ${st.short} 별 · 광도 ${fmtL(L)} (태양 = 1)</text>`;
-  h += `<text x="30" y="70" font-size="15" fill="#6b7b94">별마다 자의 축척이 달라요. 행성을 끌어 옮겨 보세요.</text>`;
+  h += `<text x="30" y="70" font-size="15" fill="#748394">별마다 자의 축척이 달라요. 행성을 끌어 옮겨 보세요.</text>`;
   const band = chBand(i);
   if (band){
     h += `<g clip-path="url(#rulerClip)">`;
@@ -1297,32 +1323,32 @@ DEEP.challenge = function(){
       if (xb - xa > 70) h += `<text x="${(xa + xb) / 2}" y="${RY - 6}" text-anchor="middle" font-size="15" font-weight="700" fill="${ZONES[z].ink}">${ZONES[z].energy}</text>`;
     }
     h += `</g>`;
-    if (band.model) h += `<text x="${RX1}" y="70" text-anchor="end" font-size="15" font-weight="700" fill="#2563eb">정답 띠(모형) 표시 중</text>`;
+    if (band.model) h += `<text x="${RX1}" y="70" text-anchor="end" font-size="15" font-weight="700" fill="#4F7895">정답 띠(모형) 표시 중</text>`;
   }
-  h += `<line x1="${RX0}" y1="${RY}" x2="${RX1}" y2="${RY}" stroke="#4a5a75" stroke-width="3"/>`;
+  h += `<line x1="${RX0}" y1="${RY}" x2="${RX1}" y2="${RY}" stroke="#4C5D6E" stroke-width="3"/>`;
   const nMinor = Math.round(max / st.minor);
   for (let k = 0; k <= nMinor; k++){
     const d = k * st.minor, x = X(d), isLab = Math.abs(d / st.label - Math.round(d / st.label)) < 1e-6;
-    h += `<line x1="${x}" y1="${RY}" x2="${x}" y2="${RY + (isLab ? 18 : 9)}" stroke="#4a5a75" stroke-width="${isLab ? 2.5 : 1.5}"/>`;
-    if (isLab) h += `<text x="${x}" y="${RY + 44}" text-anchor="middle" font-size="22" font-weight="700" fill="#1b2a41">${trimNum(d)}</text>`;
+    h += `<line x1="${x}" y1="${RY}" x2="${x}" y2="${RY + (isLab ? 18 : 9)}" stroke="#4C5D6E" stroke-width="${isLab ? 2.5 : 1.5}"/>`;
+    if (isLab) h += `<text x="${x}" y="${RY + 44}" text-anchor="middle" font-size="22" font-weight="700" fill="#243447">${trimNum(d)}</text>`;
   }
-  h += `<text x="${RX1 + 8}" y="${RY + 6}" font-size="18" font-weight="700" fill="#4a5a75">AU</text>`;
+  h += `<text x="${RX1 + 8}" y="${RY + 6}" font-size="15" font-weight="700" fill="#748394" letter-spacing="1">AU</text>`;
   const rec = S.ch.rec[i];
   for (const [k, lab] of [['inner', '안쪽'], ['outer', '바깥쪽']]){
     if (rec[k] == null) continue;
     const x = X(rec[k]);
-    h += `<line x1="${x}" y1="${RY - 30}" x2="${x}" y2="${RY + 22}" stroke="#1b2a41" stroke-width="2.5" stroke-dasharray="5 4"/>`;
-    h += `<text x="${x}" y="${RY + 72}" text-anchor="middle" font-size="15" font-weight="700" fill="#1b2a41">${lab} ${f2(rec[k])}</text>`;
+    h += `<line x1="${x}" y1="${RY - 30}" x2="${x}" y2="${RY + 22}" stroke="#243447" stroke-width="2.5" stroke-dasharray="5 4"/>`;
+    h += `<text x="${x}" y="${RY + 72}" text-anchor="middle" font-size="15" font-weight="700" fill="#243447">${lab} ${f2(rec[k])}</text>`;
   }
-  h += `<circle cx="${RX0}" cy="${RY}" r="${st.r * 2.6}" fill="url(#sg${i})"/><circle cx="${RX0}" cy="${RY}" r="${st.r}" fill="${st.color}" stroke="#1b2a41" stroke-opacity=".35" stroke-width="1.5"/>`;
+  h += `<circle cx="${RX0}" cy="${RY}" r="${st.r * 2.6}" fill="url(#sg${i})"/><circle cx="${RX0}" cy="${RY}" r="${st.r}" fill="${st.color}" stroke="#243447" stroke-opacity=".35" stroke-width="1.5"/>`;
   h += `<rect class="drag-zone" x="${RX0 - 6}" y="${RY - 52}" width="${RX1 - RX0 + 12}" height="104" fill="transparent"/>`;
-  h += `<text id="pLabel" y="${RY - 34}" text-anchor="middle" font-size="22" font-weight="800" fill="#1b2a41"></text>`;
+  h += `<text id="pLabel" y="${RY - 34}" text-anchor="middle" font-size="22" font-weight="700" fill="#243447"></text>`;
   h += `<g id="planet" class="drag-zone" tabindex="0" role="slider" aria-label="행성 위치(AU)" aria-valuemin="0.01" aria-valuemax="${max}">
           <circle r="34" fill="transparent"/><circle class="focus-ring" r="27" fill="none" stroke="transparent"/>
           <circle id="pRing" r="18" fill="none" stroke-width="5"/>
-          <circle r="12" fill="#ffffff"/><circle r="12" fill="none" stroke="#1b2a41" stroke-width="1.5"/></g>`;
-  h += `<text x="${GX0 + 16}" y="${GY - 20}" font-size="18" font-weight="700" fill="#1b2a41">받는 에너지 <tspan font-size="15" font-weight="600" fill="#6b7b94">(지구 = 1)</tspan></text>`;
-  h += `<text id="gVal" x="${GX1}" y="${GY - 18}" text-anchor="end" font-size="24" font-weight="800"></text>`;
+          <circle r="12" fill="#ffffff"/><circle r="12" fill="none" stroke="#243447" stroke-width="1.5"/></g>`;
+  h += `<text x="${GX0 + 16}" y="${GY - 20}" font-size="18" font-weight="700" fill="#243447">받는 에너지 <tspan font-size="15" font-weight="600" fill="#748394">(지구 = 1)</tspan></text>`;
+  h += `<text id="gVal" x="${GX1}" y="${GY - 18}" text-anchor="end" font-size="24" font-weight="700"></text>`;
   for (const [z, a, b] of [['hot', G_MAX, HZ_INNER_S], ['ok', HZ_INNER_S, HZ_OUTER_S], ['cold', HZ_OUTER_S, 0]]){
     const xa = gX(a), xb = gX(b);
     h += `<rect x="${xa}" y="${GY}" width="${xb - xa}" height="30" fill="${ZONES[z].color}" fill-opacity=".3" stroke="${ZONES[z].color}" stroke-opacity=".7"/>`;
@@ -1330,29 +1356,30 @@ DEEP.challenge = function(){
   }
   for (const [v, lab, anc] of [[G_MAX, `많음 (${G_MAX} 이상)`, 'start'], [HZ_INNER_S, String(HZ_INNER_S), 'middle'], [HZ_OUTER_S, String(HZ_OUTER_S), 'middle'], [0, '적음 0', 'end']]){
     const x = gX(v);
-    h += `<line x1="${x}" y1="${GY + 30}" x2="${x}" y2="${GY + 38}" stroke="#4a5a75"/><text x="${x}" y="${GY + 56}" text-anchor="${anc}" font-size="15" font-weight="600" fill="#4a5a75">${lab}</text>`;
+    h += `<line x1="${x}" y1="${GY + 30}" x2="${x}" y2="${GY + 38}" stroke="#4C5D6E"/><text x="${x}" y="${GY + 56}" text-anchor="${anc}" font-size="15" font-weight="600" fill="#4C5D6E">${lab}</text>`;
   }
-  h += `<g id="gMark"><polygon points="-9,-14 9,-14 0,-1" fill="#1b2a41"/><line x1="0" y1="0" x2="0" y2="30" stroke="#1b2a41" stroke-width="3"/></g>`;
-  h += `<line x1="20" y1="350" x2="980" y2="350" stroke="#c9d6ea"/>`;
-  h += `<text x="20" y="380" font-size="17" font-weight="700" fill="#1b2a41">모든 별을 같은 축척으로 비교 <tspan font-size="15" font-weight="600" fill="#6b7b94">(0 ~ ${C_MAX} AU · 위로 갈수록 질량이 큰 별)</tspan></text>`;
+  h += `<g id="gMark"><polygon points="-9,-14 9,-14 0,-1" fill="#243447"/><line x1="0" y1="0" x2="0" y2="30" stroke="#243447" stroke-width="3"/></g>`;
+  h += `<line x1="20" y1="350" x2="980" y2="350" stroke="#E3E8EB"/>`;
+  h += `<text x="20" y="380" font-size="17" font-weight="700" fill="#243447">모든 별을 같은 축척으로 비교 <tspan font-size="15" font-weight="600" fill="#748394">(0 ~ ${C_MAX} AU · 위로 갈수록 질량이 큰 별)</tspan></text>`;
   C_ROWS.forEach((si, r) => {
     const y = C_ROW_Y[r], s = STARS[si], cur = si === i, b = chBand(si), rr = S.ch.rec[si];
-    if (cur) h += `<rect x="20" y="${y - 17}" width="960" height="34" rx="8" fill="#2563eb" fill-opacity=".1"/>`;
-    h += `<text x="${CX0 - 26}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="${cur ? 800 : 600}" fill="${cur ? '#1b2a41' : '#4a5a75'}">${s.short}</text>`;
-    h += `<line x1="${CX0}" y1="${y}" x2="${CX1}" y2="${y}" stroke="#c3cfe2" stroke-dasharray="2 4"/>`;
+    if (cur) h += `<rect x="20" y="${y - 17}" width="960" height="34" rx="8" fill="#4F7895" fill-opacity=".1"/>`;
+    h += `<text x="${CX0 - 26}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="${cur ? 800 : 600}" fill="${cur ? '#243447' : '#4C5D6E'}">${s.short}</text>`;
+    h += `<line x1="${CX0}" y1="${y}" x2="${CX1}" y2="${y}" stroke="#D5DCE1" stroke-dasharray="2 4"/>`;
     if (b) h += `<rect x="${cX(b.inner)}" y="${y - 9}" width="${Math.max(2, cX(b.outer) - cX(b.inner))}" height="18" rx="3" fill="${ZONES.ok.color}" fill-opacity="${b.model ? .5 : .75}"/>`;
-    for (const k of ['inner', 'outer']) if (rr[k] != null) h += `<line x1="${cX(rr[k])}" y1="${y - 13}" x2="${cX(rr[k])}" y2="${y + 13}" stroke="#1b2a41" stroke-width="2.5"/>`;
-    h += `<circle cx="${CX0}" cy="${y}" r="${4 + s.r / 4}" fill="${s.color}" stroke="#1b2a41" stroke-opacity=".35"/>`;
+    for (const k of ['inner', 'outer']) if (rr[k] != null) h += `<line x1="${cX(rr[k])}" y1="${y - 13}" x2="${cX(rr[k])}" y2="${y + 13}" stroke="#243447" stroke-width="1.4"/>`;
+    h += `<circle cx="${CX0}" cy="${y}" r="${4 + s.r / 4}" fill="${s.color}" stroke="#243447" stroke-opacity=".35"/>`;
   });
-  h += `<circle id="cMark" r="6" fill="#ffffff" stroke="#1b2a41" stroke-width="1.5"/>`;
-  h += `<line x1="${CX0}" y1="${C_AXIS_Y}" x2="${CX1}" y2="${C_AXIS_Y}" stroke="#6b7b94"/>`;
-  for (let d = 0; d <= C_MAX; d++) h += `<line x1="${cX(d)}" y1="${C_AXIS_Y}" x2="${cX(d)}" y2="${C_AXIS_Y + 6}" stroke="#6b7b94"/><text x="${cX(d)}" y="${C_AXIS_Y + 24}" text-anchor="middle" font-size="15" fill="#4a5a75">${d}</text>`;
-  h += `<text x="${CX1 + 8}" y="${C_AXIS_Y + 24}" font-size="15" fill="#4a5a75">AU</text>`;
+  h += `<circle id="cMark" r="6" fill="#ffffff" stroke="#243447" stroke-width="1.5"/>`;
+  h += `<line x1="${CX0}" y1="${C_AXIS_Y}" x2="${CX1}" y2="${C_AXIS_Y}" stroke="#748394"/>`;
+  for (let d = 0; d <= C_MAX; d++) h += `<line x1="${cX(d)}" y1="${C_AXIS_Y}" x2="${cX(d)}" y2="${C_AXIS_Y + 6}" stroke="#748394"/><text x="${cX(d)}" y="${C_AXIS_Y + 24}" text-anchor="middle" font-size="15" fill="#4C5D6E">${d}</text>`;
+  h += `<text x="${CX1 + 8}" y="${C_AXIS_Y + 24}" font-size="15" fill="#4C5D6E">AU</text>`;
 
   const n = chDone(), msg = S.ch.msg;
   $('deepBody').innerHTML = `
     <div class="split">
       <section class="sim" aria-label="도전 활동">
+        <p class="figcap"><b>FIG. 4</b>자 위에서 행성을 옮겨 두 경계 찾기</p>
         <svg id="chSv" viewBox="0 0 1000 580" role="img" aria-label="조작용 자, 받는 에너지 게이지, 같은 축척 비교 그림">${h}</svg>
         <div class="ctl"><span class="lbl">별의 질량</span>${STARS.map((s, k) => {
           const done = S.ch.rec[k].inner != null && S.ch.rec[k].outer != null;
@@ -1449,7 +1476,7 @@ function chBind(){
 }
 
 /* ── 에너지–거리 그래프 (광도별 곡선) ── */
-const GR_LS = [ { L:0.25, color:'#d6457a' }, { L:1, color:'#d99a00' }, { L:4, color:'#6d4fd6' }, { L:9, color:'#1b2a41' } ];
+const GR_LS = [ { L:0.25, color:'#9B7BB5' }, { L:1, color:'#D98A3E' }, { L:4, color:'#4F7895' }, { L:9, color:'#243447' } ];
 DEEP.graph = function(){
   const PX0 = 110, PX1 = 950, PY0 = 50, PY1 = 440, XMAX = 6, YMAX = 2;
   const X = d => PX0 + d / XMAX * (PX1 - PX0), Y = s => PY1 - s / YMAX * (PY1 - PY0);
@@ -1459,14 +1486,14 @@ DEEP.graph = function(){
     h += `<rect x="${PX0}" y="${Y(a)}" width="${PX1 - PX0}" height="${Y(b) - Y(a)}" fill="${ZONES[z].color}" fill-opacity="${z === 'ok' ? .22 : .07}"/>`;
     h += `<text x="${PX1 - 10}" y="${(Y(a) + Y(b)) / 2 + 6}" text-anchor="end" font-size="17" font-weight="700" fill="${ZONES[z].ink}">받는 에너지 ${ZONES[z].energy}</text>`;
   }
-  for (let s = 0; s <= YMAX + 1e-9; s += 0.5) h += `<line x1="${PX0}" y1="${Y(s)}" x2="${PX1}" y2="${Y(s)}" stroke="#1b2a41" stroke-opacity=".06"/><text x="${PX0 - 10}" y="${Y(s) + 6}" text-anchor="end" font-size="16" fill="#4a5a75">${trimNum(s)}</text>`;
-  for (let d = 0; d <= XMAX; d++) h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${PY1 + 7}" stroke="#6b7b94"/><text x="${X(d)}" y="${PY1 + 26}" text-anchor="middle" font-size="16" fill="#4a5a75">${d}</text>`;
-  h += `<line x1="${PX0}" y1="${PY0}" x2="${PX0}" y2="${PY1}" stroke="#6b7b94" stroke-width="2"/><line x1="${PX0}" y1="${PY1}" x2="${PX1}" y2="${PY1}" stroke="#6b7b94" stroke-width="2"/>`;
-  h += `<text transform="translate(28 ${(PY0 + PY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a41">받는 에너지 (지구 = 1)</text>`;
-  h += `<text x="${(PX0 + PX1) / 2}" y="${PY1 + 52}" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a41">별까지의 거리 (AU)</text>`;
+  for (let s = 0; s <= YMAX + 1e-9; s += 0.5) h += `<line x1="${PX0}" y1="${Y(s)}" x2="${PX1}" y2="${Y(s)}" stroke="#243447" stroke-opacity=".06"/><text x="${PX0 - 10}" y="${Y(s) + 6}" text-anchor="end" font-size="16" fill="#4C5D6E">${trimNum(s)}</text>`;
+  for (let d = 0; d <= XMAX; d++) h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${PY1 + 7}" stroke="#748394"/><text x="${X(d)}" y="${PY1 + 26}" text-anchor="middle" font-size="16" fill="#4C5D6E">${d}</text>`;
+  h += `<line x1="${PX0}" y1="${PY0}" x2="${PX0}" y2="${PY1}" stroke="#748394" stroke-width="2"/><line x1="${PX0}" y1="${PY1}" x2="${PX1}" y2="${PY1}" stroke="#748394" stroke-width="2"/>`;
+  h += `<text transform="translate(28 ${(PY0 + PY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#243447">받는 에너지 (지구 = 1)</text>`;
+  h += `<text x="${(PX0 + PX1) / 2}" y="${PY1 + 52}" text-anchor="middle" font-size="16" font-weight="700" fill="#243447">별까지의 거리 (AU)</text>`;
   for (const [v, lab] of [[HZ_INNER_S, '안쪽 경계 기준'], [HZ_OUTER_S, '바깥쪽 경계 기준']]){
-    h += `<line x1="${PX0}" y1="${Y(v)}" x2="${PX1}" y2="${Y(v)}" stroke="#1b2a41" stroke-width="2" stroke-dasharray="8 6" stroke-opacity=".85"/>`;
-    h += `<text x="${PX0 + 10}" y="${Y(v) - 8}" font-size="15" font-weight="700" fill="#1b2a41">${v} · ${lab}</text>`;
+    h += `<line x1="${PX0}" y1="${Y(v)}" x2="${PX1}" y2="${Y(v)}" stroke="#243447" stroke-width="2" stroke-dasharray="8 6" stroke-opacity=".85"/>`;
+    h += `<text x="${PX0 + 10}" y="${Y(v) - 8}" font-size="15" font-weight="700" fill="#243447">${v} · ${lab}</text>`;
   }
   h += `<g clip-path="url(#plot3)">`;
   for (const k of vis){
@@ -1477,17 +1504,18 @@ DEEP.graph = function(){
   h += `</g>`;
   vis.forEach((k, row) => {
     const { L, color } = GR_LS[k], ly = PY1 + 82 + row * 24;
-    h += `<text x="${Math.min(PX1 - 40, X(Math.sqrt(L / YMAX)) + 6)}" y="${PY0 - 10}" font-size="16" font-weight="800" fill="${color}">${mulName(L)}</text>`;
+    h += `<text x="${Math.min(PX1 - 40, X(Math.sqrt(L / YMAX)) + 6)}" y="${PY0 - 10}" font-size="16" font-weight="700" fill="${color}">${mulName(L)}</text>`;
     h += `<text x="${PX0 - 10}" y="${ly}" text-anchor="end" font-size="15" font-weight="700" fill="${color}">${mulName(L)}</text>`;
     for (const [d, s0] of [[innerOf(L), HZ_INNER_S], [outerOf(L), HZ_OUTER_S]]){
       h += `<line x1="${X(d)}" y1="${Y(s0)}" x2="${X(d)}" y2="${ly - 14}" stroke="${color}" stroke-width="1.5" stroke-dasharray="3 4" stroke-opacity=".7"/>`;
-      h += `<circle cx="${X(d)}" cy="${Y(s0)}" r="6" fill="${color}" stroke="#1b2a41" stroke-width="2"/>`;
+      h += `<circle cx="${X(d)}" cy="${Y(s0)}" r="6" fill="${color}" stroke="#243447" stroke-width="2"/>`;
       h += `<text x="${X(d)}" y="${ly}" text-anchor="middle" font-size="15" font-weight="700" fill="${color}">${f2(d)}</text>`;
     }
   });
   $('deepBody').innerHTML = `
     <div class="split">
       <section class="sim" aria-label="에너지–거리 그래프">
+        <p class="figcap"><b>FIG. 5</b>거리에 따른 받는 에너지 (지구 = 1)</p>
         <svg viewBox="0 0 1000 610" role="img" aria-label="거리에 따라 받는 에너지가 줄어드는 곡선 그래프">${h}</svg>
         <div class="ctl"><span class="lbl">곡선 켜고 끄기 (광도)</span>${GR_LS.map((g, k) =>
           `<button type="button" class="btn" data-act="gr-curve" data-v="${k}" aria-pressed="${S.gr.on[k]}"><span class="chip" style="background:${g.color}"></span>${mulName(g.L)}</button>`).join('')}</div>
@@ -1516,6 +1544,7 @@ DEEP.mass = function(){
   $('deepBody').innerHTML = `
     <div class="split">
       <section class="sim" aria-label="질량–거리 그림">
+        <p class="figcap"><b>FIG. 6</b>별의 질량과 생명 가능 지대</p>
         <svg id="mfSv" viewBox="0 0 1000 560" role="img" aria-label="별의 질량과 거리축에 생명 가능 지대를 그린 그림"></svg>
         <div class="ctl"><span class="lbl">거리축</span>
           <button type="button" class="btn" data-act="mf-axis" data-v="lin" aria-pressed="${!S.mf.log}">선형 거리축</button>
@@ -1555,25 +1584,25 @@ function mfSvg(){
   h += `<text x="${QX1}" y="${QY0 - 28}" text-anchor="end" font-size="15" font-weight="700" fill="${ZONES.cold.ink}">오른쪽: 너무 차가움</text>`;
   STARS.forEach(s => {
     const y = Y(s.m);
-    h += `<line x1="${QX0}" y1="${y}" x2="${QX1}" y2="${y}" stroke="#1b2a41" stroke-opacity=".25" stroke-dasharray="2 5"/>`;
-    h += `<circle cx="${QX0 - 22}" cy="${y}" r="${4 + s.r / 3}" fill="${s.color}" stroke="#1b2a41" stroke-opacity=".35"/><text x="${QX0 - 40}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="700" fill="#1b2a41">${trimNum(s.m)}</text>`;
+    h += `<line x1="${QX0}" y1="${y}" x2="${QX1}" y2="${y}" stroke="#243447" stroke-opacity=".25" stroke-dasharray="2 5"/>`;
+    h += `<circle cx="${QX0 - 22}" cy="${y}" r="${4 + s.r / 3}" fill="${s.color}" stroke="#243447" stroke-opacity=".35"/><text x="${QX0 - 40}" y="${y + 6}" text-anchor="end" font-size="16" font-weight="700" fill="#243447">${trimNum(s.m)}</text>`;
   });
-  h += `<text transform="translate(26 ${(QY0 + QY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#1b2a41">별의 질량 (태양 = 1)</text>`;
-  h += `<line x1="${QX0}" y1="${QY1 + 20}" x2="${QX1}" y2="${QY1 + 20}" stroke="#6b7b94" stroke-width="2"/>`;
-  for (const d of [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,2,3,4,5,6,7,8,9,20,30]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 27}" stroke="#6b7b94" opacity="${t.toFixed(2)}"/>`;
-  for (const d of [0.1, 1, 10, 40]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 32}" stroke="#4a5a75" stroke-width="2" opacity="${t.toFixed(2)}"/><text x="${X(d)}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#1b2a41" opacity="${t.toFixed(2)}">${d}</text>`;
+  h += `<text transform="translate(26 ${(QY0 + QY1) / 2}) rotate(-90)" text-anchor="middle" font-size="16" font-weight="700" fill="#243447">별의 질량 (태양 = 1)</text>`;
+  h += `<line x1="${QX0}" y1="${QY1 + 20}" x2="${QX1}" y2="${QY1 + 20}" stroke="#748394" stroke-width="2"/>`;
+  for (const d of [0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,2,3,4,5,6,7,8,9,20,30]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 27}" stroke="#748394" opacity="${t.toFixed(2)}"/>`;
+  for (const d of [0.1, 1, 10, 40]) h += `<line x1="${X(d)}" y1="${QY1 + 20}" x2="${X(d)}" y2="${QY1 + 32}" stroke="#4C5D6E" stroke-width="2" opacity="${t.toFixed(2)}"/><text x="${X(d)}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#243447" opacity="${t.toFixed(2)}">${d}</text>`;
   for (const d of [0, 10, 20, 30, 40]){
     const x = lin(d) * (1 - t) + lg(Math.max(d, D_MIN)) * t;
-    h += `<line x1="${x}" y1="${QY1 + 20}" x2="${x}" y2="${QY1 + 32}" stroke="#4a5a75" stroke-width="2" opacity="${(1 - t).toFixed(2)}"/><text x="${x}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#1b2a41" opacity="${(1 - t).toFixed(2)}">${d}</text>`;
+    h += `<line x1="${x}" y1="${QY1 + 20}" x2="${x}" y2="${QY1 + 32}" stroke="#4C5D6E" stroke-width="2" opacity="${(1 - t).toFixed(2)}"/><text x="${x}" y="${QY1 + 54}" text-anchor="middle" font-size="18" font-weight="700" fill="#243447" opacity="${(1 - t).toFixed(2)}">${d}</text>`;
   }
-  h += `<text x="${QX1}" y="${QY1 + 82}" text-anchor="end" font-size="16" font-weight="700" fill="#1b2a41">별까지의 거리 (AU, ${S.mf.log ? '로그 눈금' : '선형 눈금'})</text>`;
+  h += `<text x="${QX1}" y="${QY1 + 82}" text-anchor="end" font-size="16" font-weight="700" fill="#243447">별까지의 거리 (AU, ${S.mf.log ? '로그 눈금' : '선형 눈금'})</text>`;
   const y1 = Y(1), innerOp = Math.max(0, Math.min(1, (t - 0.35) / 0.4));
-  if (innerOp < 1) h += `<g opacity="${(1 - innerOp).toFixed(2)}"><line x1="${X(0.39)}" y1="${y1 + 16}" x2="${X(1.52)}" y2="${y1 + 16}" stroke="#1b2a41" stroke-opacity=".5"/><text x="${X(1.52) + 8}" y="${y1 + 36}" font-size="14" font-weight="600" fill="#1b2a41">수성·금성·지구·화성</text></g>`;
+  if (innerOp < 1) h += `<g opacity="${(1 - innerOp).toFixed(2)}"><line x1="${X(0.39)}" y1="${y1 + 16}" x2="${X(1.52)}" y2="${y1 + 16}" stroke="#243447" stroke-opacity=".5"/><text x="${X(1.52) + 8}" y="${y1 + 36}" font-size="14" font-weight="600" fill="#243447">수성·금성·지구·화성</text></g>`;
   PLANETS.forEach((p, k) => {
     const x = X(p.d), oy = PL_OFF[k], op = k < 4 ? innerOp : 1;
-    h += `<circle cx="${x.toFixed(1)}" cy="${y1}" r="${p.r}" fill="${p.c}" stroke="#1b2a41" stroke-width="1.5"/>`;
+    h += `<circle cx="${x.toFixed(1)}" cy="${y1}" r="${p.r}" fill="${p.c}" stroke="#243447" stroke-width="1.5"/>`;
     if (op <= 0) return;
-    h += `<g opacity="${op.toFixed(2)}"><line x1="${x.toFixed(1)}" y1="${y1 + Math.sign(oy) * (p.r + 1)}" x2="${x.toFixed(1)}" y2="${y1 + oy - Math.sign(oy) * 13}" stroke="#1b2a41" stroke-opacity=".35"/><text x="${x.toFixed(1)}" y="${y1 + oy + (oy > 0 ? 4 : 0)}" text-anchor="middle" font-size="14" font-weight="${p.n === '지구' ? 800 : 600}" fill="#1b2a41">${p.n}</text></g>`;
+    h += `<g opacity="${op.toFixed(2)}"><line x1="${x.toFixed(1)}" y1="${y1 + Math.sign(oy) * (p.r + 1)}" x2="${x.toFixed(1)}" y2="${y1 + oy - Math.sign(oy) * 13}" stroke="#243447" stroke-opacity=".35"/><text x="${x.toFixed(1)}" y="${y1 + oy + (oy > 0 ? 4 : 0)}" text-anchor="middle" font-size="14" font-weight="${p.n === '지구' ? 800 : 600}" fill="#243447">${p.n}</text></g>`;
   });
   sv.innerHTML = h;
 }
