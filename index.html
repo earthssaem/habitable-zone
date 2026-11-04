@@ -389,38 +389,40 @@
      긴 설명 단은 그 안에서만 스크롤 */
   .svgbox{position:relative; min-width:0}
   .svgbox > svg{display:block; width:100%; height:auto}
+  /* 그림이 읽기 어려울 만큼 작아지면(fitCheck) html.no-fit이 붙어 한 화면 맞춤을 끄고 페이지를 스크롤한다 */
   @media (min-width: 700px) and (min-height: 540px){
-    body{height:100vh; height:100dvh; overflow:hidden}
-    .wrap{flex:1 1 auto; min-height:0; overflow:hidden}
-    .wrap > *{flex:none}
-    .wrap > .sim, .wrap > .split, .wrap > #deepBody{flex:1 1 auto; min-height:0}
-    .sim{display:flex; flex-direction:column}
-    .sim > *{flex:none}
-    .sim > .svgbox{flex:1 1 auto; min-height:100px; aspect-ratio:var(--ar, 1000 / 400)}
-    .sim > .svgbox > svg{position:absolute; inset:0; width:100%; height:100%}
-    #deepBody{display:flex; flex-direction:column}
-    #deepBody > *{flex:1 1 auto; min-height:0}
-    #deepBody > .card{overflow:auto; flex-grow:0}
-    .split{grid-template-rows:minmax(0,1fr); align-items:stretch}
-    .split > *{min-height:0; max-height:100%}
-    .split > .side{overflow:auto}
-    .split > .side > .snav{margin-top:auto; position:sticky; bottom:-4px; z-index:1; background:var(--bg); padding:10px 0 4px; margin-bottom:-4px}   /* 설명이 길어도 이전·다음은 늘 보이게 */
-    footer{padding-bottom:6px}
+    html:not(.no-fit) body{height:100vh; height:100dvh; overflow:hidden}
+    html:not(.no-fit) .wrap{flex:1 1 auto; min-height:0; overflow:hidden}
+    html:not(.no-fit) .wrap > *{flex:none}
+    html:not(.no-fit) .wrap > .sim, html:not(.no-fit) .wrap > .split, html:not(.no-fit) .wrap > #deepBody{flex:1 1 auto; min-height:0}
+    html:not(.no-fit) .sim{display:flex; flex-direction:column}
+    html:not(.no-fit) .sim > *{flex:none}
+    html:not(.no-fit) .sim > .svgbox{flex:1 1 auto; min-height:100px; aspect-ratio:var(--ar, 1000 / 400)}
+    html:not(.no-fit) .sim > .svgbox > svg{position:absolute; inset:0; width:100%; height:100%}
+    html:not(.no-fit) #deepBody{display:flex; flex-direction:column}
+    html:not(.no-fit) #deepBody > *{flex:1 1 auto; min-height:0}
+    html:not(.no-fit) #deepBody > .card{overflow:auto; flex-grow:0}
+    html:not(.no-fit) .split{grid-template-rows:minmax(0,1fr); align-items:stretch}
+    html:not(.no-fit) .split > *{min-height:0; max-height:100%}
+    html:not(.no-fit) .split > .side{overflow:auto}
+    html:not(.no-fit) .split > .side > .snav{margin-top:auto; position:sticky; bottom:-4px; z-index:1; background:var(--bg); padding:10px 0 4px; margin-bottom:-4px}   /* 설명이 길어도 이전·다음은 늘 보이게 */
+    html:not(.no-fit) footer{padding-bottom:6px}
   }
   @media (min-width: 700px) and (min-height: 540px) and (max-width: 1000px){
-    .split{display:flex; flex-direction:column; align-items:stretch}
-    .split > *{flex:0 1 auto}
-    .split > .sim{flex-grow:1}
+    html:not(.no-fit) .split{display:flex; flex-direction:column; align-items:stretch}
+    html:not(.no-fit) .split > *{flex:0 1 auto}
+    html:not(.no-fit) .split > .sim{flex-grow:1}
   }
   @media (min-width: 700px) and (min-height: 540px) and (orientation: portrait){
-    .split{display:flex; flex-direction:column; align-items:stretch; gap:16px}
-    .split > *{flex:0 1 auto}
-    .split > .sim{flex:1 4 auto}
-    .split > .side{flex:0 .05 auto; min-height:220px}
-    .split > .side.card{border-left:0; border-top:1px solid var(--line); padding:14px 0 0}
-    #app[data-view="principle"] .split > .side{max-height:58%}   /* 펼친 계산 과정이 길어도 그림·버튼을 덮지 않게 */
-    #app[data-view="principle"] .split > .sim > .svgbox{min-height:min(240px, 22vh)}
+    html:not(.no-fit) .split{display:flex; flex-direction:column; align-items:stretch; gap:16px}
+    html:not(.no-fit) .split > *{flex:0 1 auto}
+    html:not(.no-fit) .split > .sim{flex:1 4 auto}
+    html:not(.no-fit) .split > .side{flex:0 .05 auto; min-height:220px}
+    html:not(.no-fit) #app[data-view="principle"] .split > .side{max-height:58%}   /* 펼친 계산 과정이 길어도 그림·버튼을 덮지 않게 */
+    html:not(.no-fit) #app[data-view="principle"] .split > .sim > .svgbox{min-height:min(240px, 22vh)}
   }
+  /* 한 줄(세로로 쌓인) 배치: 설명 단은 왼쪽 선 대신 위쪽 선으로 */
+  @media (max-width: 1000px), (orientation: portrait){ .split > .side.card{border-left:0; border-top:1px solid var(--line); padding:14px 0 0} }
   @media (min-width: 700px) and (min-height: 540px) and (max-height: 860px){
     .wrap{padding-top:12px; gap:11px}
     .lead h2{font-size:20px}
@@ -630,7 +632,24 @@ function render(){
   });
   VIEWS[S.view]();
   boxSvgs();
+  fitCheck();
   restoreFocus(fk);
+}
+/* 한 화면 맞춤은 그림이 읽을 만할 때만: 높이에 맞추느라 그림 속 가장 작은 글자가 FIT_MIN_PX보다 작아지면
+   html.no-fit을 붙여 한 화면 맞춤을 끄고(그림은 화면 폭에 맞는 원래 비율 크기로) 페이지를 세로로 스크롤한다 */
+const FIT_MIN_PX = 11;
+function fitCheck(){
+  const root = document.documentElement;
+  root.classList.remove('no-fit');
+  const sv = document.querySelector('#app .sim > .svgbox > svg');
+  if (!sv || getComputedStyle(document.body).overflowY !== 'hidden') return;   // 한 화면 맞춤이 아닌 화면(폰 등)
+  const R = sv.getBoundingClientRect(), vb = sv.viewBox.baseVal;
+  if (!R.width || !vb.width) return;
+  let u = Infinity;   // 그림 속 가장 작은 글자 크기(그림 좌표 단위)
+  for (const t of sv.querySelectorAll('text')){ const fs = parseFloat(t.getAttribute('font-size')); if (fs && t.textContent.trim()) u = Math.min(u, fs); }
+  if (!isFinite(u)) return;
+  const kw = R.width / vb.width, k = Math.min(kw, R.height / vb.height);   // 폭 기준 배율 · 실제 배율
+  if (u * k < Math.min(FIT_MIN_PX, 0.9 * u * kw)) root.classList.add('no-fit');
 }
 /* 시뮬레이션 그림을 비율 상자(.svgbox)로 감싼다: 한 화면 맞춤에서 남은 높이에 맞춰 줄어들게 */
 function boxSvgs(){
@@ -743,6 +762,9 @@ function obsGeom(){
 /* 띠가 좁을 때 두 값이 겹치지 않게 양쪽으로 벌린다(경계선과 값은 짧은 지시선으로 잇는다) */
 const labelGap = (xa, xb, need) => Math.max(0, need - (xb - xa)) / 2;
 VIEWS.observe = function(){
+  // 다시 그릴 때는 render()가 진행 중이던 애니메이션을 멈추므로, 화면 상태를 목표 광도에 맞춘다
+  // (기준 저장·비교 해제·단계 이동을 애니메이션 도중에 해도 중간 값이 남지 않게)
+  S.obs.s = Math.sqrt(S.obs.L);
   const G = OG = obsGeom(), sa = innerOf(1), sb = outerOf(1), top = G.CY - G.CH / 2, bot = G.CY + G.CH / 2;
   const halo = 'stroke="#0D1726" stroke-width="4" stroke-linejoin="round" paint-order="stroke"';
   let g = `<defs>
@@ -1566,6 +1588,7 @@ const PLANETS = [
 const PL_OFF = [-18, 26, -34, 42, -22, -22, -22, -22];
 const D_MIN = 0.1, D_MAX = 40;
 DEEP.mass = function(){
+  S.mf.t = S.mf.log ? 1 : 0;   // 축 전환 애니메이션 도중 메뉴를 옮겼다 돌아와도 중간 상태가 남지 않게
   const marsIn = 1.52 >= innerOf(1) && 1.52 <= outerOf(1);
   $('deepBody').innerHTML = `
     <div class="split">
@@ -1653,6 +1676,7 @@ DEEP.limits = function(){
     <section class="card side" style="max-width:880px">
       <h3>이 앱의 모형과 한계</h3>
       <p class="txt">이 앱은 행성이 받는 복사 에너지에 일정한 경계값(안쪽 ${HZ_INNER_S}, 바깥쪽 ${HZ_OUTER_S}, 지구 = 1)을 적용한 <b>단순화된 교육용 모형</b>이에요.</p>
+      <p class="summary">이 시뮬레이션은 교과서의 생명 가능 지대 그림을 참고하여, 태양계에서 지구는 포함하고 화성은 제외되도록 복사 에너지 경계값을 설정한 교육용 모형입니다. 실제 생명 가능 지대의 경계는 별의 특성과 행성 대기 조건, 적용하는 기후 모형에 따라 달라질 수 있습니다.</p>
       <ul class="limits">
         <li><b>별의 스펙트럼:</b> 같은 광도라도 별빛의 파장 분포가 다르면 행성 대기가 빛을 흡수·반사하는 정도가 달라져, 경계에 필요한 에너지가 달라질 수 있어요.</li>
         <li><b>행성의 대기:</b> 대기의 양과 성분(온실 기체 등)에 따라 같은 에너지를 받아도 표면 온도가 크게 달라져요. 그래서 실제 생명 가능 지대의 경계는 모형마다 달라요.</li>
@@ -1721,9 +1745,11 @@ function goHome(){
 $('homeLink').addEventListener('click', e => { e.preventDefault(); goHome(); });
 
 let lastNarrow = null;
+let fitTimer = null;
 addEventListener('resize', () => {
   const n = isNarrow();
-  if (n !== lastNarrow){ lastNarrow = n; if (!drag) render(); }
+  if (n !== lastNarrow){ lastNarrow = n; if (!drag) render(); return; }
+  clearTimeout(fitTimer); fitTimer = setTimeout(() => { if (!drag) fitCheck(); }, 120);
 });
 runSelfCheck();
 render();
