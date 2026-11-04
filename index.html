@@ -533,7 +533,7 @@
    물리 모형 상수 — 여기만 바꾸면 앱 전체 계산·설명이 함께 바뀐다
    ========================================================== */
 const HZ_INNER_S = 1.1;   // 안쪽 경계에서 받는 에너지(지구 = 1)
-const HZ_OUTER_S = 0.35;  // 바깥쪽 경계에서 받는 에너지(지구 = 1)
+const HZ_OUTER_S = 0.53;  // 바깥쪽 경계에서 받는 에너지(지구 = 1). 교과서 그림처럼 화성(1.52 AU)이 경계 밖에 오도록
 const MASS_LUMINOSITY_POWER = 3.5;   // 심화 활동(질량이 다른 별)에서만 사용: 광도 = 질량^3.5
 const L_MIN = 0.25, L_MAX = 9;       // 광도 슬라이더 범위(태양 = 1)
 const L_QUICK = [0.25, 1, 4, 9];
@@ -573,15 +573,15 @@ const pts = a => a.map(p => p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
 
 /* ── 검증 수치 확인 ───────────────────────── */
 const EXPECTED_L = [
-  { L:1, inner:'0.95', outer:'1.69', width:'0.74' },
-  { L:4, inner:'1.91', outer:'3.38', width:'1.47' },
-  { L:9, inner:'2.86', outer:'5.07', width:'2.21' },
+  { L:1, inner:'0.95', outer:'1.37', width:'0.42' },
+  { L:4, inner:'1.91', outer:'2.75', width:'0.84' },
+  { L:9, inner:'2.86', outer:'4.12', width:'1.26' },
 ];
 const EXPECTED_M = [   // 심화 '도전' 활동(질량 → 광도)
-  { m:0.5, L:'0.088', inner:'0.28', outer:'0.50', width:'0.22' },
-  { m:1,   L:'1.00',  inner:'0.95', outer:'1.69', width:'0.74' },
-  { m:1.5, L:'4.13',  inner:'1.94', outer:'3.44', width:'1.50' },
-  { m:2,   L:'11.31', inner:'3.21', outer:'5.69', width:'2.48' },
+  { m:0.5, L:'0.088', inner:'0.28', outer:'0.41', width:'0.12' },
+  { m:1,   L:'1.00',  inner:'0.95', outer:'1.37', width:'0.42' },
+  { m:1.5, L:'4.13',  inner:'1.94', outer:'2.79', width:'0.85' },
+  { m:2,   L:'11.31', inner:'3.21', outer:'4.62', width:'1.41' },
 ];
 function runSelfCheck(){
   const rowsL = EXPECTED_L.map(e => {
@@ -595,7 +595,7 @@ function runSelfCheck(){
     got.ok = ['L','inner','outer','width'].every(k => got[k] === e[k]);
     return got;
   });
-  const ok = rowsL.every(r => r.ok) && rowsM.every(r => r.ok) && f2(HZ_RATIO) === '1.77' && HZ_LOG_WIDTH.toFixed(3) === '0.249';
+  const ok = rowsL.every(r => r.ok) && rowsM.every(r => r.ok) && f2(HZ_RATIO) === '1.44' && HZ_LOG_WIDTH.toFixed(3) === '0.159';
   document.documentElement.dataset.selfcheck = ok ? 'pass' : 'fail';
   window.__hzSelfCheck = { ok, rowsL, rowsM };
   if (console.table){ console.table(rowsL); console.table(rowsM); }
@@ -898,7 +898,7 @@ function obsDraw(){
   set('oInLead', { d:lead(xa, ix) }); set('oOutLead', { d:lead(xb, ox) });
   // 폭 화살표
   const by = G.BY;
-  set('oBrA', { x1:(xa + 2).toFixed(1), x2:(xb - 2).toFixed(1), opacity:xb - xa > 18 ? 1 : 0 });
+  set('oBrA', { x1:(xa + 2).toFixed(1), x2:(xb - 2).toFixed(1), opacity:xb - xa > 44 ? 1 : 0 });   // 띠가 좁으면 화살표 대신 양 끝 표시만
   set('oBrE', { d:`M${xa.toFixed(1)},${by - 8}V${by + 8}M${xb.toFixed(1)},${by - 8}V${by + 8}` });
   const bw = (G.fs - 1) * 5.4 / 2, bcx = Math.max(AX0 + bw, Math.min(AX1 - bw, (xa + xb) / 2));
   set('oBrT', { x:bcx.toFixed(1) }); $('oBrT').textContent = `폭 ${f2(b - a)} AU`;
@@ -929,7 +929,7 @@ const mv = x => `<i class="mv">${x}</i>`;
 const mfrac = (a, b) => `<span class="mfrac"><span>${a}</span><span>${b}</span></span>`;
 const msqrt = x => `<span class="msqrt"><span>${x}</span></span>`;
 const SQRT_L = msqrt(mv('L'));
-/* 경계·폭의 계수: 안쪽 1/√1.1, 바깥쪽 1/√0.35, 폭 = 그 차이 (반올림 전 값으로 계산) */
+/* 경계·폭의 계수: 안쪽 1/√HZ_INNER_S, 바깥쪽 1/√HZ_OUTER_S, 폭 = 그 차이 (반올림 전 값으로 계산) */
 const K_IN = 1 / Math.sqrt(HZ_INNER_S), K_OUT = 1 / Math.sqrt(HZ_OUTER_S), K_W = K_OUT - K_IN;
 const ROUND_NOTE = '※ 화면의 수치는 소수 둘째 자리까지 반올림한 값입니다. 실제 계산에서는 반올림하지 않은 값을 사용하므로 표시된 수치를 직접 계산한 결과와 약간 다를 수 있습니다.';
 const PR_SCENES = [
