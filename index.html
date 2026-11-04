@@ -102,7 +102,7 @@
   .sim svg{display:block; width:100%; height:auto; fill:var(--ink-2); font-family:inherit; user-select:none; -webkit-user-select:none}
   .sim svg text{font-feature-settings:"tnum"}
   .figcap{margin:0; padding:10px 16px 0; font-size:12.5px; color:var(--muted); display:flex; gap:10px; align-items:baseline; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-  .figcap b{font-size:10.5px; font-weight:700; letter-spacing:.14em; color:var(--ink-2); flex:none}
+  .figcap b{font-size:10.5px; font-weight:700; letter-spacing:.14em; color:var(--ink-2); flex:none; font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
   .sim .ctl{padding:9px 14px; border-top:1px solid var(--line); background:var(--tint); display:flex; flex-wrap:wrap; gap:8px; align-items:center}
   .sim svg .drag-zone{touch-action:none; cursor:grab}
   .sim svg.dragging .drag-zone{cursor:grabbing}
@@ -132,14 +132,16 @@
   .btn.go{background:var(--accent); border-color:var(--accent); color:#fff}
   @media (hover:hover){ .btn.go:hover:not(:disabled){background:var(--accent-ink); border-color:var(--accent-ink)} }
   .btn.ghost{background:transparent}
+  .btn .ico{font-weight:400; font-size:1.1em; line-height:1; transition:transform .15s}
+  @media (hover:hover){ .btn.go:hover .ico{transform:translateX(2px)} }
   .btn .chip{width:12px; height:12px; border-radius:50%; flex:none; box-shadow:inset 0 0 0 1px rgba(36,52,71,.3)}
-  .lbl{color:var(--muted); font-size:12px; font-weight:700; letter-spacing:.06em; margin-right:2px}
+  .lbl{color:var(--muted); font-size:13px; font-weight:600; margin-right:4px}
   .sep{width:1px; align-self:stretch; background:var(--line); margin:0 6px}
   .note{font-size:13.5px; color:var(--muted)}
   .box{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:11px 14px}
   .summary{border-left:2px solid var(--accent); padding:4px 0 4px 14px; color:var(--ink); font-weight:600}
   .hz{color:var(--hz)}
-  .tag{align-self:flex-start; font-size:11.5px; font-weight:700; letter-spacing:.1em; color:var(--accent)}
+  .tag{align-self:flex-start; font-size:13px; font-weight:700; color:var(--accent)}
 
   /* 밑줄형 보조 탭(② 장면 묶음·심화 메뉴) */
   .parts, .subtabs{display:flex; gap:2px 22px; flex-wrap:wrap; border-bottom:1px solid var(--line)}
@@ -153,7 +155,8 @@
   .lum{display:grid; grid-template-columns:auto minmax(0,1fr) auto; gap:8px 28px; align-items:center; padding:12px 18px 12px}
   .sim > .lum.top{border-bottom:1px solid var(--line)}
   .lum .read{display:flex; flex-direction:column; line-height:1.1; min-width:178px}
-  .lum .read label{font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--star-ink)}
+  .lum .read label{font-size:13px; font-weight:700; color:var(--star-ink); display:flex; align-items:center; gap:6px}
+  .lum .read label::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--star)}
   .lum .read output{font-size:42px; font-weight:300; letter-spacing:-.03em; white-space:nowrap; color:var(--ink); font-feature-settings:"tnum"}
   .lum .read output small{font-size:14px; font-weight:500; color:var(--muted); letter-spacing:0; margin-left:4px}
   .slider{position:relative; padding-bottom:22px}
@@ -193,7 +196,7 @@
   .legend li{display:flex; align-items:center; gap:6px; white-space:nowrap}
   .sw{width:18px; height:10px; border-radius:3px; flex:none; display:inline-block}
   .sw.hot{background:linear-gradient(90deg,#F2BE8C,#FBE6D2)}
-  .sw.ok{background:#CBE9DC; box-shadow:inset 1.5px 0 0 var(--hz), inset -1.5px 0 0 var(--hz)}
+  .sw.ok{background:#CBE9DC; box-shadow:inset 0 0 0 1px var(--hz-line)}
   .sw.cold{background:linear-gradient(90deg,#E2ECF3,#C3D6E4)}
   .sw.sun{background:#E2E6E9; box-shadow:inset 0 0 0 1px #A7B1BA}
   .sw.base{background:transparent; border:1.5px dashed var(--ink)}
@@ -204,19 +207,18 @@
   .cards{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; padding:2px 0}
   .val{
     padding:2px 22px; min-width:0; border-left:1px solid var(--line);
-    display:grid; grid-template-columns:auto minmax(0,1fr); grid-template-areas:"k s" "v v"; align-items:baseline; column-gap:12px;
+    display:grid; grid-template-columns:minmax(0,1fr); grid-template-areas:"k" "v" "s";
   }
   .val:first-child{border-left:0; padding-left:4px}
   .val .k{grid-area:k; font-size:13px; font-weight:700; color:var(--ink-2); white-space:nowrap; display:flex; align-items:center; gap:7px}
-  .val .s{grid-area:s; font-size:12.5px; color:var(--muted); text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .val .s{grid-area:s; font-size:12.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px}
   .val .v{grid-area:v; font-size:40px; font-weight:300; letter-spacing:-.03em; line-height:1.12; white-space:nowrap; color:var(--ink); font-feature-settings:"tnum"}
   .val .v small{font-size:15px; font-weight:500; color:var(--muted); letter-spacing:0; margin-left:5px}
   .val.w .k{color:var(--hz)}
   .val.w .k::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--hz-line)}
   .val.w .v{color:var(--hz); font-weight:400}
   @media (max-width: 1000px){
-    .val{grid-template-areas:"k" "v" "s"; grid-template-columns:minmax(0,1fr)}
-    .val .s{text-align:left; min-height:1.4em}
+    .val .s{min-height:1.4em}
   }
   @media (max-width: 600px){
     .obsbar{padding:8px 10px}
@@ -235,7 +237,7 @@
   .bottom .note{max-width:72ch}
 
   /* ── 2단계: 장면 ─────────────────────── */
-  .scene-no{font-size:11.5px; font-weight:700; letter-spacing:.12em; color:var(--muted)}
+  .scene-no{font-size:13px; font-weight:600; color:var(--muted); font-feature-settings:"tnum"}
   .side h3{font-size:22px; line-height:1.32; letter-spacing:-.025em; font-weight:700; color:var(--ink)}
   .side .txt{font-size:16px; line-height:1.65; color:var(--ink-2)}
   .readline{font-size:15.5px; line-height:1.6}
@@ -278,7 +280,7 @@
   .flow .fl.w{color:var(--hz); border-color:#B9DFCD; background:var(--hz-soft)}
   .flow .ar{color:var(--muted)}
   .keyrel{border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:12px 0; display:flex; flex-direction:column; gap:9px}
-  .keyrel .kh{font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--hz)}
+  .keyrel .kh{font-size:13px; font-weight:700; color:var(--hz)}
   .keyrel .kr{display:grid; grid-template-columns:100px minmax(0,1fr); align-items:center; gap:4px 14px}
   .keyrel .kr .math{font-size:26px}
   .keyrel .kr b{font-size:17px; line-height:1.4; font-weight:700; color:var(--ink)}
@@ -286,12 +288,12 @@
   .keyrel > .btn{align-self:flex-start; min-height:38px; font-size:14px}
   .calc{display:flex; flex-direction:column; gap:14px; padding-top:12px; border-top:1px dashed var(--line-2)}
   .cstep{display:flex; flex-direction:column; gap:3px}
-  .cstep .ct{font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--accent-ink)}
+  .cstep .ct{font-size:13px; font-weight:700; color:var(--accent-ink)}
   .cstep .cn{font-size:14px; line-height:1.55; color:var(--ink-2)}
   .nw{white-space:nowrap}
   .numcmp{border-top:1px solid var(--line); padding:10px 18px 12px; display:flex; flex-direction:column; gap:6px}
   table.data.cmp2{font-size:15px; width:auto; min-width:min(100%, 480px)}
-  table.cmp2 caption{caption-side:top; text-align:left; font-size:11px; font-weight:700; letter-spacing:.14em; color:var(--muted); padding-bottom:4px}
+  table.cmp2 caption{caption-side:top; text-align:left; font-size:13px; font-weight:700; color:var(--ink-2); padding-bottom:4px}
   table.cmp2 th, table.cmp2 td{padding:4px 10px}
   table.cmp2 tbody th{text-align:left; font-weight:600; color:var(--ink-2); font-size:14px; white-space:nowrap}
   table.cmp2 td:last-child{font-weight:700; color:var(--hz)}
@@ -307,10 +309,12 @@
   /* ── 3단계: 적용 문제 ─────────────────── */
   .qchips{display:flex; gap:8px 20px; flex-wrap:wrap; align-items:center; padding:8px 14px}
   .qgroup{display:flex; gap:4px; align-items:center; flex-wrap:wrap}
-  .qgroup > span{font-size:12px; font-weight:700; letter-spacing:.06em; color:var(--muted); margin-right:4px}
+  .qgroup > span{font-size:13px; font-weight:600; color:var(--muted); margin-right:4px}
   .qgroup + .qgroup{padding-left:18px; border-left:1px solid var(--line)}
   .qchips .btn{min-width:42px; min-height:40px; padding:4px 8px; font-size:15px}
-  .qchips .btn.done:not([aria-pressed="true"]){color:var(--hz); border-color:#B9DFCD; background:var(--hz-soft)}
+  .qchips .btn{position:relative}
+  .qchips .btn.done::after{content:""; position:absolute; top:5px; right:5px; width:6px; height:6px; border-radius:50%; background:var(--hz-line)}
+  .qchips .btn.done:not([aria-pressed="true"]){color:var(--hz); border-color:#C9E5D8}
   .score{display:flex; gap:10px; align-items:center; flex-wrap:wrap; font-size:14px; font-weight:600; color:var(--ink-2); margin-left:auto}
   .qcard .q{font-size:20px; font-weight:700; line-height:1.45; letter-spacing:-.02em; color:var(--ink)}
   .opts{display:flex; flex-direction:column; gap:8px}
@@ -318,6 +322,9 @@
   .opts .btn.right{border-color:var(--hz-line); background:var(--hz-soft); color:var(--hz); font-weight:700}
   .opts .btn.wrong{border-color:#E7C2BA; background:var(--bad-soft); color:var(--bad)}
   .opts .btn:disabled{opacity:1; cursor:default}
+  .opts .btn .mk{flex:none; font-size:11.5px; font-weight:700; padding:2px 8px; border-radius:999px; margin-right:4px; color:#fff}
+  .opts .btn.right .mk{background:var(--hz-line)}
+  .opts .btn.wrong .mk{background:var(--bad)}
   .qcard p.box{border-left:2px solid var(--accent); border-radius:0 10px 10px 0}
 
   /* ── 심화 ─────────────────────────────── */
@@ -328,7 +335,10 @@
   table.data tr.cur td{background:var(--accent-soft)}
   table.data .empty{color:#B7C0C7}
   details{background:var(--surface); border:1px solid var(--line); border-radius:10px}
-  details summary{cursor:pointer; padding:10px 14px; min-height:44px; font-weight:600; font-size:15px; color:var(--ink)}
+  details summary{cursor:pointer; padding:10px 14px; min-height:44px; font-weight:600; font-size:15px; color:var(--ink); list-style:none; display:flex; gap:12px; justify-content:space-between; align-items:flex-start}
+  details summary::-webkit-details-marker{display:none}
+  details summary::after{content:"+"; flex:none; font-weight:400; font-size:20px; line-height:1.1; color:var(--accent)}
+  details[open] summary::after{content:"−"}
   details[open] summary{border-bottom:1px solid var(--line)}
   details .in{padding:10px 14px; display:flex; flex-direction:column; gap:8px; font-size:15px; color:var(--ink-2)}
   ul.limits{margin:0; padding-left:20px; display:flex; flex-direction:column; gap:10px; color:var(--ink-2)}
@@ -1038,10 +1048,10 @@ VIEWS.principle = function(){
         ${read}
         ${formula}
         <nav class="snav" aria-label="장면 이동">
-          <button type="button" class="btn" data-act="pr-scene" data-v="${S.pr.scene - 1}" ${S.pr.scene === 0 ? 'disabled' : ''}>◀ 이전</button>
+          <button type="button" class="btn" data-act="pr-scene" data-v="${S.pr.scene - 1}" ${S.pr.scene === 0 ? 'disabled' : ''}><span class="ico" aria-hidden="true">←</span>이전</button>
           ${S.pr.scene < PR_SCENES.length - 1
-            ? `<button type="button" class="btn go" data-act="pr-scene" data-v="${S.pr.scene + 1}">다음 장면 ▶</button>`
-            : `<button type="button" class="btn go" data-act="view" data-v="apply">적용하기 ▶</button>`}
+            ? `<button type="button" class="btn go" data-act="pr-scene" data-v="${S.pr.scene + 1}">다음 장면<span class="ico" aria-hidden="true">→</span></button>`
+            : `<button type="button" class="btn go" data-act="view" data-v="apply">적용하기<span class="ico" aria-hidden="true">→</span></button>`}
         </nav>
       </aside>
     </div>`;
@@ -1213,7 +1223,7 @@ VIEWS.apply = function(){
   const score = AP.reduce((n, x, k) => n + (S.ap.picks[k] === x.a ? 1 : 0), 0);
   const answered = S.ap.picks.filter(p => p != null).length;
   const chips = AP_GROUPS.map(([cat, name]) => `<div class="qgroup"><span>${name}</span>${AP.map((x, k) => x.cat !== cat ? '' :
-    `<button type="button" class="btn ${S.ap.picks[k] != null ? 'done' : ''}" data-act="ap-go" data-v="${k}" aria-pressed="${k === qi}" aria-label="${k + 1}번 문제${S.ap.picks[k] != null ? ' (풀었음)' : ''}">${k + 1}${S.ap.picks[k] != null ? '✓' : ''}</button>`).join('')}</div>`).join('');
+    `<button type="button" class="btn ${S.ap.picks[k] != null ? 'done' : ''}" data-act="ap-go" data-v="${k}" aria-pressed="${k === qi}" aria-label="${k + 1}번 문제${S.ap.picks[k] != null ? ' (풀었음)' : ''}">${k + 1}</button>`).join('')}</div>`).join('');
   const vis = it.vis ? apVisSvg(it.vis, pk != null) : '';
   $('app').innerHTML = `
     <div class="lead"><h2>적용하기</h2><p>배운 개념으로 비교하고, 판단하고, 예측해 보세요.</p></div>
@@ -1226,15 +1236,15 @@ VIEWS.apply = function(){
         <p class="q">${esc(it.q)}</p>
         <div class="opts">${it.c.map((c, k) => {
           let cls = '', mark = '';
-          if (pk != null){ if (k === it.a){ cls = 'right'; mark = '✓ 정답 · '; } else if (k === pk){ cls = 'wrong'; mark = '✗ 내 답 · '; } }
+          if (pk != null){ if (k === it.a){ cls = 'right'; mark = '<span class="mk">정답</span>'; } else if (k === pk){ cls = 'wrong'; mark = '<span class="mk">내 답</span>'; } }
           return `<button type="button" class="btn ${cls}" data-act="ap-ans" data-v="${k}" ${pk != null ? 'disabled' : ''}>${mark}${esc(c)}</button>`;
         }).join('')}</div>
         ${pk != null ? `<p class="box" role="status"><b>${pk === it.a ? '맞았어요!' : '다시 생각해 봐요.'}</b> ${esc(it.e)}</p>`
           : `<p class="note">${it.vis ? '답을 고르면 그림에 생명 가능 지대가 나타나요.' : '답을 고르면 해설이 나와요.'}</p>`}
         <nav class="snav" aria-label="문제 이동">
-          <button type="button" class="btn" data-act="ap-go" data-v="${qi - 1}" ${qi === 0 ? 'disabled' : ''}>◀ 이전</button>
-          ${qi < AP.length - 1 ? `<button type="button" class="btn go" data-act="ap-go" data-v="${qi + 1}">다음 문제 ▶</button>`
-            : `<button type="button" class="btn go" data-act="view" data-v="deep">심화 탐구 ▶</button>`}
+          <button type="button" class="btn" data-act="ap-go" data-v="${qi - 1}" ${qi === 0 ? 'disabled' : ''}><span class="ico" aria-hidden="true">←</span>이전</button>
+          ${qi < AP.length - 1 ? `<button type="button" class="btn go" data-act="ap-go" data-v="${qi + 1}">다음 문제<span class="ico" aria-hidden="true">→</span></button>`
+            : `<button type="button" class="btn go" data-act="view" data-v="deep">심화 탐구<span class="ico" aria-hidden="true">→</span></button>`}
         </nav>
       </section>
     </div>
@@ -1481,10 +1491,12 @@ DEEP.graph = function(){
   const PX0 = 110, PX1 = 950, PY0 = 50, PY1 = 440, XMAX = 6, YMAX = 2;
   const X = d => PX0 + d / XMAX * (PX1 - PX0), Y = s => PY1 - s / YMAX * (PY1 - PY0);
   const vis = GR_LS.map((_, k) => k).filter(k => S.gr.on[k]);
+  let top = '';   // 곡선 위에 얹는 글자(흰 테두리로 곡선과 겹쳐도 읽히게)
   let h = `<defs><clipPath id="plot3"><rect x="${PX0}" y="${PY0}" width="${PX1 - PX0}" height="${PY1 - PY0}"/></clipPath></defs>`;
   for (const [z, a, b] of [['hot', YMAX, HZ_INNER_S], ['ok', HZ_INNER_S, HZ_OUTER_S], ['cold', HZ_OUTER_S, 0]]){
     h += `<rect x="${PX0}" y="${Y(a)}" width="${PX1 - PX0}" height="${Y(b) - Y(a)}" fill="${ZONES[z].color}" fill-opacity="${z === 'ok' ? .22 : .07}"/>`;
-    h += `<text x="${PX1 - 10}" y="${(Y(a) + Y(b)) / 2 + 6}" text-anchor="end" font-size="17" font-weight="700" fill="${ZONES[z].ink}">받는 에너지 ${ZONES[z].energy}</text>`;
+    const zl = z === 'cold';   // 받는 에너지 적음: 곡선이 지나가지 않는 왼쪽 아래에
+    top += `<text x="${zl ? PX0 + 12 : PX1 - 10}" y="${(Y(a) + Y(b)) / 2 + 6}" text-anchor="${zl ? 'start' : 'end'}" font-size="16" font-weight="700" fill="${ZONES[z].ink}" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">받는 에너지 ${ZONES[z].energy}</text>`;
   }
   for (let s = 0; s <= YMAX + 1e-9; s += 0.5) h += `<line x1="${PX0}" y1="${Y(s)}" x2="${PX1}" y2="${Y(s)}" stroke="#243447" stroke-opacity=".06"/><text x="${PX0 - 10}" y="${Y(s) + 6}" text-anchor="end" font-size="16" fill="#4C5D6E">${trimNum(s)}</text>`;
   for (let d = 0; d <= XMAX; d++) h += `<line x1="${X(d)}" y1="${PY1}" x2="${X(d)}" y2="${PY1 + 7}" stroke="#748394"/><text x="${X(d)}" y="${PY1 + 26}" text-anchor="middle" font-size="16" fill="#4C5D6E">${d}</text>`;
@@ -1493,7 +1505,8 @@ DEEP.graph = function(){
   h += `<text x="${(PX0 + PX1) / 2}" y="${PY1 + 52}" text-anchor="middle" font-size="16" font-weight="700" fill="#243447">별까지의 거리 (AU)</text>`;
   for (const [v, lab] of [[HZ_INNER_S, '안쪽 경계 기준'], [HZ_OUTER_S, '바깥쪽 경계 기준']]){
     h += `<line x1="${PX0}" y1="${Y(v)}" x2="${PX1}" y2="${Y(v)}" stroke="#243447" stroke-width="2" stroke-dasharray="8 6" stroke-opacity=".85"/>`;
-    h += `<text x="${PX0 + 10}" y="${Y(v) - 8}" font-size="15" font-weight="700" fill="#243447">${v} · ${lab}</text>`;
+    const right = v === HZ_INNER_S;   // 안쪽 경계 기준은 곡선과 만나는 점을 피해 오른쪽 끝에
+    top += `<text x="${right ? PX1 - 10 : PX0 + 10}" y="${Y(v) - 8}" text-anchor="${right ? 'end' : 'start'}" font-size="14" font-weight="700" fill="#243447" stroke="#ffffff" stroke-width="5" stroke-linejoin="round" paint-order="stroke">${v} · ${lab}</text>`;
   }
   h += `<g clip-path="url(#plot3)">`;
   for (const k of vis){
@@ -1501,7 +1514,7 @@ DEEP.graph = function(){
     const p = []; for (let n = 0; n <= 300; n++){ const d = d0 + (XMAX - d0) * n / 300; p.push(`${X(d).toFixed(1)},${Y(fluxAt(L, d)).toFixed(1)}`); }
     h += `<polyline points="${p.join(' ')}" fill="none" stroke="${GR_LS[k].color}" stroke-width="3.5"/>`;
   }
-  h += `</g>`;
+  h += `</g>` + top;
   vis.forEach((k, row) => {
     const { L, color } = GR_LS[k], ly = PY1 + 82 + row * 24;
     h += `<text x="${Math.min(PX1 - 40, X(Math.sqrt(L / YMAX)) + 6)}" y="${PY0 - 10}" font-size="16" font-weight="700" fill="${color}">${mulName(L)}</text>`;
