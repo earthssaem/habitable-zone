@@ -35,3 +35,25 @@ git checkout <작업-브랜치>
 - 물리 상수(`HZ_INNER_S`, `HZ_OUTER_S`, `MASS_LUMINOSITY_POWER`)는 `<script>` 맨 위 한곳에서만 정의합니다.
 - 제목을 누르면 1단계로, 푸터의 제작자 문구와 허브 링크(`연경쌤의 지구과학 실험실 둘러보기 →`)는 유지합니다.
 - 화면 구조나 사용법이 바뀌면 `README.md`도 함께 고칩니다.
+
+## 디자인: '탐구실' 시리즈와 같게
+
+해파·해일·우박 탐구실(wave-lab, haeil-lab, hailstone-lab)과 같은 디자인을 유지합니다.
+
+- 바탕 `#E6EEF3`, 종이색 패널 `#FFFDF8`, 진한 테두리 2px `#24303A`, 카드·버튼은 흰 바탕 + 진한 테두리(버튼은 아래 그림자 `0 2px 0`).
+- 상단은 `앱 이름 | 부제`, 그 아래 폴더 탭(번호 원). 탭 색: 1 관찰 `#5B9BD5`, 2 원리 `#E0A93B`, 3 적용 `#8C7BB5`, 심화 `#5E6FA3`. 화면마다 `--tc`·`--tc-soft`로 강조색이 바뀝니다.
+- 주요 버튼(다음·이동)은 코랄 `#E8553E`, 화면 제목은 진한 알약(`.lead h2`), 설명 속 강조는 노란 형광펜.
+- 글꼴: 제목·버튼·숫자는 Jua, 본문은 Noto Sans KR(없으면 시스템 글꼴). Jua는 외부 서버 없이 쓰려고 이 앱에 쓰인 글자만 담아 `<style>` 맨 앞(`JUA-FONT-START`~`END`)에 base64로 넣었습니다(SIL OFL 1.1).
+- **새 한글 문구를 넣거나 바꾸면 글꼴을 다시 만듭니다**(안 하면 새 글자만 다른 글꼴로 보임):
+
+```bash
+pip install fonttools brotli
+```
+
+```bash
+curl -sS -A "Wget/1.0" "https://fonts.googleapis.com/css2?family=Jua" | grep -o 'https://[^)]*' | head -1 | xargs curl -sS -o /tmp/Jua-Regular.ttf
+```
+
+```bash
+python3 tools/embed-jua.py index.html /tmp/Jua-Regular.ttf /tmp
+```
